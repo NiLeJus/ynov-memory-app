@@ -1,4 +1,5 @@
 export type tMemoryCard = {
+  uid: string;
   validationLevel: number; // Niveau de validation (entier)
   lastValidationDate: number; // Date de la dernière validation (timestamp)
   nextValidationDate: number; // Date de la prochaine validation (timestamp)

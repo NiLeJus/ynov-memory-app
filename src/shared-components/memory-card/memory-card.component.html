@@ -1,4 +1,4 @@
-<div class="card text-cente" style="width: 18rem;">
+
   <div class="card-header">
   lv {{_memoryCard()?.validationLevel}}
   </div>
@@ -10,14 +10,14 @@
     </div>
   </div>
   <div class="card-footer text-body-secondary">
-    <button (click)="UserValidation()" class="btn btn-primary">Valider</button>
+    <button (click)="userValidation()" class="btn btn-primary">Valider</button>
     @if (this.hasUserAnswered) {
-      @if (this.IsAnswerValid()) {
-        <p>Bien jouer</p>
+      @if (this.isAnswerValid()) {
+        <p>Bien jouer !</p>
       }
-      @if (!this.IsAnswerValid()) {
+      @if (!this.isAnswerValid()) {
         <p>Nul</p>
       }
     }
   </div>
-</div>
+
