@@ -1,7 +1,12 @@
 
-<div>
-  @for(card of data; track $index) {
-    <app-memory-card [_memoryCard]="card"/>
-  }
-
+<div class="text-center">
+  <h1>MEMORY APP</h1>
+  <p>Bastien truc & Nils Verneret</p>
+</div>
+<div class="container text-center d-flex justify-content-center">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
+    @for(card of memoryCards; track $index) {
+      <app-memory-card  class="col card text-center" [_memoryCard]="card" />
+    }
+  </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component, input, computed } from '@angular/core';
 import { tMemoryCard } from '../../_models/app.interfaces';
 import { FormsModule } from '@angular/forms';
+import { JsonService } from '../../services/json.service';
 
 @Component({
   selector: 'app-memory-card',
@@ -10,9 +11,41 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./memory-card.component.scss'],
 })
 export class MemoryCardComponent {
-  //Memory Card
-  _memoryCard = input<tMemoryCard | undefined>();
+  constructor(private jsonService: JsonService) {}
 
+  //Memory Card
+  _memoryCard = input<tMemoryCard>();
+   cardUid: string | undefined;
+
+
+  //User related
+  userAnswer: string = ''; // Variable liée au textarea
+  hasUserAnswered: boolean = false;
+
+  userValidation() {
+    console.log(this.userAnswer);
+    this.hasUserAnswered = true;
+      this.jsonService.changeCardValidation(this.cardUid);
+  }
+
+  isAnswerValid(): boolean {
+    const memoryCard = this._memoryCard();
+    if (!memoryCard) {
+      console.error('Memory card is undefined');
+      return false;
+    }
+
+    const trueAnswer = memoryCard.answer;
+    if (trueAnswer === this.userAnswer) {
+      console.log('This answer is valid');
+      return true;
+    }
+
+    return false;
+  }
+}
+
+/*
   lastValidationDate = computed(() => {
     const memoryCard = this._memoryCard();
     if (memoryCard && memoryCard.lastValidationDate) {
@@ -32,23 +65,4 @@ export class MemoryCardComponent {
       'memoryCard et/ou memoryCard.nextValidationDate are Null'
     );
   });
-
-  //User related
-  userAnswer: string = ''; // Variable liée au textarea
-  hasUserAnswered: boolean = false;
-
-  UserValidation() {
-    console.log(this.userAnswer);
-    this.hasUserAnswered = true;
-  }
-
-  //Need to Implement letter Case compatiility
-  IsAnswerValid(): boolean {
-    const trueAnswer = this._memoryCard()?.answer;
-    if (trueAnswer == this.userAnswer) {
-      console.log('this answer is valid');
-      return true;
-    }
-    return false;
-  }
-}
+*/
