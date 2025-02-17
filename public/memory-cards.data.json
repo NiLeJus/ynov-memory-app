@@ -1,0 +1,65 @@
+[
+  {
+    "validationLevel": 3,
+    "lastValidationDate": 1708087625000,
+    "nextValidationDate": 1708682425000,
+    "question": "Quel est le symbole chimique du fer ?",
+    "answer": "Fe"
+  },
+  {
+    "validationLevel": 1,
+    "lastValidationDate": 1707077620000,
+    "nextValidationDate": 1707672420000,
+    "question": "Combien y a-t-il de continents sur Terre ?",
+    "answer": "7"
+  },
+  {
+    "validationLevel": 4,
+    "lastValidationDate": 1706087620000,
+    "nextValidationDate": 1706682420000,
+    "question": "Quel est le plus grand océan du monde ?",
+    "answer": "L'océan Pacifique"
+  },
+  {
+    "validationLevel": 2,
+    "lastValidationDate": 1705087620000,
+    "nextValidationDate": 1705682420000,
+    "question": "Qui a peint La Joconde ?",
+    "answer": "Léonard de Vinci"
+  },
+  {
+    "validationLevel": 3,
+    "lastValidationDate": 1704087620000,
+    "nextValidationDate": 1704682420000,
+    "question": "Quel est l'élément le plus léger du tableau périodique ?",
+    "answer": "L'hydrogène"
+  },
+  {
+    "validationLevel": 1,
+    "lastValidationDate": 1703087620000,
+    "nextValidationDate": 1703682420000,
+    "question": "Dans quelle ville se trouve la tour Eiffel ?",
+    "answer": "Paris"
+  },
+  {
+    "validationLevel": 5,
+    "lastValidationDate": 1702087620000,
+    "nextValidationDate": 1702682420000,
+    "question": "Quel est le carré de 9 ?",
+    "answer": "81"
+  },
+  {
+    "validationLevel": 2,
+    "lastValidationDate": 1701087620000,
+    "nextValidationDate": 1701682420000,
+    "question": "Quel est l'organe principal du système circulatoire ?",
+    "answer": "Le cœur"
+  },
+  {
+    "validationLevel": 4,
+    "lastValidationDate": 1700087620000,
+    "nextValidationDate": 1700682420000,
+    "question": "Qui est l'auteur de 'Les Misérables' ?",
+    "answer": "Victor Hugo"
+  }
+]
