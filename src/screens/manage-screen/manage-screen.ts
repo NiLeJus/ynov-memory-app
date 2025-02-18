@@ -4,13 +4,13 @@ import { CommonModule } from '@angular/common';
 import { MemoryCardComponent } from "../../shared-components/memory-card/memory-card.component";
 
 @Component({
-  selector: 'app-landing-screen',
-  imports: [CommonModule, MemoryCardComponent],
+  selector: 'app-manage-screen',
+  imports: [CommonModule],
   templateUrl: './manage-screen.html',
   styleUrl: './manage-screen.scss'
 })
 
-export class LandingScreenComponent {
+export class ManageScreenComponent {
   data: any;
 
   constructor(private jsonService: JsonService) {}

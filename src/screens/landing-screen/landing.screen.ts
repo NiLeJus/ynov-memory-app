@@ -3,7 +3,7 @@ import { JsonService } from '../../services/json.service';
 import { CommonModule } from '@angular/common';
 import { MemoryCardComponent } from '../../shared-components/memory-card/memory-card.component';
 import { Subscription } from 'rxjs';
-import { tMemoryCard } from '../../_models/app.interfaces';
+import { iMemoryCard } from '../../_models/app.interfaces';
 
 @Component({
   selector: 'app-landing-screen',
@@ -14,7 +14,7 @@ import { tMemoryCard } from '../../_models/app.interfaces';
 export class LandingScreenComponent {
   data: any;
 
-  memoryCards: tMemoryCard[] = []; // Stocke les données localement
+  memoryCards: iMemoryCard[] = []; // Stocke les données localement
   private subscription!: Subscription; // Pour gérer l'abonnement
 
   constructor(private jsonService: JsonService) {}
@@ -26,6 +26,8 @@ export class LandingScreenComponent {
       console.log('Données chargées :', this.memoryCards);
     });
   }
+
+  
 
   ngOnDestroy(): void {
     // Desabo observable //?IMPORTANT

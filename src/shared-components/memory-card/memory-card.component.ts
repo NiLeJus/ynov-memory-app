@@ -1,5 +1,5 @@
 import { Component, input, computed } from '@angular/core';
-import { tMemoryCard } from '../../_models/app.interfaces';
+import { iMemoryCard } from '../../_models/app.interfaces';
 import { FormsModule } from '@angular/forms';
 import { JsonService } from '../../services/json.service';
 
@@ -14,9 +14,8 @@ export class MemoryCardComponent {
   constructor(private jsonService: JsonService) {}
 
   //Memory Card
-  _memoryCard = input<tMemoryCard>();
-   cardUid: string | undefined;
-
+  _memoryCard = input<iMemoryCard>();
+  cardId?: string = this._memoryCard()?.id;
 
   //User related
   userAnswer: string = ''; // Variable liée au textarea
@@ -24,8 +23,17 @@ export class MemoryCardComponent {
 
   userValidation() {
     console.log(this.userAnswer);
+
+    if (!this.userAnswer) {
+      console.error('No answer provided or answer is null / undefined');
+    }
+
     this.hasUserAnswered = true;
-      this.jsonService.changeCardValidation(this.cardUid);
+    if (this.isAnswerValid()) {
+      this.jsonService.changeCardValidation(this.cardId, 'add');
+    } else {
+      this.jsonService.changeCardValidation(this.cardId, 'sub');
+    }
   }
 
   isAnswerValid(): boolean {
@@ -44,25 +52,3 @@ export class MemoryCardComponent {
     return false;
   }
 }
-
-/*
-  lastValidationDate = computed(() => {
-    const memoryCard = this._memoryCard();
-    if (memoryCard && memoryCard.lastValidationDate) {
-      return new Date(memoryCard.lastValidationDate);
-    }
-    return console.error(
-      'memoryCard et/ou memoryCard.lastValidationDate are Null'
-    );
-  });
-
-  nextValidationDate = computed(() => {
-    const memoryCard = this._memoryCard();
-    if (memoryCard && memoryCard.nextValidationDate) {
-      return new Date(memoryCard.nextValidationDate);
-    }
-    return console.error(
-      'memoryCard et/ou memoryCard.nextValidationDate are Null'
-    );
-  });
-*/
