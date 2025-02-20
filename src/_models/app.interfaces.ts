@@ -14,4 +14,9 @@ export interface iMemoryTheme {
   cardsRef : string[];
 };
 
-  
+export class MemoryCard {
+  validate() {
+
+  }
+
+}

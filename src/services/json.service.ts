@@ -6,7 +6,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class JsonService {
-  private jsonFilePath = '/memory-cards.data.json';
+
+  private _jsonFilePath = '/memory-cards.data.json';
+  private _userData = {
+    name: 'Bernard',
+  };
+
+  private _themes = [{ id: 1, name: 'Asgrotomie' }, { id: 2, name: 'Trosgrotomie' }];
 
   //* Set up de l'observable pour les données
   private data: iMemoryCard[] = []; // Stock localement
@@ -17,14 +23,22 @@ export class JsonService {
   }
 
   private loadData(): void {
-    this.http.get(this.jsonFilePath).subscribe((jsonData) => {
+    this.http.get(this._jsonFilePath).subscribe((jsonData) => {
       this.data = JSON.parse(JSON.stringify(jsonData)); // Copy
       this.dataSubject.next(this.data); // Met à jour lobservable
     });
   }
 
+  getThemeData(): any {
+    return this._themes;
+  }
+
   getData(): Observable<any> {
     return this.dataSubject.asObservable();
+  }
+
+  getUserData(): any {
+    return this._userData;
   }
 
   changeCardValidation(uid: any, operation: 'add' | 'sub'): void {
@@ -36,7 +50,6 @@ export class JsonService {
       console.error('Card not found');
       return;
     } else if (response.card) {
-
       //Met à jour la valeur de la carte
       switch (operation) {
         case 'add':
@@ -46,9 +59,10 @@ export class JsonService {
           response.card.validationLevel -= 1;
           break;
         default:
-          console.error('Default switch reached, should not be, frere reflechi stp');
+          console.error(
+            'Default switch reached, should not be, frere reflechi stp'
+          );
       }
-
 
       // Met à jour le BehaviorSubject
       this.dataSubject.next([...this.data]); // Crée une nouvelle copie de data avec la modification

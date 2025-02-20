@@ -1,4 +1,4 @@
-
+<!--
 <div class="text-center">
   <h1>MEMORY APP</h1>
   <p>Bastien truc & Nils Verneret</p>
@@ -9,4 +9,32 @@
       <app-memory-card  class="col card text-center" [_memoryCard]="card" />
     }
   </div>
-</div>
+</div> -->
+
+<app-header />
+
+<main class="container d-flex flex-column">
+  <h1>Run XX</h1>
+
+  <div class="row">
+    <div class="col flex-column d-flex text-center">
+      <label for="">All</label>
+      <input type="checkbox" id="all-checkbox" checked />
+    </div>
+
+    @for (theme of theme(); track $index) {
+    <div class="col flex-column d-flex text-center">
+      <label for="">{{theme.name}}</label>
+      <input type="checkbox" />
+    </div>
+    }
+  </div>
+
+  <h1>Card to do</h1>
+</main>
+
+<app-memory-card-sm />
+
+<button class="btn btn-primary" routerLin>Run</button>
+<button>Train</button>
+<button>Manage</button>
