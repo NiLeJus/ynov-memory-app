@@ -1,0 +1,14 @@
+@use "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+* {
+  caret-color: rgba(135, 135, 135, 0.461);
+}
+
+@font-face {
+  font-family: "PixelifySans"; /* Use a short and meaningful name */
+  src: url("/PixelifySans-VariableFont_wght.ttf") format("truetype");
+}
+
+h1 {
+  font-family: "PixelifySans", sans-serif; /* Use the font-family name defined in @font-face */
+}

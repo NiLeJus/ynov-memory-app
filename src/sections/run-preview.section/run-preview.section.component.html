@@ -1,0 +1,25 @@
+<div class="card">
+  <h1 class="text-center">Run {{ this.dataService.getRunNumber() }}</h1>
+
+  <app-content-filters />
+</div>
+
+<h3>Validation Levels:</h3>
+<ul>
+  @for (level of _selectedLevels(); track level.validationLevel) {
+  <li>Validation Level {{ level.validationLevel }}: {{ level.count }}</li>
+  }
+</ul>
+
+@for (card of _selectedCards.value(); track $index) {
+
+<app-memory-card-sm [_memoryCard]="card" />
+
+}
+
+<div class="card">
+  <div></div>
+  <h1>Run Sum Up</h1>
+  <h2>{{ _selectedCardCount() }} Cards {{ _selectedPoints() }} points</h2>
+  <h2>{{ _remainingTime() }} Left to Complete</h2>
+</div>

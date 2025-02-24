@@ -1,0 +1,11 @@
+<button class="btn btn-primary" (click)="onCreateUser()">New Profile</button>
+
+@if (_users()) { @for ( user of _users(); track user.id) {
+<app-profile-tab [_user]="user" />
+} } @else {
+<p>Loading...</p>
+} @if (isCreatingNewUser()) {
+<app-profile-creation
+  (notifyProcessEnded)="onProfileCreationEnd()"
+></app-profile-creation>
+}

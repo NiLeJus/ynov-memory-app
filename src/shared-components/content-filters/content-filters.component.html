@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col flex-column d-flex text-center"></div>
+
+  <div class="btn-group" role="group" aria-label="">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="selectAllThemes(true)"
+    >
+      Tous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="selectAllThemes(false)"
+    >
+      Aucun
+    </button>
+  </div>
+
+  @for (theme of _userThemes(); track theme.id) {
+  <div class="col flex-column d-flex text-center">
+    <label for="theme-{{ theme.id }}">{{ theme.name }}</label>
+    <input
+      type="checkbox"
+      [id]="'theme-' + theme.id"
+      [checked]="themeFilter()[theme.name]"
+      (change)="onThemeSelectionChange(theme.name, $event)"
+    />
+  </div>
+  }
+</div>
+
+<div class="btn-group" role="group" aria-label="">
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="orderFilterBy(eOrderFilter.ByTheme)"
+  >
+    Par thème
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="orderFilterBy(eOrderFilter.ByIncrLevel)"
+  >
+    Par niveau croissant
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="orderFilterBy(eOrderFilter.ByDecrLevel)"
+  >
+    Par niveau décroissant
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="orderFilterBy(eOrderFilter.Random)"
+  >
+    Aléatoire
+  </button>
+</div>

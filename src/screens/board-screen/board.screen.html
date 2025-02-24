@@ -1,0 +1,20 @@
+<app-header [_profileStats]="_user()?.statistics" [_username]="_user()?.name" />
+
+<main class="container d-flex flex-column">
+  <app-run-preview-section [_themes]="this._userThemes()" />
+  <h1>Card to do</h1>
+</main>
+
+<app-memory-card-sm />
+
+<button
+  class="btn btn-primary"
+  [routerLink]="['/board', _usernameRouteParam()]"
+>
+  Run
+</button>
+<button>Train</button>
+<button class="btn btn-dark" [routerLink]="['/manage', _user()?.name]">
+  Manage
+</button>
+<button class="btn btn-primary" (click)="dev()">dev</button>

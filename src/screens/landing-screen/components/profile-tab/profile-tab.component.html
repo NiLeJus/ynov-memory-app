@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="d-flex flex-row">
+    @if (isRenaming()) {
+    <span class="input-group-text" id="basic-addon1">Username</span>
+    <input type="text" class="form-control" [(ngModel)]="newUsername" [value]="_user()?.name" aria-label="user()?.name"
+      aria-describedby="basic-addon1" />
+    <button class="btn btn-success" (click)="onValidateRenaiming()">
+      Valider
+    </button>
+    <button class="btn btn-danger" (click)="onModifyProfile(false)">
+      Annuler
+    </button>
+
+    } @else {
+    <h1>{{ _user()?.name }}</h1>
+    <div class="col">
+      <button>Exporter</button>
+      <button class="btn btn-primary" (click)="onDeleteProfile()">Supr</button>
+      <button class="btn btn-primary" (click)="onModifyProfile(true)">
+        Modify
+      </button>
+      <button>Param</button>
+      <button (click)="onUserSelection()" [routerLink]="['/board', _user()?.name]">
+        Go
+      </button>
+    </div>
+    }
+  </div>
+</div>
