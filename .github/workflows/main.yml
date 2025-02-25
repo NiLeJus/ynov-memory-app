@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist/memory-app/browser/ # Dossier généré par le build Angular
-          server-dir: memory-app.com/
+          server-dir: public_html/
           exclude: |
             **/.git*
             **/node_modules/**
