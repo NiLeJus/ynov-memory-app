@@ -1,0 +1,41 @@
+name: Build and Deploy Angular App via FTP
+
+on:
+  push:
+    branches:
+      - main # Déclenchement uniquement sur la branche principale
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Récupérer le code source
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Étape 2 : Installer Node.js et les dépendances
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Version compatible avec Angular 19
+
+      - name: Install dependencies
+        run: npm install
+
+      # Étape 3 : Construire l'application Angular
+      - name: Build Angular App
+        run: npm run build
+
+      # Étape 4 : Déployer via FTP
+      - name: Deploy to FTP Server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: dist/memory-app/browser/ # Dossier généré par le build Angular
+          server-dir: memory-app.com/
+          exclude: |
+            **/.git*
+            **/node_modules/**
