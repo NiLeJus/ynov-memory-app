@@ -1,6 +1,6 @@
-import { iUser } from '../_models/app.interfaces';
+import { iProfile } from 'src/_models/domains/profile.models';
 
-export const MockProfileData: iUser[] = [
+export const MockProfileData: iProfile[] = [
   // {
   //   id: 1,
   //   name: 'Bernard',

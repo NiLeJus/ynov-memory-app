@@ -1,10 +1,10 @@
 import Dexie, { Table } from 'dexie';
-import { iMemoryCard, iMemoryTheme, iUser } from '../_models/app.interfaces';
 import { MockProfileData } from './mockProfile.data';
+import { iProfile } from 'src/_models/domains/profile.models';
 
 // Define the Dexie database with nested structure
 export class MemoryAppDB extends Dexie {
-  users!: Table<iUser, number>; // Store users with nested themes and cards
+  users!: Table<iProfile, number>; // Store users with nested themes and cards
 
   constructor() {
     super('MemoryAppDB');
@@ -15,4 +15,4 @@ export class MemoryAppDB extends Dexie {
 }
 
 // Instantiate the database
-export const db = new MemoryAppDB()
+export const db = new MemoryAppDB();

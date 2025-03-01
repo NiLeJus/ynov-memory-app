@@ -1,0 +1,65 @@
+<div class="flex-column d-flex">
+  <h5 class="">Ajouter du contenu</h5>
+
+  <div class="input-group">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.text)"
+      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.text)"
+    >
+      <img src="/app-icons/ico-text.svg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.image)"
+      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.image)"
+    >
+      <img src="/app-icons/ico-image-file.svg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.video)"
+      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.video)"
+    >
+      <img src="/app-icons/ico-video-file.svg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.audio)"
+      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.audio)"
+    >
+      <img src="/app-icons/ico-sound-file.svg" />
+    </button>
+
+    @switch (selContentType()) { @case (_CONTENT_TYPE_ENUM.text) {
+    <textarea
+      type="text"
+      class="form-control"
+      placeholder="Recipient's username"
+      aria-label="Recipient's username with two button addons"
+      [(ngModel)]="returned_content().value"
+    >
+    </textarea>
+    } @case (_CONTENT_TYPE_ENUM.image) {
+    <div>
+      <input class="form-control form-control" id="formFileLg" type="file" />
+    </div>
+    } @case (_CONTENT_TYPE_ENUM.video) {
+    <div>
+      <input class="form-control form-control" id="formFileLg" type="file" />
+    </div>
+    } @case (_CONTENT_TYPE_ENUM.audio) {
+    <div>
+      <input class="form-control form-control-sm" id="formFileSm" type="file" />
+    </div>
+    } }
+
+    <button type="button" class="btn btn-success" (click)="onValidate()">
+      <img src="/app-icons/ico-check.svg" />
+    </button>
+  </div>
+</div>

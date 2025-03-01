@@ -1,11 +1,5 @@
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  iMemoryCard,
-  iMemoryTheme,
-  iUser,
-  iProfileStatistics,
-} from '../../_models/app.interfaces';
-import {
   computed,
   inject,
   Injectable,
@@ -15,6 +9,7 @@ import {
 import { MockProfileData } from '../../_data/mockProfile.data';
 import { liveQuery, Observable } from 'dexie';
 import { db } from '../../_data/db';
+import { iProfile } from '../../_models/domains/profile.models';
 
 @Injectable({
   providedIn: 'root',
@@ -30,11 +25,11 @@ import { db } from '../../_data/db';
  */
 export class DatabaseService {
   // Observable that emits user data whenever it changes
-  _USERSDATA$: Observable<iUser[]> = liveQuery(() => db.users.toArray());
+  _USERSDATA$: Observable<iProfile[]> = liveQuery(() => db.users.toArray());
   _SELECTED_USERID: WritableSignal<null | number> = signal(null);
 
-  async getAllUsers(): Promise<iUser[]> {
-    const users: iUser[] = await db.users.toArray();
+  async getAllUsers(): Promise<iProfile[]> {
+    const users: iProfile[] = await db.users.toArray();
     console.log(users);
     return users;
   }
@@ -62,16 +57,19 @@ export class DatabaseService {
     this._SELECTED_USERID.set(newUserId);
   }
 
-  getAllUsers$(): Observable<iUser[]> {
+  getAllUsers$(): Observable<iProfile[]> {
     return liveQuery(() => db.users.toArray());
   }
 
-  async getUserByUsername(username: string): Promise<iUser | undefined> {
+  async getUserByUsername(username: string): Promise<iProfile | undefined> {
     try {
       const user = await db.users.where('name').equals(username).first(); // Recherche par index
       return user; // Retourne l'utilisateur ou undefined s'il n'existe pas
     } catch (error) {
-      console.error(`Erreur lors de la récupération de l'utilisateur "${username}":`, error);
+      console.error(
+        `Erreur lors de la récupération de l'utilisateur "${username}":`,
+        error
+      );
       return undefined;
     }
   }

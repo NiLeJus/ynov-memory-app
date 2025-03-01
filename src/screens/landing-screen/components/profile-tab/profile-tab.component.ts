@@ -5,11 +5,11 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { iUser } from '../../../../_models/app.interfaces';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../../../services/database/database.service';
 import { AlertService } from '../../../../services/alert.service';
+import { iProfile } from 'src/_models/domains/profile.models';
 
 @Component({
   selector: 'app-profile-tab',
@@ -18,7 +18,7 @@ import { AlertService } from '../../../../services/alert.service';
   styleUrl: './profile-tab.component.scss',
 })
 export class ProfileTabComponent {
-  readonly _user = input<iUser>();
+  readonly _user = input<iProfile>();
   newUsername = '';
   constructor(
     private databaseService: DatabaseService,

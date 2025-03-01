@@ -29,10 +29,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/_styles/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
-            ],
+            "styles": ["src/_styles/styles.scss"],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]

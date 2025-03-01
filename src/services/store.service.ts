@@ -1,10 +1,10 @@
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
-  iMemoryCard,
+  iMemorycard,
   iMemoryTheme,
-  iUser,
+  iProfile,
   iProfileStatistics,
-} from '../_models/app.interfaces';
+} from '../_models/features.interfaces';
 import {
   computed,
   inject,
@@ -16,7 +16,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, map } from 'rxjs';
 import { MockProfileData } from '../_data/mockProfile.data';
-import { eOrderFilter } from '../_models/enums.model';
+import { eOrderFilter } from '../_models/app.enums';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -33,7 +33,7 @@ import { ActivatedRoute } from '@angular/router';
  * @param {type}           very_long_name Description.
  */
 export class DataService {
-  private _usersData = signal<iUser[]>(MockProfileData);
+  private _usersData = signal<iProfile[]>(MockProfileData);
 
   private route = inject(ActivatedRoute);
 
@@ -47,14 +47,14 @@ export class DataService {
     )
   );
 
-  setFocusedUser(user: iUser): boolean {
+  setFocusedUser(user: iProfile): boolean {
     this.userFocused.set(user);
     return true;
   }
 
-  userFocused: WritableSignal<iUser | undefined> = signal(undefined);
+  userFocused: WritableSignal<iProfile | undefined> = signal(undefined);
 
-  getFocusedUser(): Promise<iUser | undefined> {
+  getFocusedUser(): Promise<iProfile | undefined> {
     return Promise.resolve(this.userFocused());
   }
 
@@ -68,8 +68,8 @@ export class DataService {
     return Promise.resolve(allThemes);
   }
 
-  getAllFocusedCards(): Promise<iMemoryCard[] | undefined> {
-    let allCards: iMemoryCard[] = [];
+  getAllFocusedCards(): Promise<iMemorycard[] | undefined> {
+    let allCards: iMemorycard[] = [];
     const selectedUserThemes = this.userThemes();
     if (selectedUserThemes) {
       selectedUserThemes.forEach((theme: iMemoryTheme) => {
@@ -111,8 +111,8 @@ export class DataService {
   });
 
   //* Set up de l'observable pour les données
-  private data: iMemoryCard[] = []; // Stock localement
-  private dataSubject = new BehaviorSubject<iMemoryCard[]>([]); // Observable pour suivre les mises à jour
+  private data: iMemorycard[] = []; // Stock localement
+  private dataSubject = new BehaviorSubject<iMemorycard[]>([]); // Observable pour suivre les mises à jour
   private _themesFilter: { [key: string]: boolean } | undefined;
 
   constructor(private http: HttpClient) {}
@@ -177,7 +177,7 @@ export class DataService {
     }
   }
 
-  pickCard(id: string): { success: boolean; card?: iMemoryCard } {
+  pickCard(id: string): { success: boolean; card?: iMemorycard } {
     const card = this.data.find((card) => card.id === id);
     if (card) {
       return { success: true, card };

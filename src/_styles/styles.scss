@@ -1,14 +1,37 @@
-@use "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import "_colors.variables";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
-* {
-  caret-color: rgba(135, 135, 135, 0.461);
+input[type="file"]::file-selector-button {
+  @extend .btn, .btn-primary;
 }
 
-@font-face {
-  font-family: "PixelifySans"; /* Use a short and meaningful name */
-  src: url("/PixelifySans-VariableFont_wght.ttf") format("truetype");
+.btn-outline-dark:active > img {
+  color: red;
 }
 
-h1 {
-  font-family: "PixelifySans", sans-serif; /* Use the font-family name defined in @font-face */
+.svg-primary {
+  filter: invert(36%) sepia(92%) saturate(1456%) hue-rotate(151deg)
+    brightness(95%) contrast(88%);
+}
+.svg-primary {
+  filter: invert(36%) sepia(92%) saturate(1456%) hue-rotate(151deg)
+    brightness(95%) contrast(88%);
+}
+.svg-primary {
+  filter: invert(36%) sepia(92%) saturate(1456%) hue-rotate(151deg)
+    brightness(95%) contrast(88%);
+}
+.svg-primary {
+  filter: invert(36%) sepia(92%) saturate(1456%) hue-rotate(151deg)
+    brightness(95%) contrast(88%);
+}
+
+.rotate-svg-45 {
+  transform: rotate(45deg);
+  transition: all 0.5s ease;
+}
+
+.rotate-svg-0 {
+  transition: all 0.5s ease;
+  transform: rotate(0deg);
 }

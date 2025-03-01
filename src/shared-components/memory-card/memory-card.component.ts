@@ -1,10 +1,6 @@
 import { Component, input, computed } from '@angular/core';
-import { iMemoryCard } from '../../_models/app.interfaces';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-
-
-
+import { iMemorycard } from 'src/_models/domains/memorycard.models';
 
 @Component({
   selector: 'app-memory-card',
@@ -14,11 +10,9 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./memory-card.component.scss'],
 })
 export class MemoryCardComponent {
-  constructor(private jsonService: DataService) {}
-
   //Memory Card
-  _memoryCard = input<iMemoryCard>();
-  cardId?: string = this._memoryCard()?.id;
+  _memoryCard = input<iMemorycard>();
+  // cardId?: string = this._memoryCard()?.id;
 
   //User related
   userAnswer: string = ''; // Variable liée au textarea
@@ -32,26 +26,5 @@ export class MemoryCardComponent {
     }
 
     this.hasUserAnswered = true;
-    // if (this.isAnswerValid()) {
-    //   this.jsonService.changeCardValidation(this.cardId, 'add');
-    // } else {
-    //   this.jsonService.changeCardValidation(this.cardId, 'sub');
-    // }
   }
-
-  // isAnswerValid(): boolean {
-  //   const memoryCard = this._memoryCard();
-  //   if (!memoryCard) {
-  //     console.error('Memory card is undefined');
-  //     return false;
-  //   }
-
-  //   const trueAnswer = memoryCard.answer;
-  //   if (trueAnswer === this.userAnswer) {
-  //     console.log('This answer is valid');
-  //     return true;
-  //   }
-
-  //   return false;
-  // }
 }

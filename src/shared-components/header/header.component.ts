@@ -1,10 +1,7 @@
 import { Component, computed, input, Input } from '@angular/core';
-import {
-  iMemoryCard,
-  iUser,
-  iProfileStatistics,
-} from '../../_models/app.interfaces';
+
 import { Router } from '@angular/router';
+import { iProfileStatistics } from 'src/_models/domains/profile.models';
 
 @Component({
   selector: 'app-header',

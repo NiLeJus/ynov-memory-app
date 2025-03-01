@@ -1,5 +1,11 @@
-
 <div>
-Ca fonctioij nzd
+  @for (theme of _themes; track $index) { }
+  @for (card of _data; track $index) {
 
+  <app-memorycard-tab [_memorycardData$]="card" />
+
+  }
 </div>
+
+<button>Nouveau thèmes</button>
+<button>Nouvelle entrée</button>

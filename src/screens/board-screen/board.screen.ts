@@ -13,11 +13,13 @@ import {
 import { CommonModule } from '@angular/common';
 import { MemoryCardComponent } from '../../shared-components/memory-card/memory-card.component';
 import { Subscription } from 'rxjs';
-import { iMemoryCard, iMemoryTheme, iUser } from '../../_models/app.interfaces';
 import { HeaderComponent } from '../../shared-components/header/header.component';
 import { MemoryCardSmComponent } from '../../shared-components/memory-card-sm/memory-card-sm.component';
 import { RunPreviewSectionComponent } from '../../sections/run-preview.section/run-preview.section.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { iProfile } from 'src/_models/domains/profile.models';
+import { iMemorycard } from 'src/_models/domains/memorycard.models';
+import { iMemoryTheme } from 'src/_models/domains/theme.models';
 
 @Component({
   selector: 'app-board-screen',
@@ -36,7 +38,7 @@ export class BoardScreenComponent implements OnInit {
   _usernameRouteParam = signal('');
 
   // Resource to fetch the user by username
-  userResource: ResourceRef<iUser | undefined> = resource({
+  userResource: ResourceRef<iProfile | undefined> = resource({
     loader: ({ request }) =>
       this.databaseService.getUserByUsername(this._usernameRouteParam()),
   });
@@ -72,6 +74,6 @@ export class BoardScreenComponent implements OnInit {
     });
   }
 
-  memoryCards: iMemoryCard[] = []; // Stocke les données localement
+  memoryCards: iMemorycard[] = []; // Stocke les données localement
   ngOnDestroy(): void {}
 }

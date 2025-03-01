@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { iMemoryCard } from '../../_models/app.interfaces';
+import { iMemorycard } from 'src/_models/domains/memorycard.models';
 
 @Component({
   selector: 'app-memory-card-sm',
@@ -8,5 +8,5 @@ import { iMemoryCard } from '../../_models/app.interfaces';
   styleUrl: './memory-card-sm.component.scss',
 })
 export class MemoryCardSmComponent {
-  _memoryCard = input<iMemoryCard>();
+  _memoryCard = input<iMemorycard>();
 }

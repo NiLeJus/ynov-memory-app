@@ -1,5 +1,6 @@
+import { DatabaseService } from './../../services/database/database.service';
 import { Component, resource } from '@angular/core';
-import { DatabaseService } from '../../services/database/database.service';
+import { DevModeService } from './../dev-mode.service';
 
 @Component({
   selector: 'app-dev-bar',
@@ -7,14 +8,13 @@ import { DatabaseService } from '../../services/database/database.service';
   templateUrl: './dev-bar.component.html',
   styleUrl: './dev-bar.component.scss',
 })
-
 export class DevBarComponent {
-  constructor(public databaseService: DatabaseService) {}
+  constructor(
+    public devModeService: DevModeService,
+    public databaseService: DatabaseService
+  ) {}
 
-  dev() {
+  dev() {}
 
-  }
-
-  onClearDB() {
-  }
+  onClearDB() {}
 }

@@ -10,7 +10,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { MemoryCardComponent } from '../../shared-components/memory-card/memory-card.component';
 import { async, Subscription } from 'rxjs';
-import { iMemoryCard, iMemoryTheme, iUser } from '../../_models/app.interfaces';
 import { HeaderComponent } from '../../shared-components/header/header.component';
 import { MemoryCardSmComponent } from '../../shared-components/memory-card-sm/memory-card-sm.component';
 import { RunPreviewSectionComponent } from '../../sections/run-preview.section/run-preview.section.component';
@@ -19,6 +18,7 @@ import { ProfileTabComponent } from './components/profile-tab/profile-tab.compon
 import { ProfileCreationComponent } from './components/profile-creation/profile-creation.component';
 import { DatabaseService } from '../../services/database/database.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { iProfile } from 'src/_models/domains/profile.models';
 
 @Component({
   selector: 'app-landing-screen',
@@ -30,7 +30,7 @@ export class LandingScreenComponent implements OnInit {
   public databaseService = inject(DatabaseService);
 
   // Conversion du flux constant en signal Angular pour une gestion réactive
-  _users: Signal<iUser[]> = toSignal(this.databaseService.getAllUsers$(), { initialValue: [] });
+  _users: Signal<iProfile[]> = toSignal(this.databaseService.getAllUsers$(), { initialValue: [] });
 
   // Writable signal to hold user data
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChainLink } from '../_models/chain-responsibility.interfaces';
+import { ChainLink } from '../_models/systems/chain-responsibility.models';
 
 @Injectable({
   providedIn: 'root',
