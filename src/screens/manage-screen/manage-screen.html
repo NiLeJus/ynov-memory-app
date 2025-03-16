@@ -1,11 +1,31 @@
 <div>
-  @for (theme of _themes; track $index) { }
-  @for (card of _data; track $index) {
+  <div class="container text-center">
+    <div class="row row-cols-2">
+      @if (_userThemes()) { @for (theme of _userThemes(); track theme.id) {
+      <div class="col">
+        <div class="card-body flex-row">
+          <h5 class="card-title">{{ theme.name }}</h5>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+
+      } } @else {
+      <p>Aucun thème trouvé.</p>
+      }
+    </div>
+
+    <!-- @for (card of _USER_DATA; track $index) {
 
   <app-memorycard-tab [_memorycardData$]="card" />
 
-  }
-</div>
+  } -->
 
-<button>Nouveau thèmes</button>
-<button>Nouvelle entrée</button>
+  <app-create-new-theme />
+
+  <button>Nouveau thèmes</button>
+  <button>Nouvelle entrée</button>
+</div>

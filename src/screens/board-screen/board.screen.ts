@@ -1,4 +1,4 @@
-import { DatabaseService } from './../../services/database/database.service';
+import { DatabaseService } from '../../services/database/database.service';
 import {
   Component,
   computed,
@@ -20,6 +20,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { iProfile } from 'src/_models/domains/profile.models';
 import { iMemorycard } from 'src/_models/domains/memorycard.models';
 import { iMemoryTheme } from 'src/_models/domains/theme.models';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-board-screen',
@@ -50,6 +51,8 @@ export class BoardScreenComponent implements OnInit {
   _userThemes: Signal<iMemoryTheme[] | undefined> = computed(
     () => this._user()?.themes
   );
+
+
 
   constructor(
     private databaseService: DatabaseService,

@@ -5,61 +5,75 @@
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.text)"
-      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.text)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.text)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.text)"
     >
-      <img src="/app-icons/ico-text.svg" />
+      <img src="/app-icons/ico-text-file.svg" />
     </button>
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.image)"
-      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.image)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.image)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.image)"
     >
       <img src="/app-icons/ico-image-file.svg" />
     </button>
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.video)"
-      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.video)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.video)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.video)"
     >
       <img src="/app-icons/ico-video-file.svg" />
     </button>
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.audio)"
-      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.audio)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.audio)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.audio)"
     >
-      <img src="/app-icons/ico-sound-file.svg" />
+      <img src="/app-icons/ico-audio-file.svg" />
     </button>
 
-    @switch (selContentType()) { @case (_CONTENT_TYPE_ENUM.text) {
-    <textarea
-      type="text"
-      class="form-control"
-      placeholder="Recipient's username"
-      aria-label="Recipient's username with two button addons"
-      [(ngModel)]="returned_content().value"
-    >
-    </textarea>
-    } @case (_CONTENT_TYPE_ENUM.image) {
-    <div>
-      <input class="form-control form-control" id="formFileLg" type="file" />
-    </div>
-    } @case (_CONTENT_TYPE_ENUM.video) {
-    <div>
-      <input class="form-control form-control" id="formFileLg" type="file" />
-    </div>
-    } @case (_CONTENT_TYPE_ENUM.audio) {
-    <div>
-      <input class="form-control form-control-sm" id="formFileSm" type="file" />
-    </div>
-    } }
+    @switch (mediaTypeSlct()) {
+      @case (ENUM_CONTENT_TYPE.text) {
+        <textarea
+          type="text"
+          class="form-control"
+          placeholder="Recipient's username"
+          aria-label="Recipient's username with two button addons"
+          [(ngModel)]="textValueInput"
+        >
+        </textarea>
+      }
+      @default {
+        <input
+          class="form-control form-control-sm"
+          type="file"
+          id="formFile"
+          (change)="onImageSelected($event)"
+        />
+        <textarea
+          type="text"
+          class="form-control"
+          placeholder="Description / Source (facultatif)"
+          [(ngModel)]="descrValueInput"
+        >
+        </textarea>
+      }
+    }
 
     <button type="button" class="btn btn-success" (click)="onValidate()">
       <img src="/app-icons/ico-check.svg" />
     </button>
+    <button type="button" class="btn btn-success" (click)="dev()">DEV</button>
   </div>
+</div>
+<div class="file-upload">
+  <!-- @if (this.selectedFile) {
+    <div>
+      <h3>Preview:</h3>
+      <img [src]="previewUrl" alt="Uploaded Photo" style="max-width: 300px" />
+    </div>
+  } -->
 </div>

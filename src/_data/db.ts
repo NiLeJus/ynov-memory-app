@@ -1,5 +1,4 @@
 import Dexie, { Table } from 'dexie';
-import { MockProfileData } from './mockProfile.data';
 import { iProfile } from 'src/_models/domains/profile.models';
 
 // Define the Dexie database with nested structure

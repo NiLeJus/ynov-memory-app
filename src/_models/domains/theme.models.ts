@@ -1,8 +1,8 @@
 import { iMemorycard } from './memorycard.models';
 
 export interface iMemoryTheme {
-  id?: number;
+  id: string;
   name: string;
-  cards: iMemorycard;
+  cards: iMemorycard[] | [];
   themes?: iMemoryTheme[];
 }

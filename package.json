@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "concurrently \"ng build --watch --configuration development\" \"nodemon --watch dist/memory-app/browser -e js,html,css --exec \\\"npx http-server -p 8080 -c-1 dist/memory-app/browser\\\"\"",
     "test": "ng test",
-    "launch-dev": "concurrently \"ng build --watch --configuration development\" \"nodemon --watch dist/memory-app/browser -e js,html,css --exec \\\"npx http-server -p 8080 -c-1 dist/memory-app/browser\\\"\""
+    "launch-dev": "concurrently \"ng build --watch --configuration development\" \"nodemon --watch dist/memory-app/browser -e js,html,css --exec \\\"npx http-server -p 8080 -c-1 dist/memory-app/browser\\\"\"",
+    "compodoc:build": "compodoc -p tsconfig.doc.json",
+    "compodoc:build-and-serve": "compodoc -p tsconfig.doc.json -s",
+    "compodoc:serve": "compodoc -s"
   },
   "private": true,
   "dependencies": {
@@ -26,12 +29,14 @@
     "luxon": "^3.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "wasm-vips": "^0.0.11",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.5",
     "@angular/cli": "^19.1.5",
     "@angular/compiler-cli": "^19.1.0",
+    "@compodoc/compodoc": "^1.1.26",
     "@types/jasmine": "~5.1.0",
     "concurrently": "^9.1.2",
     "jasmine-core": "~5.5.0",

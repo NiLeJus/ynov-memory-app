@@ -25,7 +25,7 @@ jobs:
 
       # Étape 3 : Construire l'application Angular
       - name: Build Angular App
-        run: npm run build
+        run: npm run build 
 
       # Étape 4 : Déployer via FTP
       - name: Deploy to FTP Server

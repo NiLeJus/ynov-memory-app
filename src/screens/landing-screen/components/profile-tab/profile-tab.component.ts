@@ -1,3 +1,4 @@
+import { StoreGlobalService } from './../../../../services/store-global.service';
 import {
   Component,
   computed,
@@ -23,13 +24,17 @@ export class ProfileTabComponent {
   constructor(
     private databaseService: DatabaseService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private storeGlobalService: StoreGlobalService,
   ) {}
 
   isRenaming: WritableSignal<boolean> = signal(false);
 
   onUserSelection(): void {
-    this.databaseService.setSelectedUserId(this._user()!.id);
+    const userId = this._user()?.id;
+    if (userId != undefined) {
+      this.storeGlobalService.changeCurrentUserId(userId);
+    }
   }
 
   onModifyProfile(state: boolean) {
@@ -62,16 +67,16 @@ export class ProfileTabComponent {
       console.log('Utilisateur enregistré avec succès.');
       this.alertService.showAlert(
         'Utilisateur enregistré avec succès.',
-        'success'
+        'success',
       );
     } else {
       console.error(
         "Erreur lors de l'enregistrement de l'utilisateur :",
-        result.error
+        result.error,
       );
       this.alertService.showAlert(
         'Utilisateur enregistré avec succès.',
-        'danger'
+        'danger',
       );
     }
   }

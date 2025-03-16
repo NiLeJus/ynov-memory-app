@@ -1,11 +1,14 @@
-import { DatabaseService } from './../../services/database/database.service';
+import { StoreGlobalService } from './../../services/store-global.service';
+import { DatabaseService } from '../../services/database/database.service';
 import {
   Component,
   computed,
+  inject,
   resource,
   ResourceRef,
   Signal,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -13,95 +16,56 @@ import { MemorycardTabComponent } from './memorycard-tab/memorycard-tab.componen
 import { iMemorycard } from 'src/_models/domains/memorycard.models';
 import { iProfile } from 'src/_models/domains/profile.models';
 import { iMemoryTheme } from 'src/_models/domains/theme.models';
+import { CreateMemorycardComponent } from '../../sections/create-memorycard/create-memorycard.component';
+import { CreateNewThemeComponent } from './create-new-theme/create-new-theme.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-manage-screen',
-  imports: [CommonModule, MemorycardTabComponent],
+  imports: [
+    CommonModule,
+    MemorycardTabComponent,
+    CreateMemorycardComponent,
+    CreateNewThemeComponent,
+  ],
   templateUrl: './manage-screen.html',
   styleUrl: './manage-screen.scss',
 })
 export class ManageScreenComponent {
-  //Placeholder
-  _data: iMemorycard[] = [
-    // {
-    //   id: '1',
-    //   validationLevel: 3,
-    //   title: 'Quelle est la capitale de la France ?',
-    //   lastValidationDate: 1708400000000,
-    //   nextValidationDate: 1709000000000,
-    //   recto: ['Quelle est la capitale de la France ?'],
-    //   verso: ['Paris'],
-    // },
-    // {
-    //   id: 'card-002',
-    //   validationLevel: 5,
-    //   lastValidationDate: 1707800000000,
-    //   nextValidationDate: 1708400000000,
-    //   title: 'Qui a peint La Joconde ?',
-    //   recto: [
-    //     'Qui a peint La Joconde ?',
-    //     {
-    //       path: 'joconde.jpg',
-    //       mediaType: 'img',
-    //       description: 'Tableau de Léonard de Vinci',
-    //     },
-    //   ],
-    //   verso: ['Léonard de Vinci'],
-    // },
-    // {
-    //   id: 'card-003',
-    //   validationLevel: 2,
-    //   lastValidationDate: 1707000000000,
-    //   nextValidationDate: 1707600000000,
-    //   title: "Quel est l'hymne national des États-Unis ?",
-    //   recto: [
-    //     "Quel est l'hymne national des États-Unis ?",
-    //     {
-    //       path: 'us_anthem.mp3',
-    //       mediaType: 'audio',
-    //       description: "Extrait de l'hymne américain",
-    //     },
-    //   ],
-    //   verso: ['The Star-Spangled Banner'],
-    // },
-  ];
-
-  _themes: any = [{ name: 'Astrogomie' }, { name: 'Bernardisdatop' }];
-
-  // Signal to hold the username from the route
-  _usernameRouteParam = signal('');
-
-  // Resource to fetch the user by username
-  userResource: ResourceRef<iProfile | undefined> = resource({
-    loader: ({ request }) =>
-      this.databaseService.getUserByUsername(this._usernameRouteParam()),
-  });
-
-  // Computed signal for the user object
-  _user = computed(() => this.userResource.value());
-
-  // Computed signal for the user's themes
-  _userThemes: Signal<iMemoryTheme[] | undefined> = computed(
-    () => this._user()?.themes
-  );
+  isCreatingANewTheme: WritableSignal<boolean> = signal(false);
+  public databaseService = inject(DatabaseService);
 
   constructor(
-    private databaseService: DatabaseService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private storeGlobalService: StoreGlobalService,
   ) {}
 
-  dev() {}
+  // Conversion du flux constant en signal Angular pour une gestion réactive
+  _user: Signal<iProfile | null | undefined> = toSignal(
+    this.databaseService.getSelectedUser$(),
+    { initialValue: null as iProfile | null },
+  );
 
-  ngOnInit(): void {
-    // Subscribe to route parameters and update the username signal
-    this.route.paramMap.subscribe((params) => {
-      const username = params.get('username');
-      if (username) {
-        console.error('UserName');
-        this._usernameRouteParam.set(username);
-      } else {
-        console.error('No username found in route parameters.');
-      }
-    });
-  }
+  // Conversion du flux constant en signal Angular pour une gestion réactive
+  _userThemes = computed(() => {
+    return this._user()?.themes;
+  });
+  // // Resource to fetch the user by username
+  // userResource: ResourceRef<iProfile | undefined> = resource({
+  //   loader: ({ request }) =>
+  //     this.databaseService.getUserByUsername(this._usernameRouteParam()),
+  // });
+
+  // ngOnInit(): void {
+  //   // Subscribe to route parameters and update the username signal
+  //   this.route.paramMap.subscribe((params) => {
+  //     const username = params.get('username');
+  //     if (username) {
+  //       console.error('UserName');
+  //       this._usernameRouteParam.set(username);
+  //     } else {
+  //       console.error('No username found in route parameters.');
+  //     }
+  //   });
+  // }
 }

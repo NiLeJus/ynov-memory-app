@@ -1,15 +1,20 @@
+import { StoreGlobalService } from './../store-global.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   computed,
   inject,
   Injectable,
+  Injector,
+  Resource,
   signal,
   WritableSignal,
 } from '@angular/core';
-import { MockProfileData } from '../../_data/mockProfile.data';
 import { liveQuery, Observable } from 'dexie';
 import { db } from '../../_data/db';
 import { iProfile } from '../../_models/domains/profile.models';
+import { iMemoryTheme } from 'src/_models/domains/theme.models';
+import { UserController } from './controllers/user.controller';
+import { ThemesController } from './controllers/themes.controller';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +24,50 @@ import { iProfile } from '../../_models/domains/profile.models';
  * Service pour CRUD les données.
  * Utilise Dexie(IDB)
  *
- * Description. (use period)
- * @param {very_long_type} name           Description.
- * @param {type}           very_long_name Description.
  */
 export class DatabaseService {
+  constructor(private storeGlobalService: StoreGlobalService) {}
+
+  async registerNewTheme(
+    name: string,
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    try {
+      const newTheme: iMemoryTheme = {
+        id: crypto.randomUUID(),
+        name: name,
+        cards: [],
+        themes: [],
+      };
+
+      // Assuming you want to add this theme to a specific user
+      const userId = this.storeGlobalService.getCurrentUserId(); // Example method to get current user ID
+
+      if (userId) {
+        await db.transaction('rw', db.users, async () => {
+          const user = await db.users.get(userId);
+          if (!user) throw new Error('User not found');
+
+          user.themes = [...(user.themes || []), newTheme]; // Add the new theme to user's themes
+          await db.users.put(user); // Save updated user object
+        });
+      }
+
+      return { status: 'ok' };
+    } catch (error) {
+      console.error('Error registering new theme:', error);
+      return { status: 'error', error };
+    }
+  }
+
+  //#endregion
+
   // Observable that emits user data whenever it changes
   _USERSDATA$: Observable<iProfile[]> = liveQuery(() => db.users.toArray());
-  _SELECTED_USERID: WritableSignal<null | number> = signal(null);
+  _SELECTED_USERID$ = computed(() => {
+    return this.storeGlobalService.getCurrentUserId();
+  });
+
+  //#region USER RELATED
 
   async getAllUsers(): Promise<iProfile[]> {
     const users: iProfile[] = await db.users.toArray();
@@ -44,8 +85,10 @@ export class DatabaseService {
     return;
   }
 
+  //#endregion
+
   async getSelectedUser() {
-    const selectedUserId = this._SELECTED_USERID();
+    const selectedUserId = this._SELECTED_USERID$();
     if (selectedUserId) {
       const result = await db.users.get(selectedUserId);
       return result;
@@ -53,12 +96,16 @@ export class DatabaseService {
     return;
   }
 
-  setSelectedUserId(newUserId: number) {
-    this._SELECTED_USERID.set(newUserId);
-  }
-
   getAllUsers$(): Observable<iProfile[]> {
     return liveQuery(() => db.users.toArray());
+  }
+
+  getSelectedUser$(): Observable<iProfile | undefined> {
+    let selectedUserId = this._SELECTED_USERID$();
+    if (selectedUserId == null) {
+      selectedUserId = 0;
+    }
+    return liveQuery(() => db.users.get(selectedUserId));
   }
 
   async getUserByUsername(username: string): Promise<iProfile | undefined> {
@@ -68,7 +115,7 @@ export class DatabaseService {
     } catch (error) {
       console.error(
         `Erreur lors de la récupération de l'utilisateur "${username}":`,
-        error
+        error,
       );
       return undefined;
     }
@@ -76,13 +123,13 @@ export class DatabaseService {
 
   async modifyUsername(
     userId: number,
-    newName: string
+    newName: string,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
     try {
       const updated = await db.users.update(userId, { name: newName }); // Update the user's name
       if (updated) {
         console.log(
-          `User with ID ${userId} updated successfully to name: ${newName}`
+          `User with ID ${userId} updated successfully to name: ${newName}`,
         );
         return { status: 'ok' }; // Return success status
       } else {
@@ -96,7 +143,7 @@ export class DatabaseService {
   }
 
   async registerNewUser(
-    name: string
+    name: string,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
     const newUser = {
       id: Date.now(), // TIMESTAMP POUR UID
@@ -117,8 +164,8 @@ export class DatabaseService {
     }
   }
 
-  async getThemesForUser(userId: number) {
-    const user = await db.users.get(userId);
+  async getThemesForUserId() {
+    const user = await db.users.get(this._SELECTED_USERID$);
 
     if (user?.themes) {
       console.log(`Themes for user ${user.name}:`, user.themes);

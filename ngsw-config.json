@@ -11,7 +11,8 @@
           "/index.csr.html",
           "/index.html",
           "/manifest.webmanifest",
-          "/*.js"
+          "/*.js",
+          "/vips/**"
         ]
       }
     },
@@ -20,7 +21,7 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
-        "files": ["/memory-cards.data.json", "/**"]
+        "files": ["/assets/**"]
       }
     }
   ]

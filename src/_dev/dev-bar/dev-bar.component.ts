@@ -1,4 +1,4 @@
-import { DatabaseService } from './../../services/database/database.service';
+import { DatabaseService } from '../../services/database/database.service';
 import { Component, resource } from '@angular/core';
 import { DevModeService } from './../dev-mode.service';
 
