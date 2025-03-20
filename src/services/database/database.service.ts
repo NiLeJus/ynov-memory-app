@@ -26,7 +26,7 @@ import { ThemesController } from './controllers/themes.controller';
  *
  */
 export class DatabaseService {
-  constructor(private storeGlobalService: StoreGlobalService) {}
+  public storeGlobalService = inject(StoreGlobalService);
 
   async registerNewTheme(
     name: string,
@@ -59,14 +59,85 @@ export class DatabaseService {
     }
   }
 
+  async deleteTheme(
+    themeId: string,
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    try {
+      const userId = this.storeGlobalService.getCurrentUserId();
+
+      if (userId) {
+        await db.transaction('rw', db.users, async () => {
+          const user = await db.users.get(userId);
+          if (!user) throw new Error('User not found');
+
+          if (user.themes) {
+            // Vérifie si user.themes est défini
+            user.themes = user.themes.filter((theme) => theme.id !== themeId);
+          } else {
+            console.log('No themes found for this user.');
+          }
+
+          await db.users.put(user); // Save updated user object
+        });
+      }
+
+      return { status: 'ok' };
+    } catch (error) {
+      console.error('Error deleting theme:', error);
+      return { status: 'error', error };
+    }
+  }
+
+  async modifyTheme(
+    themeId: string,
+    newName: string,
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    try {
+      const userId = this.storeGlobalService.getCurrentUserId();
+
+      if (userId) {
+        await db.transaction('rw', db.users, async () => {
+          const user = await db.users.get(userId);
+          if (!user) throw new Error('User not found');
+
+          if (user.themes) {
+            // Vérifie si user.themes est défini
+            const themeIndex = user.themes.findIndex(
+              (theme) => theme.id === themeId,
+            );
+            if (themeIndex !== -1) {
+              user.themes[themeIndex].name = newName;
+            } else {
+              throw new Error('Theme not found');
+            }
+          } else {
+            throw new Error('No themes found for this user.');
+          }
+
+          await db.users.put(user); // Save updated user object
+        });
+      }
+
+      return { status: 'ok' };
+    } catch (error) {
+      console.error('Error modifying theme:', error);
+      return { status: 'error', error };
+    }
+  }
+
+  async registerCard() {
+    
+  }
+
   //#endregion
 
   // Observable that emits user data whenever it changes
   _USERSDATA$: Observable<iProfile[]> = liveQuery(() => db.users.toArray());
-  _SELECTED_USERID$ = computed(() => {
-    return this.storeGlobalService.getCurrentUserId();
-  });
+  // _SELECTED_USERID$ = computed(() => {
+  //   return this.storeGlobalService.getCurrentUserId();
+  // });
 
+  _SELECTED_USERID$ = this.storeGlobalService.currentUserId;
   //#region USER RELATED
 
   async getAllUsers(): Promise<iProfile[]> {
@@ -188,4 +259,6 @@ export class DatabaseService {
       console.error(`Failed to delete user with ID ${userId}:`, error);
     }
   }
+
+
 }

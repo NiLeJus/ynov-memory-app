@@ -3,13 +3,10 @@
     <div class="row row-cols-2">
       @if (_userThemes()) { @for (theme of _userThemes(); track theme.id) {
       <div class="col">
-        <div class="card-body flex-row">
+        <div class="card-body row">
           <h5 class="card-title">{{ theme.name }}</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <button href="#" class="btn btn-primary">Select</button>
+          <button href="#" class="btn btn-danger">Go somewhere</button>
         </div>
       </div>
 
@@ -28,4 +25,6 @@
 
   <button>Nouveau thèmes</button>
   <button>Nouvelle entrée</button>
+
+  <app-add-content/>
 </div>

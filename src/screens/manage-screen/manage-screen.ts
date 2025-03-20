@@ -1,9 +1,10 @@
+import { DatabaseService } from './../../services/database/database.service';
 import { StoreGlobalService } from './../../services/store-global.service';
-import { DatabaseService } from '../../services/database/database.service';
 import {
   Component,
   computed,
   inject,
+  OnInit,
   resource,
   ResourceRef,
   Signal,
@@ -19,6 +20,7 @@ import { iMemoryTheme } from 'src/_models/domains/theme.models';
 import { CreateMemorycardComponent } from '../../sections/create-memorycard/create-memorycard.component';
 import { CreateNewThemeComponent } from './create-new-theme/create-new-theme.component';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { AddContentComponent } from '../../sections/create-memorycard/add-content/add-content.component';
 
 @Component({
   selector: 'app-manage-screen',
@@ -27,11 +29,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MemorycardTabComponent,
     CreateMemorycardComponent,
     CreateNewThemeComponent,
+    AddContentComponent,
   ],
   templateUrl: './manage-screen.html',
   styleUrl: './manage-screen.scss',
 })
-export class ManageScreenComponent {
+export class ManageScreenComponent implements OnInit {
   isCreatingANewTheme: WritableSignal<boolean> = signal(false);
   public databaseService = inject(DatabaseService);
 
@@ -50,22 +53,19 @@ export class ManageScreenComponent {
   _userThemes = computed(() => {
     return this._user()?.themes;
   });
-  // // Resource to fetch the user by username
-  // userResource: ResourceRef<iProfile | undefined> = resource({
-  //   loader: ({ request }) =>
-  //     this.databaseService.getUserByUsername(this._usernameRouteParam()),
-  // });
 
-  // ngOnInit(): void {
-  //   // Subscribe to route parameters and update the username signal
-  //   this.route.paramMap.subscribe((params) => {
-  //     const username = params.get('username');
-  //     if (username) {
-  //       console.error('UserName');
-  //       this._usernameRouteParam.set(username);
-  //     } else {
-  //       console.error('No username found in route parameters.');
-  //     }
-  //   });
-  // }
+  isThereAnActiveUser() {}
+
+  ngOnInit(): void {
+    // Subscribe to route parameters and update the username signal
+    this.route.paramMap.subscribe((params) => {
+      const username = params.get('username');
+
+      if (username && this.storeGlobalService.getCurrentUserId() == null) {
+        console.log('UserName', username);
+      } else {
+        console.error('No username found in route parameters.');
+      }
+    });
+  }
 }
