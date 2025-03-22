@@ -19,10 +19,11 @@ import { ProfileCreationComponent } from './components/profile-creation/profile-
 import { DatabaseService } from '../../services/database/database.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { iProfile } from 'src/_models/domains/profile.models';
+import { BrandHeaderComponent } from "../../atoms/brand-header/brand-header.component";
 
 @Component({
   selector: 'app-landing-screen',
-  imports: [CommonModule, ProfileTabComponent, ProfileCreationComponent],
+  imports: [CommonModule, ProfileTabComponent, ProfileCreationComponent, BrandHeaderComponent],
   templateUrl: './landing.screen.html',
   styleUrl: './landing.screen.scss',
 })

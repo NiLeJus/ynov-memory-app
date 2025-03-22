@@ -63,10 +63,13 @@ export class CreateMemorycardComponent {
     console.log('Received Data', event);
     switch (rectoOrVerso) {
       case 'verso':
+        console.log(`received verso`);
         this.isAddingVersoContent.set(false);
         this.versoContent.push(event);
         break;
       case 'recto':
+        console.log(`received recto`);
+
         this.isAddingRectoContent.set(false);
         this.rectoContent.push(event);
         break;
@@ -97,8 +100,8 @@ export class CreateMemorycardComponent {
   //#endregion
 
   onValidate() {
-    console.log(this.rectoContent);
-    console.log(this.versoContent);
+    console.log('recto', this.rectoContent);
+    console.log('verso', this.versoContent);
 
     this.factoriesService.makeMemoryCard(
       this.newCardTitle,

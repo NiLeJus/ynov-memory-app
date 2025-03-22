@@ -1,2 +1,2 @@
-export type ISODateString = `${number}-${number}-${number}`;
 
+export type dateFormatDMY = `${number}-${number}-${number}`;

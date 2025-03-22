@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { eContentType } from 'src/_models/app.enums';
 import {
   iMemorycardContent,
-  MemorycardContentObject,
+  MemorycardContentObj,
 } from 'src/_models/domains/memorycard.models';
 
 @Component({
@@ -39,7 +39,7 @@ export class AddContentComponent {
   //#region FORMS & INPUT
 
   mediaTypeSlct: WritableSignal<eContentType> = signal(
-    this.ENUM_CONTENT_TYPE.text,
+    this.ENUM_CONTENT_TYPE.Text,
   );
   textValueInput2: string = '';
 
@@ -92,13 +92,13 @@ export class AddContentComponent {
 
   FactoryContent() {
     switch (this.mediaTypeSlct()) {
-      case this.ENUM_CONTENT_TYPE.text:
-        return new MemorycardContentObject(
+      case this.ENUM_CONTENT_TYPE.Text:
+        return new MemorycardContentObj(
           this.textValueInput(),
-          eContentType.text,
+          eContentType.Text,
         );
       default:
-        return new MemorycardContentObject(
+        return new MemorycardContentObj(
           this.fileBlobInput(),
           this.mediaTypeSlct(),
         );

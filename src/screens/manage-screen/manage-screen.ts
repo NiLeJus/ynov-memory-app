@@ -35,12 +35,13 @@ import { AddContentComponent } from '../../sections/create-memorycard/add-conten
   styleUrl: './manage-screen.scss',
 })
 export class ManageScreenComponent implements OnInit {
-  isCreatingANewTheme: WritableSignal<boolean> = signal(false);
+  isCreatingTheme: WritableSignal<boolean> = signal(false);
+  isCreatingCard: WritableSignal<boolean> = signal(false);
   public databaseService = inject(DatabaseService);
 
   constructor(
     private route: ActivatedRoute,
-    private storeGlobalService: StoreGlobalService,
+    public storeGlobalService: StoreGlobalService,
   ) {}
 
   // Conversion du flux constant en signal Angular pour une gestion réactive
@@ -54,7 +55,20 @@ export class ManageScreenComponent implements OnInit {
     return this._user()?.themes;
   });
 
+  onSelect(themeId: string) {
+    this.storeGlobalService.setSelectedTheme(Number(themeId));
+  }
+
   isThereAnActiveUser() {}
+
+  switchIsCreating() {
+    this.isCreatingTheme.set(!this.isCreatingTheme());
+  }
+
+  dev() {
+    console.log(this.isCreatingTheme());
+    this.switchIsCreating();
+  }
 
   ngOnInit(): void {
     // Subscribe to route parameters and update the username signal

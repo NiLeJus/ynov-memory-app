@@ -1,29 +1,51 @@
-<div class="card">
-  <div class="d-flex flex-row">
+<div class="neuro-effect ps-3 my-2 pt-1">
+  <div class="d-flex flex-row justify-content-between align-middle">
     @if (isRenaming()) {
-    <span class="input-group-text" id="basic-addon1">Username</span>
-    <input type="text" class="form-control" [(ngModel)]="newUsername" [value]="_user()?.name" aria-label="user()?.name"
-      aria-describedby="basic-addon1" />
-    <button class="btn btn-success" (click)="onValidateRenaiming()">
-      Valider
-    </button>
-    <button class="btn btn-danger" (click)="onModifyProfile(false)">
-      Annuler
-    </button>
-
+      <span class="input-group-text" id="basic-addon1">Username</span>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newUsername"
+        [value]="_user()?.name"
+        aria-label="user()?.name"
+        aria-describedby="basic-addon1"
+      />
+      <button class="btn btn-success" (click)="onValidateRenaiming()">
+        Valider
+      </button>
+      <button class="btn btn-danger" (click)="onModifyProfile(false)">
+        Annuler
+      </button>
     } @else {
-    <h1>{{ _user()?.name }}</h1>
-    <div class="col">
-      <button>Exporter</button>
-      <button class="btn btn-primary" (click)="onDeleteProfile()">Supr</button>
-      <button class="btn btn-primary" (click)="onModifyProfile(true)">
-        Modify
-      </button>
-      <button>Param</button>
-      <button (click)="onUserSelection()" [routerLink]="['/board', _user()?.name]">
-        Go
-      </button>
-    </div>
+      <div class="d-flex flex-row">
+        <h1 class="col">{{ _user()?.name }}</h1>
+
+        <div class="d-flex flex-row text-center ms-5">
+          <div class="d-flex flex-column mx-2">
+            <p>EVER</p>
+            <p>{{ _user()?.statistics?.scoreAllTime }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="">
+        <button class="btn">
+          <img src="more-horiz.svg" />
+        </button>
+        <button class="btn btn-red" (click)="onDeleteProfile()">
+          <img src="trash.svg" />
+        </button>
+        <button class="btn" (click)="onModifyProfile(true)">
+          <img src="pen.svg" />
+        </button>
+        <button
+          class="btn fw-bold text-success"
+          (click)="onUserSelection()"
+          [routerLink]="['/board', _user()?.name]"
+        >
+          Go
+        </button>
+      </div>
     }
   </div>
 </div>

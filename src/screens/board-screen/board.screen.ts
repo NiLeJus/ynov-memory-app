@@ -21,6 +21,7 @@ import { iProfile } from 'src/_models/domains/profile.models';
 import { iMemorycard } from 'src/_models/domains/memorycard.models';
 import { iMemoryTheme } from 'src/_models/domains/theme.models';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { BrandHeaderComponent } from "../../atoms/brand-header/brand-header.component";
 
 @Component({
   selector: 'app-board-screen',
@@ -30,7 +31,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
     HeaderComponent,
     MemoryCardSmComponent,
     RunPreviewSectionComponent,
-  ],
+    BrandHeaderComponent
+],
   templateUrl: './board.screen.html',
   styleUrl: './board.screen.scss',
 })

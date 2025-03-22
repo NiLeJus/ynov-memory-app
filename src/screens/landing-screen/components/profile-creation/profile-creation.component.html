@@ -11,5 +11,11 @@
     aria-describedby="basic-addon1"
   />
 
-  <button class="btn btn-primary" (click)="onValidate()">Valider</button>
+  <button
+    class="btn btn-primary"
+    (click)="onValidate()"
+    [disabled]="isUsernameValid()"
+  >
+    Valider
+  </button>
 </div>

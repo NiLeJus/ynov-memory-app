@@ -17,4 +17,5 @@ export const routes: Routes = [
     title: 'Board -',
   },
   { path: '**', component: Page404ScreenComponent },
+  
 ];

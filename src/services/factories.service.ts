@@ -1,5 +1,10 @@
-import { eContentType, eMemorycardType } from 'src/_models/app.enums';
 import {
+  eContentType,
+  eMemorycardStatus,
+  eMemorycardType,
+} from 'src/_models/app.enums';
+import {
+  HistoricEntryObj,
   iMemorycard,
   iMemorycardContent,
   MemorycardObject,
@@ -37,14 +42,12 @@ export class FactoriesService {
       null,
       title,
       cardType,
-      null,
-      null,
       recto,
       verso,
       0,
-      null,
+      [],
     );
 
-    console.log(newMemoryCard);
+    console.log('Created Memory Card', newMemoryCard);
   }
 }

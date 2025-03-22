@@ -1,3 +1,4 @@
+import { ValidationDisplayerService } from '../../../../services/displayer/val-disp.service';
 import { StoreGlobalService } from './../../../../services/store-global.service';
 import {
   Component,
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { DatabaseService } from '../../../../services/database/database.service';
 import { AlertService } from '../../../../services/alert.service';
 import { iProfile } from 'src/_models/domains/profile.models';
+import { modalAskForDeletion } from 'src/services/displayer/modal-disp/modals.prefabs';
 
 @Component({
   selector: 'app-profile-tab',
@@ -22,6 +24,7 @@ export class ProfileTabComponent {
   readonly _user = input<iProfile>();
   newUsername = '';
   constructor(
+    private validationDisplayer: ValidationDisplayerService,
     private databaseService: DatabaseService,
     private router: Router,
     private alertService: AlertService,
@@ -41,7 +44,7 @@ export class ProfileTabComponent {
     this.isRenaming.set(state);
   }
 
-  onDeleteProfile(): void {
+  onDeleteProfile(): any {
     const user = this._user(); // Get the user object from the input signal
     if (user && user.id) {
       this.databaseService

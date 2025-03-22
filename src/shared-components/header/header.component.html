@@ -1,12 +1,16 @@
-<div class="text-center">
-  <h1 class="text-start">MEMORY APP</h1>
-
-  <h2>{{ _username() }}</h2>
-  <p>{{ _userScore() }} Score</p>
-  <p>{{ _userScoreAllTime() }} Score All Time</p>
-</div>
-
-<div class="d-flex flex-row">
-  <button>Param</button>
-  <button (click)="returnToProfileSelection()">Quit</button>
+<div class="text-center d-flex flex-column justify-content-center">
+  <div class="d-flex flex-column justify-content-center">
+    <p class="mb-0">Profile</p>
+    <div class="d-flex flex-row justify-content-around">
+      <h2 class="mt-0">{{ _username() }}</h2>
+    </div>
+    <div class="d-flex flex-column text-center justify-content-center">
+      <p>
+        {{ _userScore() }} Score // {{ _userScoreAllTime() }} Score All Time
+      </p>
+    </div>
+    <button class="btn-neuro btn-neuro-dng mt-0" (click)="returnToProfileSelection()">
+      Quit
+    </button>
+  </div>
 </div>

@@ -1,4 +1,13 @@
-// import { iProfile } from 'src/_models/domains/profile.models';
+import {
+  eMemorycardType,
+  eContentType,
+  eMemorycardStatus,
+} from 'src/_models/app.enums';
+import {
+  MemorycardObject,
+  MemorycardContentObj,
+} from 'src/_models/domains/memorycard.models';
+import { iProfile } from 'src/_models/domains/profile.models';
 
 // export const MockProfileData: iProfile[] = [
 //   {
@@ -149,3 +158,145 @@
 //     },
 //   },
 // ];
+
+const exampleMemorycard1 = new MemorycardObject(
+  1,
+  'What is the capital of France?',
+  eMemorycardType.Classic,
+  [
+    new MemorycardContentObj(
+      'What is the capital of France?',
+      eContentType.Text,
+      'A simple geography question.',
+    ),
+  ],
+  [
+    new MemorycardContentObj(
+      'Paris',
+      eContentType.Text,
+      'The capital of France.',
+    ),
+  ],
+  3,
+  [
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 3,
+      date: '22-03-2025',
+    },
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 2,
+      date: '18-03-2025',
+    },
+    {
+      statusAt: eMemorycardStatus.NotValidated,
+      validationLevel: 1,
+      date: '16-03-2025',
+    },
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 2,
+      date: '12-03-2025',
+    },
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 1,
+      date: '10-03-2025',
+    },
+    {
+      statusAt: eMemorycardStatus.Creation,
+      validationLevel: 0,
+      date: '10-03-2025',
+    },
+  ],
+);
+
+const exampleMemorycard2 = new MemorycardObject(
+  2,
+  'What is the largest planet in our solar system?',
+  eMemorycardType.Classic,
+
+  [
+    new MemorycardContentObj(
+      'What is the largest planet in our solar system?',
+      eContentType.Text,
+      'A simple astronomy question.',
+    ),
+  ],
+  [
+    new MemorycardContentObj(
+      'Jupiter',
+      eContentType.Text,
+      'The largest planet in our solar system.',
+    ),
+  ],
+  2,
+  [
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 2,
+      date: '2025-07-20',
+    },
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 1,
+      date: '2025-07-15',
+    },
+    {
+      statusAt: eMemorycardStatus.NotValidated,
+      validationLevel: 0,
+      date: '2025-07-10',
+    },
+  ],
+  {
+    validationTotal: 3,
+    devaluationTotal: 1,
+    maxLevelReached: 2,
+    totalPoints: 100,
+  },
+);
+
+const exampleMemorycard3 = new MemorycardObject(
+  3,
+  'Who wrote "Romeo and Juliet"?',
+  eMemorycardType.Classic,
+  [
+    new MemorycardContentObj(
+      'Who wrote "Romeo and Juliet"?',
+      eContentType.Text,
+      'A literature question.',
+    ),
+  ],
+  [
+    new MemorycardContentObj(
+      'William Shakespeare',
+      eContentType.Text,
+      'Famous playwright.',
+    ),
+  ],
+  4,
+  [
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 4,
+      date: '2025-06-25',
+    },
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 3,
+      date: '2025-06-20',
+    },
+    {
+      statusAt: eMemorycardStatus.Validated,
+      validationLevel: 2,
+      date: '2025-06-15',
+    },
+  ],
+  {
+    validationTotal: 5,
+    devaluationTotal: 0,
+    maxLevelReached: 4,
+    totalPoints: 150,
+  },
+);

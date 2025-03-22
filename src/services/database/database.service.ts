@@ -39,8 +39,7 @@ export class DatabaseService {
         themes: [],
       };
 
-      // Assuming you want to add this theme to a specific user
-      const userId = this.storeGlobalService.getCurrentUserId(); // Example method to get current user ID
+      const userId = this.storeGlobalService.getCurrentUserId();
 
       if (userId) {
         await db.transaction('rw', db.users, async () => {
@@ -125,8 +124,41 @@ export class DatabaseService {
     }
   }
 
-  async registerCard() {
-    
+  async addNewCard() {}
+
+  /**
+   * Select a User in the database  by its ID
+   * @param userId user id of the user we wanna get
+   */
+  private async selectActiveUserInDb(userId?: string | number) {
+    if (userId === undefined || userId === null) {
+      //Get active user id
+    } else if (typeof userId === 'string') {
+      userId = Number(userId);
+    }
+    const activeUserId = this.storeGlobalService.getCurrentUserId();
+
+    if (userId) {
+      await db.transaction('rw', db.users, async () => {
+        const user = await db.users.get(userId);
+        if (!user) throw new Error('User not found');
+      });
+    }
+  }
+
+  private async getActiveUser(userId: string | number): Promise<any> {
+    if (typeof userId === 'string') userId = Number(userId);
+
+    try {
+      await db.transaction('rw', db.users, async () => {
+        const user = await db.users.get(userId);
+        if (!user) throw new Error('User not found');
+        return user;
+      });
+    } catch (error) {
+      console.error('Error getting user:', error);
+      throw error;
+    }
   }
 
   //#endregion
@@ -259,6 +291,4 @@ export class DatabaseService {
       console.error(`Failed to delete user with ID ${userId}:`, error);
     }
   }
-
-
 }

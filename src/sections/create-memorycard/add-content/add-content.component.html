@@ -5,38 +5,38 @@
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.text)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.text)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Text)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Text)"
     >
       <img src="/app-icons/ico-text-file.svg" />
     </button>
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.image)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.image)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Image)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Image)"
     >
       <img src="/app-icons/ico-image-file.svg" />
     </button>
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.video)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.video)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Video)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Video)"
     >
       <img src="/app-icons/ico-video-file.svg" />
     </button>
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.audio)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.audio)"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Audio)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Audio)"
     >
       <img src="/app-icons/ico-audio-file.svg" />
     </button>
 
     @switch (mediaTypeSlct()) {
-      @case (ENUM_CONTENT_TYPE.text) {
+      @case (ENUM_CONTENT_TYPE.Text) {
         <textarea
           type="text"
           class="form-control"

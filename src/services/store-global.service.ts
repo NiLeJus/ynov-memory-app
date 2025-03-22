@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StoreGlobalService implements OnInit {
   currentUserId: WritableSignal<number | null> = signal(null);
+  slcThemeId: WritableSignal<number | null> = signal(null);
   constructor(private route: ActivatedRoute) {
     if (this.currentUserId()?.valueOf == null) {
       const lastKnownUser = localStorage.getItem('lastKnownUser');
@@ -18,6 +19,15 @@ export class StoreGlobalService implements OnInit {
     this.currentUserId.set(newValue);
     console.log('Changed currentUserId to ', newValue);
     localStorage.setItem('lastKnownUser', newValue.toString());
+  }
+
+  setSelectedTheme(newValue: number | null) {
+    this.slcThemeId.set(newValue);
+    console.log('Changed Slc Theme id');
+  }
+
+  getSlcThemeId(): number | null {
+    return this.slcThemeId();
   }
 
   getCurrentUserId(): number | null {

@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
   private alertPlaceholder: HTMLElement | null;
+
+
+
+  private _alerts: any[] = [];
+  alerts = new Subject<any[]>();
 
   constructor() {
     // Dynamically create a placeholder for alerts if it doesn't exist

@@ -27,6 +27,7 @@
     "bootstrap": "^5.3.3",
     "dexie": "^4.0.11",
     "luxon": "^3.5.0",
+    "ngx-bootstrap": "^19.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "wasm-vips": "^0.0.11",

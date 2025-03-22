@@ -17,14 +17,15 @@ export enum eMemorycardType {
 }
 
 export enum eMemorycardStatus {
-  Validated = 'VALIDATED',
   NotValidated = 'NOTVALIDATED',
+  Validated = 'VALIDATED',
+  Creation = 'CREATION',
   Pending = 'PENDING',
 }
 
 export enum eContentType {
-  text = 'TEXT',
-  image = 'IMAGE',
-  video = 'VIDEO',
-  audio = 'AUDIO',
+  Text = 'TEXT',
+  Image = 'IMAGE',
+  Video = 'VIDEO',
+  Audio = 'AUDIO',
 }

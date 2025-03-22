@@ -4,9 +4,17 @@
       @if (_userThemes()) { @for (theme of _userThemes(); track theme.id) {
       <div class="col">
         <div class="card-body row">
-          <h5 class="card-title">{{ theme.name }}</h5>
-          <button href="#" class="btn btn-primary">Select</button>
-          <button href="#" class="btn btn-danger">Go somewhere</button>
+          <h5 class="card-title text-capitalize">{{ theme.name }}</h5>
+          <div>
+            <button
+              href="#"
+              class="btn btn-outline-dark"
+              (click)="onSelect(theme.id)"
+            >
+              Select
+            </button>
+          </div>
+          <!-- <button href="#" class="btn btn-danger">Go somewhere</button> -->
         </div>
       </div>
 
@@ -21,10 +29,25 @@
 
   } -->
 
-  <app-create-new-theme />
+    <button (click)="dev()" class="btn btn-outline-dark">
+      Create New Theme
+    </button>
 
-  <button>Nouveau thèmes</button>
-  <button>Nouvelle entrée</button>
+    @if (this.isCreatingTheme()) {
+    <app-create-new-theme />
+    } @if (this.storeGlobalService.getSlcThemeId() != null) {
 
-  <app-add-content/>
+    <button
+      href="#"
+      class="btn btn-outline-dark"
+      (click)="this.isCreatingCard.set(!this.isCreatingCard()) "
+    >
+      Create New Card
+    </button>
+    <br />
+
+    @if (this.isCreatingCard()) {
+    <app-create-memorycard />
+    }}
+  </div>
 </div>

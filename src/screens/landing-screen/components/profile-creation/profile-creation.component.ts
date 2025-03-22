@@ -14,7 +14,7 @@ export class ProfileCreationComponent {
   inputUsername: string = '';
   constructor(
     private databaseService: DatabaseService,
-    private alertService: AlertService
+    private alertService: AlertService,
   ) {}
 
   userGuide = computed;
@@ -29,26 +29,34 @@ export class ProfileCreationComponent {
 
   @Output() notifyProcessEnded = new EventEmitter<boolean>();
 
+  isUsernameValid(): boolean {
+    if (this.isMaxLengthMet() && this.isMinLengthMet()) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   async onValidate() {
     const result = await this.databaseService.registerNewUser(
-      this.inputUsername
+      this.inputUsername,
     );
 
     if (result.status === 'ok') {
       console.log('Utilisateur enregistré avec succès.');
       this.alertService.showAlert(
         'Utilisateur enregistré avec succès.',
-        'success'
+        'success',
       );
       this.notifyProcessEnded.emit(true);
     } else {
       console.error(
         "Erreur lors de l'enregistrement de l'utilisateur :",
-        result.error
+        result.error,
       );
       this.alertService.showAlert(
         'Utilisateur enregistré avec succès.',
-        'danger'
+        'danger',
       );
     }
   }

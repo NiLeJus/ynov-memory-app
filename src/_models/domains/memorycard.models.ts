@@ -1,19 +1,16 @@
 import { eContentType, eMemorycardStatus, eMemorycardType } from '../app.enums';
-import { ISODateString } from '../generics.models';
 
 //#region MEMORYCARD
 
 export class MemorycardObject {
   constructor(
-    public id: string | null,
+    public id: number | null,
     public title: string = '',
     public cardType: eMemorycardType | null,
-    public lastValidationDate: ISODateString | null | number,
-    public nextValidationDate: ISODateString | null | number,
     public recto: iMemorycardContent[],
     public verso: iMemorycardContent[],
     public validationLevel: number = 0,
-    public Historic: iHistoricEntry[] | null = null,
+    public Historic: iHistoricEntry[] | null[],
     public Statistics?: iMemoryCardStatistics,
   ) {}
 }
@@ -35,13 +32,12 @@ export type tMemorycardPrototype = InstanceType<typeof MemorycardPrototype>;
 
 //#endregion
 
-
 //#region TYPES
 
 // Votre code ici
 
 //#endregion
-export class MemorycardContentObject {
+export class MemorycardContentObj {
   constructor(
     public value: string | Blob,
     public mediaType: eContentType,
@@ -57,7 +53,7 @@ export class MemorycardContentPrototype {
   ) {}
 }
 
-export type iMemorycardContent = InstanceType<typeof MemorycardContentObject>;
+export type iMemorycardContent = InstanceType<typeof MemorycardContentObj>;
 
 export interface iMemoryCardStatistics {
   validationTotal: number;
@@ -65,8 +61,17 @@ export interface iMemoryCardStatistics {
   maxLevelReached: number;
   totalPoints: number;
 }
+
 export interface iHistoricEntry {
   statusAt: eMemorycardStatus;
   validationLevel: number;
   date: string;
 }
+export class HistoricEntryObj {
+  constructor(
+    statusAt: eMemorycardStatus,
+    validationLevel: number,
+    date: string,
+  ) {}
+}
+export type tHistoricEntry = InstanceType<typeof HistoricEntryObj>;
