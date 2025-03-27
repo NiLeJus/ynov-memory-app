@@ -1,20 +1,9 @@
-import { StoreGlobalService } from './../store-global.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import {
-  computed,
-  inject,
-  Injectable,
-  Injector,
-  Resource,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { liveQuery, Observable } from 'dexie';
 import { db } from '../../_data/db';
-import { iProfile } from '../../_models/domains/profile.models';
-import { iMemoryTheme } from 'src/_models/domains/theme.models';
-import { UserController } from './controllers/user.controller';
-import { ThemesController } from './controllers/themes.controller';
+import { tMemTheme, tProfile } from 'src/_models/profile.model';
+import { StoreGlobalService } from '../stores/global-store/global-store.service';
+import { tMemcard } from 'src/_models/memcard.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,11 +17,20 @@ import { ThemesController } from './controllers/themes.controller';
 export class DatabaseService {
   public storeGlobalService = inject(StoreGlobalService);
 
+  _USERSDATA$: Observable<tProfile[]> = liveQuery(() => db.users.toArray());
+  _SELECTED_USERID$ = this.storeGlobalService.currentUserId;
+
+  _selectedThemeId() {
+    return this.storeGlobalService.getSlcThemeId();
+  }
+
+  //#region THEME CRUD
+
   async registerNewTheme(
     name: string,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
     try {
-      const newTheme: iMemoryTheme = {
+      const newTheme: tMemTheme = {
         id: crypto.randomUUID(),
         name: name,
         cards: [],
@@ -71,7 +69,9 @@ export class DatabaseService {
 
           if (user.themes) {
             // Vérifie si user.themes est défini
-            user.themes = user.themes.filter((theme) => theme.id !== themeId);
+            user.themes = user.themes.filter(
+              (theme: tMemTheme) => theme.id !== themeId,
+            );
           } else {
             console.log('No themes found for this user.');
           }
@@ -102,7 +102,7 @@ export class DatabaseService {
           if (user.themes) {
             // Vérifie si user.themes est défini
             const themeIndex = user.themes.findIndex(
-              (theme) => theme.id === themeId,
+              (theme: tMemTheme) => theme.id === themeId,
             );
             if (themeIndex !== -1) {
               user.themes[themeIndex].name = newName;
@@ -124,7 +124,90 @@ export class DatabaseService {
     }
   }
 
-  async addNewCard() {}
+  //#endregion
+
+  //#region MEMCARD CRUD
+
+  async addNewCard(
+    newCard: tMemcard,
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    const themeId = this.storeGlobalService.getSlcThemeId();
+
+    try {
+      const userId = this.storeGlobalService.getCurrentUserId();
+
+      if (!userId) {
+        throw new Error('Utilisateur non connecté');
+      }
+
+      console.log(themeId);
+
+      await db.transaction('rw', db.users, async () => {
+        const user = await db.users.get(userId);
+        if (!user) throw new Error('Utilisateur introuvable');
+
+        const targetTheme = user.themes?.find((t) => t.id === themeId);
+        if (!targetTheme) throw new Error('Thème introuvable');
+
+        targetTheme.cards = [...(targetTheme.cards || []), newCard];
+        await db.users.put(user);
+      });
+
+      return { status: 'ok' };
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de la carte:", error);
+      return { status: 'error', error };
+    }
+  }
+
+  /**
+   * Delete
+   *
+   */
+  async deleteMemcard(memcardId: string) {
+    const themeId: tMemTheme['id'] | null =
+      this.storeGlobalService.getSlcThemeId();
+
+    if (!themeId) {
+      throw new Error('Selected ThemeId is null');
+    }
+
+    const userId = this.storeGlobalService.getCurrentUserId();
+
+    try {
+      if (userId) {
+        await db.transaction('rw', db.users, async () => {
+          const user = await db.users.get(userId);
+          if (!user) throw new Error('User not found');
+          if (!user.themes?.length)
+            throw new Error('This user.themes is empty');
+
+          const themeIndex = user.themes.findIndex(
+            (theme) => theme.id === themeId,
+          );
+
+          if (themeIndex === -1) throw new Error(`Theme ${themeId} not found`);
+
+          user.themes[themeIndex].cards = user.themes[themeIndex].cards?.filter(
+            (card) => card.id !== memcardId,
+          );
+
+          await db.users.put(user);
+        });
+      }
+      return { status: 'ok' };
+    } catch (error) {
+      console.error(`Error deleting card ${memcardId}:`, error);
+      return {
+        status: 'error',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  //#endregion
+
+  //#region USER CRUD
 
   /**
    * Select a User in the database  by its ID
@@ -161,19 +244,8 @@ export class DatabaseService {
     }
   }
 
-  //#endregion
-
-  // Observable that emits user data whenever it changes
-  _USERSDATA$: Observable<iProfile[]> = liveQuery(() => db.users.toArray());
-  // _SELECTED_USERID$ = computed(() => {
-  //   return this.storeGlobalService.getCurrentUserId();
-  // });
-
-  _SELECTED_USERID$ = this.storeGlobalService.currentUserId;
-  //#region USER RELATED
-
-  async getAllUsers(): Promise<iProfile[]> {
-    const users: iProfile[] = await db.users.toArray();
+  async getAllUsers(): Promise<tProfile[]> {
+    const users: tProfile[] = await db.users.toArray();
     console.log(users);
     return users;
   }
@@ -188,8 +260,6 @@ export class DatabaseService {
     return;
   }
 
-  //#endregion
-
   async getSelectedUser() {
     const selectedUserId = this._SELECTED_USERID$();
     if (selectedUserId) {
@@ -199,11 +269,11 @@ export class DatabaseService {
     return;
   }
 
-  getAllUsers$(): Observable<iProfile[]> {
+  getAllUsers$(): Observable<tProfile[]> {
     return liveQuery(() => db.users.toArray());
   }
 
-  getSelectedUser$(): Observable<iProfile | undefined> {
+  getSelectedUser$(): Observable<tProfile | undefined> {
     let selectedUserId = this._SELECTED_USERID$();
     if (selectedUserId == null) {
       selectedUserId = 0;
@@ -211,7 +281,7 @@ export class DatabaseService {
     return liveQuery(() => db.users.get(selectedUserId));
   }
 
-  async getUserByUsername(username: string): Promise<iProfile | undefined> {
+  async getUserByUsername(username: string): Promise<tProfile | undefined> {
     try {
       const user = await db.users.where('name').equals(username).first(); // Recherche par index
       return user; // Retourne l'utilisateur ou undefined s'il n'existe pas
@@ -248,10 +318,9 @@ export class DatabaseService {
   async registerNewUser(
     name: string,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
-    const newUser = {
+    const newUser: tProfile = {
       id: Date.now(), // TIMESTAMP POUR UID
       name: name,
-      selected: true,
       nextSession: null,
       themes: [], // Initialize with empty themes
       statistics: { runsDone: 0, scoreAllTime: 0, scoreNow: 0 }, // Default statistics
@@ -266,10 +335,12 @@ export class DatabaseService {
       return { status: 'error', error }; // Return error status and the error itself
     }
   }
+  //#endregion
+
+  //#region RFTW CRUD
 
   async getThemesForUserId() {
     const user = await db.users.get(this._SELECTED_USERID$);
-
     if (user?.themes) {
       console.log(`Themes for user ${user.name}:`, user.themes);
 
@@ -291,4 +362,6 @@ export class DatabaseService {
       console.error(`Failed to delete user with ID ${userId}:`, error);
     }
   }
+
+  //#endregion
 }

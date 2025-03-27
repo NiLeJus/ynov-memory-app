@@ -1,0 +1,49 @@
+<div class="neuro-effect memcard d-flex flex-column mt-5">
+  <div class="memcard-header d-flex flex-row bg-light text-center">
+    <div class="col">
+      <h6>Runned</h6>
+      <h1>{{ this.memorycard.Historic.length + 1 }}</h1>
+    </div>
+    <div class="col text-center">
+      <h6>Val Lvl</h6>
+      <h1>{{ this.memorycard.Historic[0].valLevel }}</h1>
+    </div>
+    <div class="col">
+      <h6>Val count</h6>
+      <h1>{{ this.val() }}</h1>
+    </div>
+    <div class="col">
+      <h6>Deval count</h6>
+      <h1>{{ this.deval() }}</h1>
+    </div>
+  </div>
+  <hr />
+
+  <h1 class="text-center p-3">{{ memorycard.title }}</h1>
+
+  @if (!isRevealed()) {
+    <button class="btn-neuro btn-neuro-dng" (click)="onReveal()">
+      Retourner
+    </button>
+  }
+
+  @if (isRevealed()) {
+    <hr />
+
+    <div class="verso-container text-center">
+      <h4>Answer</h4>
+      @for (versoContent of memorycard.verso; track $index) {
+        <h1>{{ versoContent.description }}</h1>
+      }
+    </div>
+  }
+
+  @if (isRevealed()) {
+    <div class="d-flex flex-row">
+      <button class="btn-neuro btn-neuro-dng" (click)="onRight()">Faux</button
+      ><button class="btn-neuro btn-neuro-val" (click)="onWrong()">
+        Juste
+      </button>
+    </div>
+  }
+</div>

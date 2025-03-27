@@ -1,6 +1,8 @@
+import { DateStore } from './../../services/stores/date-store.service';
 import { DatabaseService } from '../../services/database/database.service';
 import { Component, resource } from '@angular/core';
 import { DevModeService } from './../dev-mode.service';
+import { MemcardActions } from 'src/services/stores/actions/memcard.actions';
 
 @Component({
   selector: 'app-dev-bar',
@@ -11,10 +13,18 @@ import { DevModeService } from './../dev-mode.service';
 export class DevBarComponent {
   constructor(
     public devModeService: DevModeService,
-    public databaseService: DatabaseService
+    public memecardActions: MemcardActions,
+    public databaseService: DatabaseService,
+    public dateStore: DateStore,
   ) {}
 
-  dev() {}
+  dev() {
+    this.memecardActions.processNewDate();
+  }
 
   onClearDB() {}
+
+  onPrintNow() {
+    console.log(this.dateStore.now());
+  }
 }

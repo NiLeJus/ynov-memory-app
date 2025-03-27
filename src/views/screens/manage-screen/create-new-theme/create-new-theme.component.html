@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-body">
+    <div class="input-group">
+      <span class="input-group-text">Nom du thème</span>
+      <input
+        type="text"
+        aria-label="New Theme Name"
+        class="form-control"
+        [(ngModel)]="newThemeName"
+      />
+    </div>
+    <button
+      class="btn btn-primary"
+      [disabled]="isInputValid()"
+      (click)="onValidate()"
+    >
+      Validate
+    </button>
+    <button class="btn btn-outline-danger" (click)="onCancel()">Cancel</button>
+  </div>
+</div>

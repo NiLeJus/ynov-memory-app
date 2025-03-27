@@ -1,8 +1,8 @@
 import { Routes, ExtraOptions } from '@angular/router';
-import { LandingScreenComponent } from '../screens/landing-screen/landing.screen';
-import { ManageScreenComponent } from '../screens/manage-screen/manage-screen';
-import { BoardScreenComponent } from '../screens/board-screen/board.screen';
-import { Page404ScreenComponent } from '../screens/page404/page404.screen';
+import { BoardScreenComponent } from 'src/views/screens/board-screen/board.screen';
+import { LandingScreenComponent } from 'src/views/screens/landing-screen/landing.screen';
+import { ManageScreenComponent } from 'src/views/screens/manage-screen/manage-screen';
+import { Page404ScreenComponent } from 'src/views/screens/page404/page404.screen';
 
 export const routes: Routes = [
   { path: '', component: LandingScreenComponent, title: 'Home' },
@@ -17,5 +17,4 @@ export const routes: Routes = [
     title: 'Board -',
   },
   { path: '**', component: Page404ScreenComponent },
-  
 ];

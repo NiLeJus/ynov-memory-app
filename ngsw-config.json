@@ -1,4 +1,5 @@
 {
+  "appData": { "notificationStrategy": "time-based" },
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
   "assetGroups": [
@@ -11,8 +12,7 @@
           "/index.csr.html",
           "/index.html",
           "/manifest.webmanifest",
-          "/*.js",
-          "/vips/**"
+          "/*.js"
         ]
       }
     },
@@ -22,6 +22,14 @@
       "updateMode": "prefetch",
       "resources": {
         "files": ["/assets/**"]
+      }
+    },
+    {
+      "name": "notifications",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/sw.js", "/assets/**", "/data/notifications.json"]
       }
     }
   ]

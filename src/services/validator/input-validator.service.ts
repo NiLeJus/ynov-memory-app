@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 
-export type val = string[] | string | null | undefined;
-
 @Injectable({ providedIn: 'root' })
-export class InputValidatorService {
+export class InputValidator {
 
-  isNotEmpty(valToCheck: val) {}
+  isMinLengthMet(valToCheck: string, minValue = 3): boolean {
+    return valToCheck.length > minValue;
+  }
 
-  isLongEnought(valToCheck: val, ) {}
-
-
+  isMaxLengthMet(valToCheck: string, maxValue = 20): boolean {
+    return valToCheck.length < maxValue;
+  }
 
   constructor() {}
 }
