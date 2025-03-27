@@ -1,0 +1,1385 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>My app documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">My app documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  AddContentComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/sections/create-memorycard/add-content/add-content.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-add-content</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./add-content.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./add-content.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#_CONTENT_TYPE_ENUM" >_CONTENT_TYPE_ENUM</a>
+                            </li>
+                            <li>
+                                <a href="#dataSent" >dataSent</a>
+                            </li>
+                            <li>
+                                <a href="#destroyComponent" >destroyComponent</a>
+                            </li>
+                            <li>
+                                <a href="#imagePreview" >imagePreview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#memorycardTypes" >memorycardTypes</a>
+                            </li>
+                            <li>
+                                <a href="#previewUrl" >previewUrl</a>
+                            </li>
+                            <li>
+                                <a href="#returned_content" >returned_content</a>
+                            </li>
+                            <li>
+                                <a href="#selContentType" >selContentType</a>
+                            </li>
+                            <li>
+                                <a href="#selectedFile" >selectedFile</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#deleteSavedImage" >deleteSavedImage</a>
+                            </li>
+                            <li>
+                                <a href="#dev" >dev</a>
+                            </li>
+                            <li>
+                                <a href="#isContentValid" >isContentValid</a>
+                            </li>
+                            <li>
+                                <a href="#isMediaSelected" >isMediaSelected</a>
+                            </li>
+                            <li>
+                                <a href="#loadSavedImage" >loadSavedImage</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#onChangeMedia" >onChangeMedia</a>
+                            </li>
+                            <li>
+                                <a href="#onImageSelected" >onImageSelected</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onValidate" >onValidate</a>
+                            </li>
+                            <li>
+                                <a href="#saveImage" >saveImage</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#dataSent" >dataSent</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSent"></a>
+                        <b>dataSent</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:44</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteSavedImage"></a>
+                    <span class="name">
+                        <span ><b>deleteSavedImage</b></span>
+                        <a href="#deleteSavedImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>deleteSavedImage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Supprime l&#39;image enregistrée du localStorage.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dev"></a>
+                    <span class="name">
+                        <span ><b>dev</b></span>
+                        <a href="#dev"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>dev()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isContentValid"></a>
+                    <span class="name">
+                        <span ><b>isContentValid</b></span>
+                        <a href="#isContentValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isContentValid()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isMediaSelected"></a>
+                    <span class="name">
+                        <span ><b>isMediaSelected</b></span>
+                        <a href="#isMediaSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isMediaSelected(media: <a href="../undefineds/eContentType.html" target="_self">eContentType</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>media</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#eContentType" target="_self" >eContentType</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loadSavedImage"></a>
+                    <span class="name">
+                        <span ><b>loadSavedImage</b></span>
+                        <a href="#loadSavedImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>loadSavedImage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Charge une image précédemment enregistrée depuis le localStorage.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onChangeMedia"></a>
+                    <span class="name">
+                        <span ><b>onChangeMedia</b></span>
+                        <a href="#onChangeMedia"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onChangeMedia(newContentType: <a href="../undefineds/eContentType.html" target="_self">eContentType</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>newContentType</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#eContentType" target="_self" >eContentType</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onImageSelected"></a>
+                    <span class="name">
+                        <span ><b>onImageSelected</b></span>
+                        <a href="#onImageSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onImageSelected(event: Event)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Méthode appelée lorsque l&#39;utilisateur sélectionne une image.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>Event</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onValidate"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onValidate</b></span>
+                        <a href="#onValidate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onValidate()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveImage"></a>
+                    <span class="name">
+                        <span ><b>saveImage</b></span>
+                        <a href="#saveImage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>saveImage()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Enregistre l&#39;image dans le localStorage.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_CONTENT_TYPE_ENUM"></a>
+                    <span class="name">
+                        <span ><b>_CONTENT_TYPE_ENUM</b></span>
+                        <a href="#_CONTENT_TYPE_ENUM"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>eContentType</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dataSent"></a>
+                    <span class="name">
+                        <span ><b>dataSent</b></span>
+                        <a href="#dataSent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="destroyComponent"></a>
+                    <span class="name">
+                        <span ><b>destroyComponent</b></span>
+                        <a href="#destroyComponent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="imagePreview"></a>
+                    <span class="name">
+                        <span ><b>imagePreview</b></span>
+                        <a href="#imagePreview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="memorycardTypes"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>memorycardTypes</b></span>
+                        <a href="#memorycardTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Object.values(this._CONTENT_TYPE_ENUM)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="previewUrl"></a>
+                    <span class="name">
+                        <span ><b>previewUrl</b></span>
+                        <a href="#previewUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | ArrayBuffer | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="returned_content"></a>
+                    <span class="name">
+                        <span ><b>returned_content</b></span>
+                        <a href="#returned_content"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; ({
+    value: &#x27;&#x27;,
+    mediaType: this.selContentType(), // Utilise la valeur actuelle de selContentType
+    description: &#x27;&#x27;,
+  }))</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selContentType"></a>
+                    <span class="name">
+                        <span ><b>selContentType</b></span>
+                        <a href="#selContentType"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#eContentType" target="_self" >WritableSignal&lt;eContentType&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(
+    this._CONTENT_TYPE_ENUM.text,
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectedFile"></a>
+                    <span class="name">
+                        <span ><b>selectedFile</b></span>
+                        <a href="#selectedFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>File | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/sections/create-memorycard/add-content/add-content.component.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Component,
+  computed,
+  CUSTOM_ELEMENTS_SCHEMA,
+  EventEmitter,
+  output,
+  Output,
+  signal,
+  WritableSignal,
+} from &#x27;@angular/core&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { eContentType } from &#x27;src/_models/app.enums&#x27;;
+import { iMemorycardContent } from &#x27;src/_models/domains/memorycard.models&#x27;;
+
+@Component({
+  selector: &#x27;app-add-content&#x27;,
+  imports: [FormsModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: &#x27;./add-content.component.html&#x27;,
+  styleUrl: &#x27;./add-content.component.scss&#x27;,
+})
+export class AddContentComponent {
+  _CONTENT_TYPE_ENUM &#x3D; eContentType;
+  selContentType: WritableSignal&lt;eContentType&gt; &#x3D; signal(
+    this._CONTENT_TYPE_ENUM.text,
+  );
+  readonly memorycardTypes &#x3D; Object.values(this._CONTENT_TYPE_ENUM); // Transforme en tableau pour itérer dessus
+
+  destroyComponent &#x3D; signal(false);
+
+  returned_content &#x3D; computed(() &#x3D;&gt; ({
+    value: &#x27;&#x27;,
+    mediaType: this.selContentType(), // Utilise la valeur actuelle de selContentType
+    description: &#x27;&#x27;,
+  }));
+
+  onChangeMedia(newContentType: eContentType) {
+    console.log(&#x27;NewContentType&#x27;, newContentType);
+    console.log(&#x27;old selContentType&#x27;, this.selContentType());
+    this.selContentType.set(newContentType);
+    console.log(&#x27;new selContentType&#x27;, this.selContentType());
+  }
+  previewUrl: string | ArrayBuffer | null &#x3D; null;
+  dataSent &#x3D; output&lt;iMemorycardContent&gt;();
+
+  isMediaSelected(media: eContentType): boolean {
+    return media &#x3D;&#x3D;&#x3D; this.selContentType();
+  }
+  async onValidate() {
+    this.isContentValid();
+    this.dataSent.emit(this.returned_content());
+    const isDestroyed &#x3D; await this.destroyComponent();
+
+    if (isDestroyed &#x3D;&#x3D;&#x3D; true) {
+      this.ngOnDestroy();
+    }
+  }
+  ngOnDestroy() {}
+  isContentValid() {}
+  dev() {
+    console.log(this.returned_content());
+  }
+
+  imagePreview: string | null &#x3D; null; // Contient l&#x27;aperçu de l&#x27;image
+  selectedFile: File | null &#x3D; null; // Contient le fichier sélectionné
+
+  /**
+   * Méthode appelée lorsque l&#x27;utilisateur sélectionne une image.
+   */
+  onImageSelected(event: Event): void {
+    const input &#x3D; event.target as HTMLInputElement;
+    if (input.files &amp;&amp; input.files.length &gt; 0) {
+      this.selectedFile &#x3D; input.files[0];
+
+      // Generate a preview of the selected photo
+      const reader &#x3D; new FileReader();
+      reader.onload &#x3D; () &#x3D;&gt; {
+        this.previewUrl &#x3D; reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  /**
+   * Enregistre l&#x27;image dans le localStorage.
+   */
+  saveImage(): void {
+    if (this.imagePreview) {
+      try {
+        // Stocke l&#x27;image en Base64 dans le localStorage
+        localStorage.setItem(&#x27;savedImage&#x27;, this.imagePreview);
+        console.log(&#x27;Image enregistrée dans le localStorage&#x27;);
+      } catch (error) {
+        console.error(&quot;Erreur lors de la sauvegarde de l&#x27;image :&quot;, error);
+      }
+    }
+  }
+
+  /**
+   * Charge une image précédemment enregistrée depuis le localStorage.
+   */
+  loadSavedImage(): void {
+    const savedImage &#x3D; localStorage.getItem(&#x27;savedImage&#x27;);
+    if (savedImage) {
+      this.imagePreview &#x3D; savedImage;
+      console.log(&#x27;Image chargée depuis le localStorage&#x27;);
+    }
+  }
+
+  /**
+   * Supprime l&#x27;image enregistrée du localStorage.
+   */
+  deleteSavedImage(): void {
+    localStorage.removeItem(&#x27;savedImage&#x27;);
+    this.imagePreview &#x3D; null;
+    console.log(&#x27;Image supprimée du localStorage&#x27;);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;flex-column d-flex&quot;&gt;
+  &lt;h5 class&#x3D;&quot;&quot;&gt;Ajouter du contenu&lt;/h5&gt;
+
+  &lt;div class&#x3D;&quot;input-group&quot;&gt;
+    &lt;button
+      type&#x3D;&quot;button&quot;
+      class&#x3D;&quot;btn btn-outline-dark&quot;
+      (click)&#x3D;&quot;onChangeMedia(_CONTENT_TYPE_ENUM.text)&quot;
+      [class.active]&#x3D;&quot;isMediaSelected(_CONTENT_TYPE_ENUM.text)&quot;
+    &gt;
+      &lt;img src&#x3D;&quot;/app-icons/ico-text-file.svg&quot; /&gt;
+    &lt;/button&gt;
+    &lt;button
+      type&#x3D;&quot;button&quot;
+      class&#x3D;&quot;btn btn-outline-dark&quot;
+      (click)&#x3D;&quot;onChangeMedia(_CONTENT_TYPE_ENUM.image)&quot;
+      [class.active]&#x3D;&quot;isMediaSelected(_CONTENT_TYPE_ENUM.image)&quot;
+    &gt;
+      &lt;img src&#x3D;&quot;/app-icons/ico-image-file.svg&quot; /&gt;
+    &lt;/button&gt;
+    &lt;button
+      type&#x3D;&quot;button&quot;
+      class&#x3D;&quot;btn btn-outline-dark&quot;
+      (click)&#x3D;&quot;onChangeMedia(_CONTENT_TYPE_ENUM.video)&quot;
+      [class.active]&#x3D;&quot;isMediaSelected(_CONTENT_TYPE_ENUM.video)&quot;
+    &gt;
+      &lt;img src&#x3D;&quot;/app-icons/ico-video-file.svg&quot; /&gt;
+    &lt;/button&gt;
+    &lt;button
+      type&#x3D;&quot;button&quot;
+      class&#x3D;&quot;btn btn-outline-dark&quot;
+      (click)&#x3D;&quot;onChangeMedia(_CONTENT_TYPE_ENUM.audio)&quot;
+      [class.active]&#x3D;&quot;isMediaSelected(_CONTENT_TYPE_ENUM.audio)&quot;
+    &gt;
+      &lt;img src&#x3D;&quot;/app-icons/ico-audio-file.svg&quot; /&gt;
+    &lt;/button&gt;
+
+    @switch (selContentType()) {
+      @case (_CONTENT_TYPE_ENUM.text) {
+        &lt;textarea
+          type&#x3D;&quot;text&quot;
+          class&#x3D;&quot;form-control&quot;
+          placeholder&#x3D;&quot;Recipient&#x27;s username&quot;
+          aria-label&#x3D;&quot;Recipient&#x27;s username with two button addons&quot;
+          [(ngModel)]&#x3D;&quot;returned_content().value&quot;
+        &gt;
+        &lt;/textarea&gt;
+      }
+      @case (_CONTENT_TYPE_ENUM.image) {
+        &lt;input class&#x3D;&quot;form-control form-control-sm&quot; type&#x3D;&quot;file&quot; id&#x3D;&quot;formFile&quot; /&gt;
+        &lt;textarea
+          type&#x3D;&quot;text&quot;
+          class&#x3D;&quot;form-control&quot;
+          placeholder&#x3D;&quot;Description / Source (facultatif)&quot;
+          [(ngModel)]&#x3D;&quot;returned_content().description&quot;
+        &gt;
+        &lt;/textarea&gt;
+      }
+      @case (_CONTENT_TYPE_ENUM.video) {
+        &lt;input class&#x3D;&quot;form-control form-control-sm&quot; type&#x3D;&quot;file&quot; id&#x3D;&quot;formFile&quot; /&gt;
+        &lt;textarea
+          type&#x3D;&quot;text&quot;
+          class&#x3D;&quot;form-control&quot;
+          placeholder&#x3D;&quot;Description / Source (facultatif)&quot;
+          [(ngModel)]&#x3D;&quot;returned_content().description&quot;
+        &gt;
+        &lt;/textarea&gt;
+      }
+      @case (_CONTENT_TYPE_ENUM.audio) {
+        &lt;input class&#x3D;&quot;form-control form-control-sm&quot; type&#x3D;&quot;file&quot; id&#x3D;&quot;formFile&quot; /&gt;
+        &lt;textarea
+          type&#x3D;&quot;text&quot;
+          class&#x3D;&quot;form-control&quot;
+          placeholder&#x3D;&quot;Description / Source (facultatif)&quot;
+          [(ngModel)]&#x3D;&quot;returned_content().description&quot;
+        &gt;
+        &lt;/textarea&gt;
+      }
+    }
+
+    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-success&quot; (click)&#x3D;&quot;onValidate()&quot;&gt;
+      &lt;img src&#x3D;&quot;/app-icons/ico-check.svg&quot; /&gt;
+    &lt;/button&gt;
+    &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;btn btn-success&quot; (click)&#x3D;&quot;dev()&quot;&gt;DEV&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class&#x3D;&quot;file-upload&quot;&gt;
+  &lt;!-- &lt;div *ngIf&#x3D;&quot;selectedFile&quot;&gt;
+    &lt;h3&gt;Preview:&lt;/h3&gt;
+    &lt;img [src]&#x3D;&quot;previewUrl&quot; alt&#x3D;&quot;Uploaded Photo&quot; style&#x3D;&quot;max-width: 300px&quot; /&gt;
+  &lt;/div&gt; --&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="flex-column d-flex">  <h5 class="">Ajouter du contenu</h5>  <div class="input-group">    <button      type="button"      class="btn btn-outline-dark"      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.text)"      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.text)"    >      <img src="/app-icons/ico-text-file.svg" />    </button>    <button      type="button"      class="btn btn-outline-dark"      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.image)"      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.image)"    >      <img src="/app-icons/ico-image-file.svg" />    </button>    <button      type="button"      class="btn btn-outline-dark"      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.video)"      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.video)"    >      <img src="/app-icons/ico-video-file.svg" />    </button>    <button      type="button"      class="btn btn-outline-dark"      (click)="onChangeMedia(_CONTENT_TYPE_ENUM.audio)"      [class.active]="isMediaSelected(_CONTENT_TYPE_ENUM.audio)"    >      <img src="/app-icons/ico-audio-file.svg" />    </button>    @switch (selContentType()) {      @case (_CONTENT_TYPE_ENUM.text) {        <textarea          type="text"          class="form-control"          placeholder="Recipient\'s username"          aria-label="Recipient\'s username with two button addons"          [(ngModel)]="returned_content().value"        >        </textarea>      }      @case (_CONTENT_TYPE_ENUM.image) {        <input class="form-control form-control-sm" type="file" id="formFile" />        <textarea          type="text"          class="form-control"          placeholder="Description / Source (facultatif)"          [(ngModel)]="returned_content().description"        >        </textarea>      }      @case (_CONTENT_TYPE_ENUM.video) {        <input class="form-control form-control-sm" type="file" id="formFile" />        <textarea          type="text"          class="form-control"          placeholder="Description / Source (facultatif)"          [(ngModel)]="returned_content().description"        >        </textarea>      }      @case (_CONTENT_TYPE_ENUM.audio) {        <input class="form-control form-control-sm" type="file" id="formFile" />        <textarea          type="text"          class="form-control"          placeholder="Description / Source (facultatif)"          [(ngModel)]="returned_content().description"        >        </textarea>      }    }    <button type="button" class="btn btn-success" (click)="onValidate()">      <img src="/app-icons/ico-check.svg" />    </button>    <button type="button" class="btn btn-success" (click)="dev()">DEV</button>  </div></div><div class="file-upload">  <!-- <div *ngIf="selectedFile">    <h3>Preview:</h3>    <img [src]="previewUrl" alt="Uploaded Photo" style="max-width: 300px" />  </div> --></div></div>'
+    var COMPONENTS = [{'name': 'AddContentComponent', 'selector': 'app-add-content'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BoardScreenComponent', 'selector': 'app-board-screen'},{'name': 'CardsDisplayerComponent', 'selector': 'app-cards-displayer'},{'name': 'ContentFiltersComponent', 'selector': 'app-content-filters'},{'name': 'CreateMemorycardComponent', 'selector': 'app-create-memorycard'},{'name': 'DevBarComponent', 'selector': 'app-dev-bar'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'LandingScreenComponent', 'selector': 'app-landing-screen'},{'name': 'LandingScreenComponent', 'selector': 'app-run-screen'},{'name': 'LockedContentComponent', 'selector': 'app-locked-content'},{'name': 'ManageScreenComponent', 'selector': 'app-manage-screen'},{'name': 'MemoryCardComponent', 'selector': 'app-memory-card'},{'name': 'MemoryCardSmComponent', 'selector': 'app-memory-card-sm'},{'name': 'MemorycardTabComponent', 'selector': 'app-memorycard-tab'},{'name': 'MemorycardValLevelComponent', 'selector': 'app-memorycard-val-level'},{'name': 'NavBarComponent', 'selector': 'app-nav-bar'},{'name': 'Page404ScreenComponent', 'selector': 'app-page404-screen'},{'name': 'ProfileCreationComponent', 'selector': 'app-profile-creation'},{'name': 'ProfileTabComponent', 'selector': 'app-profile-tab'},{'name': 'RackCardComponent', 'selector': 'app-rack-card'},{'name': 'RunFiltersComponent', 'selector': 'app-run-filters'},{'name': 'RunPreviewSectionComponent', 'selector': 'app-run-preview-section'},{'name': 'ThemesDisplayerComponent', 'selector': 'app-themes-displayer'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'AddContentComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'AddContentComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

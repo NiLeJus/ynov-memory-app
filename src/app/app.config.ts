@@ -18,6 +18,7 @@ export const appConfig: ApplicationConfig = {
       url: (name: string) => `app-icons/${name}.svg`,
     }),
     provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
     provideHttpClient(),

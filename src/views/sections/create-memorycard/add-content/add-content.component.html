@@ -1,0 +1,79 @@
+<div class="flex-column d-flex">
+  <h5 class="">Ajouter du contenu</h5>
+
+  <div class="input-group">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Text)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Text)"
+    >
+      <img src="/app-icons/ico-text-file.svg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Image)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Image)"
+    >
+      <img src="/app-icons/ico-image-file.svg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Video)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Video)"
+    >
+      <img src="/app-icons/ico-video-file.svg" />
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Audio)"
+      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Audio)"
+    >
+      <img src="/app-icons/ico-audio-file.svg" />
+    </button>
+
+    @switch (mediaTypeSlct()) {
+      @case (ENUM_CONTENT_TYPE.Text) {
+        <textarea
+          type="text"
+          class="form-control"
+          placeholder="Recipient's username"
+          aria-label="Recipient's username with two button addons"
+          [(ngModel)]="textValueInput"
+        >
+        </textarea>
+      }
+      @default {
+        <input
+          class="form-control form-control-sm"
+          type="file"
+          id="formFile"
+          (change)="onImageSelected($event)"
+        />
+        <textarea
+          type="text"
+          class="form-control"
+          placeholder="Description / Source (facultatif)"
+          [(ngModel)]="descrValueInput"
+        >
+        </textarea>
+      }
+    }
+
+    <button type="button" class="btn btn-success" (click)="onValidate()">
+      <img src="/app-icons/ico-check.svg" />
+    </button>
+    <button type="button" class="btn btn-success" (click)="dev()">DEV</button>
+  </div>
+</div>
+<div class="file-upload">
+  <!-- @if (this.selectedFile) {
+    <div>
+      <h3>Preview:</h3>
+      <img [src]="previewUrl" alt="Uploaded Photo" style="max-width: 300px" />
+    </div>
+  } -->
+</div>
