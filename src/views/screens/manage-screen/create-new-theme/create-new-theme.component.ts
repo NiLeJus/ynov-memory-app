@@ -16,7 +16,7 @@ export class CreateNewThemeComponent {
   ) {}
 
   @Output() notifyProcessEnded = new EventEmitter<boolean>();
-    
+
 
   //#region USER INPUTS
 
@@ -24,10 +24,10 @@ export class CreateNewThemeComponent {
 
   //#endregion
 
-  isInputValid() {
+  isInputValid(): boolean {
     return (
-      !this.iptValidator.isMaxLengthMet(this.newThemeName, 25) ||
-      !this.iptValidator.isMinLengthMet(this.newThemeName, 5)
+      this.iptValidator.isMaxLengthMet(this.newThemeName, 25) &&
+      this.iptValidator.isMinLengthMet(this.newThemeName, 5)
     );
   }
 

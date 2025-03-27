@@ -20,20 +20,17 @@ export class ProfileCreationComponent {
 
   @Output() notifyProcessEnded = new EventEmitter<boolean>();
 
-  isUsernameValid(): boolean {
-    if (
-      !this.iptValidator.isMaxLengthMet(this.inputUsername, 15) ||
-      !this.iptValidator.isMinLengthMet(this.inputUsername, 3)
-    ) {
-      return false;
-    } else {
-      return true;
-    }
+  isInputValid(): boolean {
+    console.log(this.iptValidator.isMaxLengthMet(this.inputUsername, 15));
+    console.log(this.iptValidator.isMinLengthMet(this.inputUsername, 3));
+
+    return (
+      this.iptValidator.isMaxLengthMet(this.inputUsername, 15) &&
+      this.iptValidator.isMinLengthMet(this.inputUsername, 3)
+    );
   }
 
   async onValidate() {
-    this.isUsernameValid();
-
     const result = await this.databaseService.registerNewUser(
       this.inputUsername,
     );
