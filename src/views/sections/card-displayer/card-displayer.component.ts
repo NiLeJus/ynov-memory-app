@@ -1,14 +1,23 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
-import { Entity } from 'dexie';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  input,
+  Input,
+  OnInit,
+  Output,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import {
   eMemcardType,
   eContentType,
   eMemcardStatus,
 } from 'src/_models/enums/app.enums';
-import {
-  MemcardObj,
-  MemcardContentObj,
-} from 'src/_models/memcard.model';
+import { tEventPayload } from 'src/_models/generics.model';
+import { MemcardObj, tMemcard } from 'src/_models/memcard.model';
+import { RunStore } from 'src/services/stores/run-store.service';
 
 @Component({
   selector: 'app-card-displayer',
@@ -17,77 +26,52 @@ import {
   styleUrl: './card-displayer.component.scss',
 })
 export class CardDisplayerComponent implements OnInit {
-  //#region DATA PLACEHOLDER
+  runStore = inject(RunStore);
 
-  memorycard = new MemcardObj(
-    '1',
-    'What is the capital of France?',
-    eMemcardType.Classic,
-    [
-      new MemcardContentObj(
-        'What is the capital of France?',
-        eContentType.Text,
-        'A simple geography question.',
-      ),
-    ],
-    [
-      new MemcardContentObj(
-        'Paris',
-        eContentType.Text,
-        'The capital of France.',
-      ),
-    ],
-    3,
-    [
-      {
-        statusAt: eMemcardStatus.Validated,
-        valLevel: 2,
-        date: '2025-12-01',
-      },
-      {
-        statusAt: eMemcardStatus.Validated,
-        valLevel: 1,
-        date: '2025-08-01',
-      },
-      {
-        statusAt: eMemcardStatus.NotValidated,
-        valLevel: 0,
-        date: '2025-06-01',
-      },
-      {
-        statusAt: eMemcardStatus.Validated,
-        valLevel: 0,
-        date: '2025-05-01',
-      },
-      {
-        statusAt: eMemcardStatus.Validated,
-        valLevel: 1,
-        date: '2025-03-01',
-      },
-    ],
-    {
-      validationTotal: 4,
-      devaluationTotal: 1,
-      maxLevelReached: 3,
-      totalPoints: 120,
-    },
-  );
-  //#endregion
-
+  //#region DEPENDENCIES ENUMS
   ENUM_MEMOCARD_TYPE = eMemcardType;
   ENUM_MEMCARD_CONTENT = eContentType;
   ENUM_MEMCARD_STATUS = eMemcardStatus;
-  readonly memcardStatus = Object.values(this.ENUM_MEMCARD_STATUS); // Transforme en tableau pour itéré
+  readonly memcardStatus = Object.values(this.ENUM_MEMCARD_STATUS); // Transforme en Array pour itérer
 
-  historic = this.memorycard.Historic;
+  //#endregion
+
+  //#region INPUT / DATA
+  @Input('currentMemcard') memecard?: tMemcard;
+  @Output() onNotifyParent = new EventEmitter<tEventPayload>();
 
   val = signal(0);
   deval = signal(0);
 
+  get historic(): MemcardObj['Historic'] {
+    return this.memecard?.Historic ?? [];
+  }
+  //#endregion
+
+  //#region COMPONENT STATE
+  isRevealed: WritableSignal<boolean> = signal(false);
+
+  switchIsRevealed(newState?: boolean) {
+    this.isRevealed.set(newState ?? !this.isRevealed());
+  }
+  //#endregion
+
+  //#region COMPONENT LIFECYCLE
+  constructor() {}
   ngOnInit(): void {
     this.calculateStats();
     this.calculateStreak();
   }
+  //#endregion
+
+  //#region EVENTS & USERINPUT
+
+  onValidate(hasPassed: boolean, memecardId: tMemcard['id']) {
+    this.switchIsRevealed();
+    this.runStore.notifyValidation(hasPassed, memecardId);
+  }
+
+  //#endregion
 
   calculateStats() {
     this.historic.forEach((entry: any) => {
@@ -125,24 +109,16 @@ export class CardDisplayerComponent implements OnInit {
     return count;
   }
 
-  isRevealed: WritableSignal<boolean> = signal(false);
 
-  switchIsRevealed() {
-    this.isRevealed.set(!this.isRevealed());
-  }
 
   //Utilisé pour compter le nb de fois que la carte a étée jouée
   historicEntries() {
-    if (this.memorycard.Historic) {
-      return this.memorycard.Historic.length;
+    if (this.memecard?.Historic) {
+      return this.memecard?.Historic.length;
     } else return 0;
   }
 
   onReveal() {
     this.switchIsRevealed();
   }
-
-  onRight() {}
-
-  onWrong() {}
 }

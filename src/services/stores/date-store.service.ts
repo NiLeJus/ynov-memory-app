@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, Signal, signal } from '@angular/core';
 import { DateTime } from 'luxon';
 
 @Injectable({
@@ -7,14 +7,17 @@ import { DateTime } from 'luxon';
 export class DateStore {
   constructor() {}
 
-  daysToAdd = 0;
+  daysToAdd = signal(0);
 
   now(): string {
-    return DateTime.now().plus({ days: this.daysToAdd }).toISO();
+    return DateTime.now().plus({ days: this.daysToAdd() }).toISO();
   }
+
+  $now: Signal<string> = computed(() =>
+    DateTime.now().plus({ days: this.daysToAdd() }).toISO(),
+  );
 
   passOneDay() {
-    ++this.daysToAdd;
+    this.daysToAdd.update((value) => ++value);
   }
-
 }

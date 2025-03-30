@@ -1,1 +1,145 @@
-<p>landing-screen works!</p>
+<div class="d-flex flex-column justify-content-center">
+  <h1 class="text-center">Run</h1>
+
+  <atm-button-quit textToDisplay="Quit" />
+
+  <div class="btn-group" role="group" aria-label=" radio2 toggle button group">
+    <input
+      type="radio"
+      class="btn-check"
+      name="vbtn-radio"
+      id="vbtn-radio1"
+      autocomplete="off"
+      checked
+    />
+    <label class="btn btn-outline-primary" for="vbtn-radio1">For Real !</label>
+    <input
+      type="radio"
+      class="btn-check"
+      name="vbtn-radio"
+      id="vbtn-radio2"
+      autocomplete="off"
+      [disabled]="hasUserRunToDo()"
+      [class.btn-outline-danger]="hasUserRunToDo()"
+    />
+    <label class="btn" for="vbtn-radio2">Train <br /> </label>
+  </div>
+  <p class="text-center small">You must run before training</p>
+
+  @if (hasUserRunToDo()) { }
+  <div class="d-flex flex-column justify-content-center px-5 mt-2">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="flexRadioDefault"
+        id="flexRadioDefault1"
+        checked
+      />
+      <label class="form-check-label" for="flexRadioDefault1">
+        Cartes à valider
+      </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="flexRadioDefault"
+        id="flexRadioDefault2"
+      />
+      <label class="form-check-label" for="flexRadioDefault2">
+        Toutes les cartes
+      </label>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-center">Run content Selector</h2>
+  </div>
+</div>
+
+@if (userThemes) {
+<ul
+  class="list-group list-group-flush accordion accordion-flush"
+  id="accordionFlushExample"
+>
+  @for ( theme of userThemes; track $index) { @if (isMemThemeChecked(theme)) {
+
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div class="ms-1">
+      <input
+        class="form-check-input me-1"
+        type="checkbox"
+        id="checkbox-{{$index}}"
+        [checked]="isMemThemeChecked(theme)"
+      />
+      <label class="form-check-label" for="checkbox-{{$index}}" hidden>
+        {{ theme.name }}
+      </label>
+      {{ theme.name }}
+    </div>
+    <span>
+      <span
+        [hidden]="!isMemThemeChecked(theme)"
+        class="badge text-bg-primary rounded-pill"
+      >
+        {{ countMemcardToValidate(theme) }}
+      </span>
+    </span>
+    <!-- Bouton pour ouvrir l'accordéon -->
+    <button
+      class="accordion-button collapsed w-auto"
+      type="button"
+      data-bs-toggle="collapse"
+      [attr.data-bs-target]="'#flush-collapse-' + $index"
+      [attr.aria-controls]="'flush-collapse-' + $index"
+      aria-expanded="false"
+    >
+      Toggle Accordion
+    </button>
+    <button (click)="dev(theme)">Dev</button>
+  </li>
+
+  <!-- Contenu de l'accordéon -->
+  <div
+    id="flush-collapse-{{$index}}"
+    class="accordion-collapse collapse"
+    data-bs-parent="#accordionFlushExample"
+  >
+    @if (theme.cards && theme.cards.length > 0) { @for ( memcard of theme.cards;
+    track $index) {
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <div class="ms-1">
+        <input
+          class="form-check-input me-1"
+          type="checkbox"
+          id="card-checkbox-{{$index}}"
+          [checked]="isMemThemeChecked(theme)"
+        />
+        <label class="form-check-label" for="card-checkbox-{{$index}}" hidden>
+          {{ memcard.title }}
+        </label>
+        {{ memcard.title }}
+      </div>
+      <span>
+        <span
+          [hidden]="!isMemThemeChecked(theme)"
+          class="badge text-bg-primary rounded-pill"
+        >
+          {{ memcard.Historic[0].valLevel }}
+        </span>
+      </span>
+    </li>
+    } } @else {
+    <p>Aucune carte disponible pour ce thème.</p>
+    }
+  </div>
+
+  } }
+</ul>
+
+}
+
+<button class="btn-success btn" (click)="onValidateRun()">RUN</button>

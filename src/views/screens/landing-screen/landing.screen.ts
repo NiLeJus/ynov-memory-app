@@ -20,7 +20,7 @@ import { DatabaseService } from 'src/services/database/database.service';
 import { ProfileCreationComponent } from './components/profile-creation/profile-creation.component';
 import { ProfileTabComponent } from './components/profile-tab/profile-tab.component';
 import { tProfile } from 'src/_models/profile.model';
-import { MemcardActions } from 'src/services/stores/actions/memcard.actions';
+import { MemcardActions } from 'src/services/actions/memcard.actions';
 
 @Component({
   selector: 'app-landing-screen',

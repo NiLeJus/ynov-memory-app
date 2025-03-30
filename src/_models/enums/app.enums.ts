@@ -29,3 +29,8 @@ export enum eContentType {
   Video = 'VIDEO',
   Audio = 'AUDIO',
 }
+
+export enum eRunTypes {
+  Real = 'REAL',
+  Train = 'TRAIN',
+}

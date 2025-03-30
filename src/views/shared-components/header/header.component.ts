@@ -1,7 +1,7 @@
 import { Component, computed, input, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { tProfileStatistics } from 'src/_models/profile.model';
+import { tProfileStats } from 'src/_models/profile.model';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,7 @@ import { tProfileStatistics } from 'src/_models/profile.model';
 })
 export class HeaderComponent {
   _username = input<string>();
-  _profileStats = input<tProfileStatistics>();
+  _profileStats = input<tProfileStats>();
   _userScoreAllTime = computed(() => {
     let profile = this._profileStats();
     return profile?.scoreAllTime;

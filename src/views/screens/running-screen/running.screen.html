@@ -1,0 +1,5 @@
+@if (runStore.currentCard()) {
+<app-card-displayer [currentMemcard]="runStore.currentCard()" />
+} @else {
+<app-run-ending />
+}

@@ -59,7 +59,7 @@ export class ProfileTabComponent {
 
   async onValidateRenaiming(): Promise<void> {
     this.isRenaming.set(false);
-    const userId: number = this._user()!.id;
+    const userId: tProfile['id'] = this._user()!.id;
     const newName: string = this.newUsername;
     const result = await this.databaseService.modifyUsername(userId, newName);
 

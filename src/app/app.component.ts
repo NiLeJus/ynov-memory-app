@@ -1,4 +1,4 @@
-import { MemcardActions } from './../services/stores/actions/memcard.actions';
+import { MemcardActions } from '../services/actions/memcard.actions';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DevBarComponent } from '../_dev/dev-bar/dev-bar.component';
@@ -33,5 +33,5 @@ export class AppComponent {
   ngOnInit() {
     this.notifService.init();
   }
-  
+
 }

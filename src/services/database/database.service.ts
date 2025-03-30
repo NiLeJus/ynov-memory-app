@@ -24,6 +24,77 @@ export class DatabaseService {
     return this.storeGlobalService.getSlcThemeId();
   }
 
+  async updateMemcardByID(
+    updatedMemcard: tMemcard,
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    const userId = this.storeGlobalService.getCurrentUserId();
+
+    if (userId === null) {
+      throw new Error('user id is not defined');
+    }
+
+    try {
+      await db.transaction('rw', db.users, async () => {
+        const user = await db.users.get(userId);
+        if (!user) throw new Error('User not found');
+
+        // Parcourt les thèmes pour trouver la carte à mettre à jour
+        if (user.themes) {
+          for (const theme of user.themes) {
+            const cardIndex = theme.cards.findIndex(
+              (card) => card.id === updatedMemcard.id,
+            );
+            if (cardIndex !== -1) {
+              // Remplace la carte trouvée par le nouvel objet Memcard
+              theme.cards[cardIndex] = updatedMemcard;
+              await db.users.put(user); // Sauvegarde l'utilisateur mis à jour
+              return { status: 'ok' };
+            }
+          }
+        }
+
+        throw new Error('Memcard not found in any theme');
+      });
+
+      return { status: 'ok' };
+    } catch (error) {
+      console.error(
+        `Error updating memcard with ID ${updatedMemcard.id}:`,
+        error,
+      );
+      return { status: 'error', error };
+    }
+  }
+
+  // Dans votre DatabaseService
+  async addMockUser(
+    mockProfile: tProfile,
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    try {
+      await db.transaction('rw', db.users, async () => {
+        // Vérifie si l'utilisateur existe déjà
+        const existingUser = await db.users.get(mockProfile.id);
+        if (!existingUser) {
+          // Ajoute l'utilisateur avec ses thèmes et cartes
+          await db.users.put({
+            ...mockProfile,
+            id: mockProfile.id,
+            themes: mockProfile.themes?.map((theme) => ({
+              ...theme,
+              cards: theme.cards?.map((card) => ({
+                ...card,
+              })),
+            })),
+          });
+        }
+      });
+      return { status: 'ok' };
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du mock user:", error);
+      return { status: 'error', error };
+    }
+  }
+
   //#region THEME CRUD
 
   async registerNewTheme(
@@ -213,12 +284,7 @@ export class DatabaseService {
    * Select a User in the database  by its ID
    * @param userId user id of the user we wanna get
    */
-  private async selectActiveUserInDb(userId?: string | number) {
-    if (userId === undefined || userId === null) {
-      //Get active user id
-    } else if (typeof userId === 'string') {
-      userId = Number(userId);
-    }
+  private async selectActiveUserInDb(userId?: string) {
     const activeUserId = this.storeGlobalService.getCurrentUserId();
 
     if (userId) {
@@ -229,9 +295,7 @@ export class DatabaseService {
     }
   }
 
-  private async getActiveUser(userId: string | number): Promise<any> {
-    if (typeof userId === 'string') userId = Number(userId);
-
+  private async getActiveUser(userId: string): Promise<any> {
     try {
       await db.transaction('rw', db.users, async () => {
         const user = await db.users.get(userId);
@@ -250,12 +314,12 @@ export class DatabaseService {
     return users;
   }
 
-  async getMainUser(userId: number) {
+  async getMainUser(userId: string) {
     const user = await db.users.get(userId);
     return;
   }
 
-  async getUser(userId: number) {
+  async getUser(userId: string) {
     const user = await db.users.get(userId);
     return;
   }
@@ -276,7 +340,7 @@ export class DatabaseService {
   getSelectedUser$(): Observable<tProfile | undefined> {
     let selectedUserId = this._SELECTED_USERID$();
     if (selectedUserId == null) {
-      selectedUserId = 0;
+      selectedUserId = '0';
     }
     return liveQuery(() => db.users.get(selectedUserId));
   }
@@ -295,7 +359,7 @@ export class DatabaseService {
   }
 
   async modifyUsername(
-    userId: number,
+    userId: tProfile['id'],
     newName: string,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
     try {
@@ -319,7 +383,7 @@ export class DatabaseService {
     name: string,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
     const newUser: tProfile = {
-      id: Date.now(), // TIMESTAMP POUR UID
+      id: String(Date.now()), // TIMESTAMP POUR UID
       name: name,
       nextSession: null,
       themes: [], // Initialize with empty themes
@@ -354,9 +418,9 @@ export class DatabaseService {
     await db.users.clear();
   }
 
-  async deleteUserById(userId: number): Promise<void> {
+  async deleteUserById(userId: tProfile['id']): Promise<void> {
     try {
-      await db.users.delete(userId); // Delete the user by their primary key (ID)
+      await db.users.delete(userId);
       console.log(`User with ID ${userId} deleted successfully.`);
     } catch (error) {
       console.error(`Failed to delete user with ID ${userId}:`, error);

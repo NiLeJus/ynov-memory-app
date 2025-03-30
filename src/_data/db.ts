@@ -3,7 +3,7 @@ import { tProfile } from 'src/_models/profile.model';
 
 // Define the Dexie database with nested structure
 export class MemoryAppDB extends Dexie {
-  users!: Table<tProfile, number>; // Store users with nested themes and cards
+  users!: Table<tProfile, string>; // Store users with nested themes and cards
 
   constructor() {
     super('MemoryAppDB');

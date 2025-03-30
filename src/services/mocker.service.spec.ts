@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DateStoreService } from './date-store.service';
+import { MockerService } from './mocker.service';
 
-describe('DateStoreService', () => {
-  let service: DateStoreService;
+describe('MockerService', () => {
+  let service: MockerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DateStoreService);
+    service = TestBed.inject(MockerService);
   });
 
   it('should be created', () => {

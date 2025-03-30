@@ -15,7 +15,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { AddContentComponent } from '../../sections/create-memorycard/add-content/add-content.component';
 import { DatabaseService } from 'src/services/database/database.service';
 import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
-import { tProfile } from 'src/_models/profile.model';
+import { tMemTheme, tProfile } from 'src/_models/profile.model';
 
 @Component({
   selector: 'app-manage-screen',
@@ -52,7 +52,7 @@ export class ManageScreenComponent implements OnInit {
   });
 
   _selected_theme = computed(() => {
-    return this._userThemes()?.find((theme) => {
+    return this._userThemes()?.find((theme: tMemTheme) => {
       return theme.id == this.storeGlobalService.slcThemeId();
     });
   });

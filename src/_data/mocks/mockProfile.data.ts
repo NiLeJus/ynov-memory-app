@@ -1,296 +1,193 @@
-// export const MockProfileData: iProfile[] = [
-//   {
-//     id: 1,
-//     name: 'Bernard',
-//     nextSession: 188875,
-//     themes: [
-//       {
-//         id: 1,
-//         name: 'Mathématiques',
-//         cardFW: [101, 102, 103],
-//         cards: [
-//           {
-//             id: '101',
-//             valLevel: 3,
-//             lastValidationDate: 1708400000000,
-//             nextValidationDate: 1709000000000,
-//             recto: ['Quelle est la racine carrée de 64 ?'],
-//             verso: ['8'],
-//           },
-//           {
-//             id: '102',
-//             valLevel: 1,
-//             lastValidationDate: 1707000000000,
-//             nextValidationDate: 1707500000000,
-//             recto: ['Combien font 7 × 8 ?'],
-//             verso: ['56'],
-//           },
-//         ],
-//       },
-//       {
-//         id: 2,
-//         name: 'Histoire',
-//         cardFW: [201, 202],
-//         cards: [
-//           {
-//             id: '201',
-//             valLevel: 2,
-//             lastValidationDate: 1706000000000,
-//             nextValidationDate: 1706500000000,
-//             recto: ['En quelle année a eu lieu la Révolution française ?'],
-//             verso: ['1789'],
-//           },
-//           {
-//             id: '202',
-//             valLevel: 4,
-//             lastValidationDate: 1708000000000,
-//             nextValidationDate: 1708600000000,
-//             recto: [
-//               'Quel événement a marqué la fin du Moyen Âge ?',
-//               {
-//                 path: 'battle_hastings.jpg',
-//                 mediaType: 'img',
-//                 description: 'Bataille de Hastings',
-//               },
-//             ],
-//             verso: ['La chute de Constantinople en 1453'],
-//           },
-//         ],
-//       },
-//       {
-//         id: 0,
-//         name: 'No Thèmes',
-//         cardFW: [201, 202],
-//         cards: [
-//           {
-//             id: '201',
-//             valLevel: 2,
-//             lastValidationDate: 1706000000000,
-//             nextValidationDate: 1706500000000,
-//             recto: ['En quelle année a eu lieu la Révolution française ?'],
-//             verso: ['1789'],
-//           },
-//         ],
-//       },
-//     ],
-//     statistics: {
-//       runsDone: 15,
-//       scoreAllTime: 150,
-//       scoreNow: 55,
-//     },
-//   },
-//   {
-//     id: 2,
-//     name: 'Sophie',
-//     nextSession: 188900,
-//     themes: [
-//       {
-//         id: 3,
-//         name: 'Sciences',
-//         cardFW: [301, 302],
-//         cards: [
-//           {
-//             id: '301',
-//             valLevel: 2,
-//             lastValidationDate: 1707500000000,
-//             nextValidationDate: 1708100000000,
-//             recto: ["Quelle est la formule chimique de l'eau ?"],
-//             verso: ['H₂O'],
-//           },
-//           {
-//             id: '302',
-//             valLevel: 1,
-//             lastValidationDate: 1707200000000,
-//             nextValidationDate: 1707800000000,
-//             recto: [
-//               "À quelle température l'eau bout-elle au niveau de la mer ?",
-//             ],
-//             verso: ['100°C'],
-//           },
-//         ],
-//       },
-//       {
-//         id: 4,
-//         name: 'Littérature',
-//         cardFW: [401, 402],
-//         cards: [
-//           {
-//             id: '401',
-//             valLevel: 3,
-//             lastValidationDate: 1708000000000,
-//             nextValidationDate: 1708600000000,
-//             recto: ['Qui a écrit *Les Misérables* ?'],
-//             verso: ['Victor Hugo'],
-//           },
-//           {
-//             id: '402',
-//             valLevel: 4,
-//             lastValidationDate: 1708500000000,
-//             nextValidationDate: 1709100000000,
-//             recto: [
-//               '*Roméo et Juliette* est une œuvre de quel auteur ?',
-//               {
-//                 path: 'shakespeare_portrait.jpg',
-//                 mediaType: 'img',
-//                 description: 'Portrait de William Shakespeare',
-//               },
-//             ],
-//             verso: ['William Shakespeare'],
-//           },
-//         ],
-//       },
-//     ],
-//     statistics: {
-//       runsDone: 20,
-//       scoreAllTime: 200,
-//       scoreNow: 80,
-//     },
-//   },
-// ];
+import { eContentType, eMemcardType } from 'src/_models/enums/app.enums';
+import { MemcardContentObj, MemcardPrototype } from 'src/_models/memcard.model';
 
-import {
-  eContentType,
-  eMemcardStatus,
-  eMemcardType,
-} from 'src/_models/enums/app.enums';
-import { MemcardContentObj, MemcardObj } from 'src/_models/memcard.model';
+export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
+  new MemcardPrototype(
+    'What carries the Discworld through space?',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'What carries the Discworld through space?',
+        eContentType.Text,
+        'A question about the structure of the Discworld.',
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        "A giant turtle named Great A'Tuin",
+        eContentType.Text,
+        "The Discworld is carried by Great A'Tuin.",
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    'What directions replace cardinal points on the Discworld?',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'What directions replace cardinal points on the Discworld?',
+        eContentType.Text,
+        'A question about navigation in the Discworld.',
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'Hubward, Rimward, Turnwise, and Widdershins',
+        eContentType.Text,
+        'These directions are based on the rotation and structure of the Disc.',
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    'Where do the gods of the Discworld live?',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'Where do the gods of the Discworld live?',
+        eContentType.Text,
+        'A question about divine geography.',
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'Dunmanifestin at Cori Celesti',
+        eContentType.Text,
+        'The gods reside at the peak of Cori Celesti.',
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    'What happens when enough people believe in something on the Discworld?',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'What happens when enough people believe in something on the Discworld?',
+        eContentType.Text,
+        'A question about belief and reality.',
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'It becomes real',
+        eContentType.Text,
+        'Belief shapes reality on the Discworld.',
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    'What races populate the Discworld?',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'What races populate the Discworld?',
+        eContentType.Text,
+        'A question about inhabitants of the Disc.',
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'Humans, dwarves, trolls, and fantastical creatures like dragons and elves',
+        eContentType.Text,
+        'The Discworld is home to a diverse array of beings.',
+      ),
+    ],
+    0,
+  ),
+];
 
-export const _MOCK_Memcard = new MemcardObj(
-  '1',
-  'What is the capital of France?',
-  eMemcardType.Classic,
-  [
-    new MemcardContentObj(
-      'What is the capital of France?',
-      eContentType.Text,
-      'A simple geography question.',
-    ),
-  ],
-  [new MemcardContentObj('Paris', eContentType.Text, 'The capital of France.')],
-  3,
-  [
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 3,
-      date: '2025-03-22T00:00:00.000+01:00',
-    },
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 2,
-      date: '2025-03-18T00:00:00.000+01:00',
-    },
-    {
-      statusAt: eMemcardStatus.NotValidated,
-      valLevel: 1,
-      date: '2025-03-16T00:00:00.000+01:00',
-    },
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 2,
-
-      date: '2025-03-12T00:00:00.000+01:00',
-    },
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 1,
-      date: '2025-03-10T00:00:00.000+01:00',
-    },
-    {
-      statusAt: eMemcardStatus.Creation,
-      valLevel: 0,
-      date: '2025-03-10T00:00:00.000+01:00',
-    },
-  ],
-);
-
-const exampleMemorycard2 = new MemcardObj(
-  '2',
-  'What is the largest planet in our solar system?',
-  eMemcardType.Classic,
-
-  [
-    new MemcardContentObj(
-      'What is the largest planet in our solar system?',
-      eContentType.Text,
-      'A simple astronomy question.',
-    ),
-  ],
-  [
-    new MemcardContentObj(
-      'Jupiter',
-      eContentType.Text,
-      'The largest planet in our solar system.',
-    ),
-  ],
-  2,
-  [
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 2,
-      date: '2025-07-20',
-    },
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 1,
-      date: '2025-07-15',
-    },
-    {
-      statusAt: eMemcardStatus.NotValidated,
-      valLevel: 0,
-      date: '2025-07-10',
-    },
-  ],
-  {
-    validationTotal: 3,
-    devaluationTotal: 1,
-    maxLevelReached: 2,
-    totalPoints: 100,
-  },
-);
-
-const exampleMemorycard3 = new MemcardObj(
-  '3',
-  'Who wrote "Romeo and Juliet"?',
-  eMemcardType.Classic,
-  [
-    new MemcardContentObj(
-      'Who wrote "Romeo and Juliet"?',
-      eContentType.Text,
-      'A literature question.',
-    ),
-  ],
-  [
-    new MemcardContentObj(
-      'William Shakespeare',
-      eContentType.Text,
-      'Famous playwright.',
-    ),
-  ],
-  4,
-  [
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 4,
-
-      date: '2025-06-25',
-    },
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 3,
-
-      date: '2025-06-20',
-    },
-    {
-      statusAt: eMemcardStatus.Validated,
-      valLevel: 2,
-
-      date: '2025-06-15',
-    },
-  ],
-  {
-    validationTotal: 5,
-    devaluationTotal: 0,
-    maxLevelReached: 4,
-    totalPoints: 150,
-  },
-);
+export const _MOCK_MEMCARD_KARLMARX: MemcardPrototype[] = [
+  new MemcardPrototype(
+    'Une question sur les origines de Karl Marx.',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'Quand et où est né Karl Marx ?',
+        eContentType.Text,
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'Le 5 mai 1818 à Trèves, en Prusse',
+        eContentType.Text,
+        "Marx est né dans une famille d'origine juive convertie au protestantisme.",
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    "Une question sur l'œuvre principale de Marx.",
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        "Quel est le titre de l'ouvrage majeur de Karl Marx ?",
+        eContentType.Text,
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'Le Capital',
+        eContentType.Text,
+        'Le premier volume est paru en 1867, les suivants ont été publiés à titre posthume.',
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    'Avec qui Karl Marx a-t-il co-écrit le Manifeste du parti communiste ?',
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'Avec qui Karl Marx a-t-il co-écrit le Manifeste du parti communiste ?',
+        eContentType.Text,
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'Friedrich Engels',
+        eContentType.Text,
+        'Le Manifeste du parti communiste a été publié en 1848.',
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    "Une question sur la philosophie de l'histoire selon Marx.",
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        "Quelle théorie Karl Marx a-t-il développée concernant l'histoire ?",
+        eContentType.Text,
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        "Marx considérait que l'histoire était mue par les conflits entre classes sociales.",
+        eContentType.Text,
+        "La lutte des classes comme moteur de l'histoire",
+      ),
+    ],
+    0,
+  ),
+  new MemcardPrototype(
+    "Une question sur l'exil de Marx.",
+    eMemcardType.Classic,
+    [
+      new MemcardContentObj(
+        'Où Karl Marx a-t-il passé la dernière partie de sa vie ?',
+        eContentType.Text,
+      ),
+    ],
+    [
+      new MemcardContentObj(
+        'À Londres',
+        eContentType.Text,
+        "Marx s'est exilé à Londres en 1849 et y est resté jusqu'à sa mort en 1883.",
+      ),
+    ],
+    0,
+  ),
+];

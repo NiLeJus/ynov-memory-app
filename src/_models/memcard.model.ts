@@ -10,7 +10,7 @@ export class MemcardObj {
   constructor(
     public id: string,
     public title: string = '',
-    public cardType: eMemcardType | null,
+    public cardType: eMemcardType,
     public recto: tMemcardContent[],
     public verso: tMemcardContent[],
     public validationLevel: number = 0,
@@ -23,14 +23,15 @@ export type tMemcard = InstanceType<typeof MemcardObj>;
 
 export class MemcardPrototype {
   constructor(
-    public cardType?: eMemcardType | null,
     public title: string = '',
-    public recto: tMemcardContent[] | null = null,
-    public verso: tMemcardContent[] | null = null,
+    public cardType: eMemcardType,
+    public recto: tMemcardContent[],
+    public verso: tMemcardContent[],
+    public validationLevel: number = 0,
   ) {}
 }
 
-export type tMemorycardPrototype = InstanceType<typeof MemcardPrototype>;
+export type tMemcardPrototype = InstanceType<typeof MemcardPrototype>;
 
 //#endregion
 

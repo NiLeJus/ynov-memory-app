@@ -1,7 +1,7 @@
-<div class="bg-primary text-light">
+<div class="bg-primary text-light d-flex flex-row justify-content-center">
   DEV BAR
-  <button (click)="dev()">Print Focused User</button>
-  <button (click)="onPrintNow()">Print now()</button>
-  <button (click)="this.dateStore.passOneDay()">Pass One day</button>
-
+  <button (click)="onPopulateDB()">Populate Db</button>
+  <button (click)="dateStore.passOneDay()">Pass One day</button>
+  <button (click)="databaseService.clearWholeDB()">Clear Whole DB</button>
+  <p>{{ formatedActualDate() }}</p>
 </div>

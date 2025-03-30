@@ -1,8 +1,6 @@
-<app-brand-header />
 <app-header [_profileStats]="_user()?.statistics" [_username]="_user()?.name" />
 
-<hr class="dashed">
-
+<hr class="dashed" />
 
 <main class="container d-flex flex-column">
   <!-- <app-run-preview-section [_themes]="this._userThemes()" /> -->
@@ -11,12 +9,7 @@
 
 <app-memory-card-sm />
 
-<button
-  class="btn btn-primary"
-  [routerLink]="['/board', _usernameRouteParam()]"
->
-  Run
-</button>
+<button class="btn btn-primary" [routerLink]="['/run']">Run</button>
 <button>Train</button>
 <button class="btn btn-dark" [routerLink]="['/manage', _user()?.name]">
   Manage

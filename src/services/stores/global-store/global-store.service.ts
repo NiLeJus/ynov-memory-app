@@ -1,21 +1,24 @@
 import { Injectable, OnInit, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { tProfile } from 'src/_models/profile.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StoreGlobalService implements OnInit {
-  currentUserId: WritableSignal<number | null> = signal(null);
+
+  currentUserId: WritableSignal<string | null> = signal(null);
   slcThemeId: WritableSignal<string | null> = signal(null);
+
   constructor(private route: ActivatedRoute) {
     if (this.currentUserId()?.valueOf == null) {
       const lastKnownUser = localStorage.getItem('lastKnownUser');
       console.log(lastKnownUser);
-      this.changeCurrentUserId(Number(lastKnownUser));
+      this.changeCurrentUserId(String(lastKnownUser));
     }
   }
 
-  changeCurrentUserId(newValue: number) {
+  changeCurrentUserId(newValue: tProfile['id']) {
     this.currentUserId.set(newValue);
     console.log('Changed currentUserId to ', newValue);
     localStorage.setItem('lastKnownUser', newValue.toString());
@@ -31,7 +34,7 @@ export class StoreGlobalService implements OnInit {
     return this.slcThemeId();
   }
 
-  getCurrentUserId(): number | null {
+  getCurrentUserId(): string | null {
     console.log('Current user ID', this.currentUserId);
     return this.currentUserId();
   }
@@ -43,6 +46,10 @@ export class StoreGlobalService implements OnInit {
     }
     const paramUserId = this.route.snapshot.paramMap.get('username');
     console.log(paramUserId, 'erfgz');
+  }
+
+  hasUserRunToDo(): boolean {
+    return true;
   }
 
   ngOnInit() {}

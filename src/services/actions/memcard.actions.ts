@@ -1,8 +1,8 @@
-import { DateStore } from './../date-store.service';
+import { DateStore } from '../stores/date-store.service';
 import {
   HistoricEntryObj,
   tHistoricEntry,
-} from './../../../_models/memcard.model';
+} from '../../_models/memcard.model';
 import { Injectable, OnInit } from '@angular/core';
 import {
   eMemcardType,
@@ -11,7 +11,6 @@ import {
 } from 'src/_models/enums/app.enums';
 import { tMemcard } from 'src/_models/memcard.model';
 import { DateTime } from 'luxon';
-import { _MOCK_Memcard } from 'src/_data/mocks/mockProfile.data';
 import { _DAYS_SPACING } from 'src/_data/days-spacing.table';
 
 @Injectable({
@@ -21,8 +20,6 @@ export class MemcardActions implements OnInit {
   //#region CORE STATE
   ENUM_MEMCARD_STATUS = eMemcardStatus;
   readonly memcardStatus = Object.values(this.ENUM_MEMCARD_STATUS); // Transforme en tableau pour itéré
-
-  mock_memcard = _MOCK_Memcard;
 
   //#endregion
 
@@ -46,19 +43,19 @@ export class MemcardActions implements OnInit {
       newStatus,
       DateTime.now().toISODate(),
       newValLevel,
-      this.processNewDate(hasPassed)!, // Si ne retourne pas null
+      this.processNewDate(hasPassed)!,
     );
     memcard.Historic?.unshift(newHistoricEntry);
 
     return memcard;
   }
 
-  processNewDate(hasPassed: boolean = true): string | null {
+  processNewDate(hasPassed: boolean = true): string {
     const daysSpacing = _DAYS_SPACING;
     const actualValLevel = 2;
     const newValLevel = actualValLevel + 1;
 
-    let nextDate = DateTime.fromISO(this.dateStore.now()); // Value to be retured
+    let nextDate: any = DateTime.fromISO(this.dateStore.now()); // Value to be retured
     //Determine si il faut appliquer un downgrade ou upgrade
     if (hasPassed) {
       nextDate = nextDate.plus({ days: daysSpacing[newValLevel] + 1 });
@@ -68,13 +65,26 @@ export class MemcardActions implements OnInit {
       console.log(nextDate);
     }
 
+    nextDate = nextDate.toISODate();
     if (nextDate) {
       // Return the ISO string (or null if invalid)
       return nextDate.toISODate();
     } else {
       console.error('next Date at memcard.actions is null wtfbro');
-      return null;
+      return '';
     }
+  }
+
+  nextDate() {}
+
+  createNewHistory() {
+    const _nextDate: string = this.processNewDate();
+    return new HistoricEntryObj(
+      eMemcardStatus.Creation,
+      DateTime.now().toISODate(),
+      0,
+      _nextDate,
+    );
   }
 
   ngOnInit(): void {
