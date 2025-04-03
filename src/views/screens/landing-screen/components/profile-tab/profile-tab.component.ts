@@ -23,7 +23,6 @@ export class ProfileTabComponent {
   newUsername = '';
   constructor(
     private databaseService: DatabaseService,
-    private router: Router,
     private alertService: AlertService,
     private storeGlobalService: StoreGlobalService,
   ) {}
@@ -39,6 +38,7 @@ export class ProfileTabComponent {
 
   onModifyProfile(state: boolean) {
     this.isRenaming.set(state);
+    this.newUsername = this._user()!.name;
   }
 
   onDeleteProfile(): any {

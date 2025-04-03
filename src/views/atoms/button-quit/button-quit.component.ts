@@ -11,11 +11,12 @@ import { Location } from '@angular/common';
 export class ButtonQuitComponent {
   @Input({ required: true }) textToDisplay!: string;
   @Input({ required: false }) svgPathToDisplay?: string;
+  
   constructor(
     private router: Router,
     private location: Location,
   ) {}
-  
+
   returnToProfileSelection() {
     this.router.navigate(['']);
   }

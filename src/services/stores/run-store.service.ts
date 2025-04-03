@@ -23,7 +23,7 @@ export class RunStore {
 
   constructor() {}
 
-  private removeFirstCard(): void {
+  private removeFirstCard(hasPassed: boolean): void {
     this.cardsLeftToRun.update((cards) => {
       if (cards.length === 0) return [];
       const [removed, ...remaining] = cards;
@@ -32,11 +32,11 @@ export class RunStore {
     });
   }
 
-  // Le reste reste inchangé
   themesLeftToRun = signal<tMemTheme[]>([]);
 
   notifyValidation(hasPassed: boolean, memcardId: tMemcard['id']) {
-    this.removeFirstCard();
+    
+    this.removeFirstCard(hasPassed);
   }
 
   initRun() {

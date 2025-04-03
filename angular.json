@@ -28,7 +28,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/_styles/styles.scss"],
+            "styles": ["src/_styles/_styles.scss"],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
@@ -63,6 +63,11 @@
           },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
+            "hmr": {
+              "hmr": true,
+              "browserTarget": "app:build:hmr"
+            },
+
             "production": {
               "buildTarget": "memory-app:build:production"
             },
@@ -87,7 +92,7 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": ["src/_styles/_styles.scss"],
             "scripts": [],
             "karmaConfig": "karma.conf.js"
           }

@@ -1,7 +1,6 @@
-<h1>New Profile</h1>
+<!-- <h1 class="ms-2">New Profile</h1> -->
 
-<div class="input-group mb-3">
-  <span class="input-group-text" id="basic-addon1">Username</span>
+<div class="input-group mb-3 px-2">
   <input
     type="text"
     class="form-control"
@@ -17,5 +16,11 @@
     [disabled]="!isInputValid()"
   >
     Valider
+  </button>
+  <button
+    class="btn btn-danger"
+    (click)="this.notifyProcessEnded.emit(true)"
+  >
+    Annuler
   </button>
 </div>

@@ -1,4 +1,5 @@
-@import "_colors.variables";
+@import "colors.tokens";
+@import "font-families.tokens";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 input[type="file"]::file-selector-button {
@@ -60,13 +61,6 @@ body {
     2.5px 2.5px 5px 0px #a6abbd;
 }
 
-@font-face {
-  font-family: "VT323";
-  src: url("./_fonts/VT323-Regular.ttf");
-  font-weight: 400;
-  font-weight: normal;
-  font-display: swap;
-}
 
 h1 {
   font-family: "VT323";
@@ -89,7 +83,8 @@ h1 {
 
 .app-container {
   max-width: 480px;
-  min-height: 90svh;
+  min-height: 100svh;
+
 }
 .btn-neuro {
   /* Positionnement horizontal centré */
@@ -135,7 +130,6 @@ h1 {
 
 .btn-neuro-val {
   background-color: #a7ff95; /* Changement de couleur au survol */
-
 }
 
 .btn-neuro:hover {
