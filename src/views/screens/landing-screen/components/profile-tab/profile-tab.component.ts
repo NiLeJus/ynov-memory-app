@@ -11,10 +11,11 @@ import { DatabaseService } from 'src/services/database/database.service';
 import { AlertService } from 'src/services/displayer/alert.service';
 import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
 import { tProfile } from 'src/_models/profile.model';
+import { ProfileCreationComponent } from "../profile-creation/profile-creation.component";
 
 @Component({
   selector: 'app-profile-tab',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, ProfileCreationComponent],
   templateUrl: './profile-tab.component.html',
   styleUrl: './profile-tab.component.scss',
 })

@@ -1,61 +1,8 @@
 <div class="d-flex flex-column justify-content-center">
+  <atm-button-quit class="mx-auto my-2" textToDisplay="Quit" button />
   <h1 class="text-center">Run</h1>
 
-  <atm-button-quit textToDisplay="Quit" button />
-
-  <div class="btn-group" role="group" aria-label=" radio2 toggle button group">
-    <input
-      type="radio"
-      class="btn-check"
-      name="vbtn-radio"
-      id="vbtn-radio1"
-      autocomplete="off"
-      checked
-    />
-    <label class="btn btn-outline-primary" for="vbtn-radio1">For Real !</label>
-    <input
-      type="radio"
-      class="btn-check"
-      name="vbtn-radio"
-      id="vbtn-radio2"
-      autocomplete="off"
-      [disabled]="hasUserRunToDo()"
-      [class.btn-outline-danger]="hasUserRunToDo()"
-    />
-    <label class="btn" for="vbtn-radio2">Train <br /> </label>
-  </div>
-  <p class="text-center small">You must run before training</p>
-
   @if (hasUserRunToDo()) { }
-  <div class="d-flex flex-column justify-content-center px-5 mt-2">
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="flexRadioDefault"
-        id="flexRadioDefault1"
-        checked
-      />
-      <label class="form-check-label" for="flexRadioDefault1">
-        Cartes à valider
-      </label>
-    </div>
-    <div class="form-check">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="flexRadioDefault"
-        id="flexRadioDefault2"
-      />
-      <label class="form-check-label" for="flexRadioDefault2">
-        Toutes les cartes
-      </label>
-    </div>
-  </div>
-
-  <div>
-    <h2 class="text-center">Run content Selector</h2>
-  </div>
 </div>
 
 @if (_userThemes$()) {
@@ -143,4 +90,12 @@
 
 }
 
-<button class="btn-success btn" (click)="onValidateRun()">RUN</button>
+<div class="d-flex justify-content-center">
+  <button
+    class="btn-success btn"
+    (click)="onValidateRun()"
+    [disabled]="!hasUserRunToDo()"
+  >
+    RUN
+  </button>
+</div>

@@ -8,23 +8,26 @@
       placeholder="Username"
       [class.is-invalid]="isNameTakenFlag"
     />
-    @if (isNameTakenFlag) {
-      <div class="invalid-feedback d-block">
-        <!-- Ajoutez "d-block" -->
-        Ce nom est déjà pris
-      </div>
-    }
 
-    <button
-      class="btn btn-primary"
-      (click)="onValidate()"
-      [disabled]="!isInputValid() || isNameTakenFlag"
-    >
-      Valider
-    </button>
+    <div class="d-flex flex-row-reverse mt-1">
+      <button
+        class="btn btn-neuro-sm btn-neuro-val"
+        (click)="onValidate()"
+        [disabled]="!isInputValid() || isNameTakenFlag"
+      >
+        Valider
+      </button>
 
-    <button class="btn btn-danger" (click)="notifyProcessEnded.emit(true)">
-      Annuler
-    </button>
+      <button class="btn btn-danger" (click)="notifyProcessEnded.emit(true)">
+        Annuler
+      </button>
+
+      @if (isNameTakenFlag) {
+        <div class="invalid-feedback d-block">
+          <!-- Ajoutez "d-block" -->
+          Ce nom est déjà pris
+        </div>
+      }
+    </div>
   </div>
 </div>

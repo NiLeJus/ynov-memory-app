@@ -29,16 +29,7 @@ export class StoreGlobalService implements OnInit {
     }
   }
 
-  // // Conversion du flux constant en signal Angular pour une gestion réactive
-  // _user$: Signal<tProfile | null | undefined> = toSignal(
-  //   this.databaseService.getSelectedUser$(),
-  //   { initialValue: null as tProfile | null },
-  // );
 
-  // // Conversion du flux constant en signal Angular pour une gestion réactive
-  // _userThemes$ = computed(() => {
-  //   return this._user()?.themes;
-  // });
 
   changeCurrentUserId(newValue: tProfile['id']) {
     this.currentUserId.set(newValue);
@@ -74,4 +65,15 @@ export class StoreGlobalService implements OnInit {
   }
 
   ngOnInit() {}
+
+    // // Conversion du flux constant en signal Angular pour une gestion réactive
+  // _user$: Signal<tProfile | null | undefined> = toSignal(
+  //   this.databaseService.getSelectedUser$(),
+  //   { initialValue: null as tProfile | null },
+  // );
+
+  // // Conversion du flux constant en signal Angular pour une gestion réactive
+  // _userThemes$ = computed(() => {
+  //   return this._user()?.themes;
+  // });
 }

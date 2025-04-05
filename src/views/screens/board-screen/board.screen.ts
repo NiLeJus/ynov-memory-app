@@ -1,3 +1,5 @@
+import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
+import { RunStore } from 'src/services/stores/run-store.service';
 import {
   Component,
   computed,
@@ -20,6 +22,7 @@ import { tMemcard } from 'src/_models/memcard.model';
 import { tProfile } from 'src/_models/profile.model';
 import { tMemTheme } from 'src/_models/profile.model';
 import { DatabaseService } from 'src/services/database/database.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-board-screen',
@@ -35,37 +38,32 @@ import { DatabaseService } from 'src/services/database/database.service';
   styleUrl: './board.screen.scss',
 })
 export class BoardScreenComponent implements OnInit {
-  _usernameRouteParam = signal('');
-  userResource: ResourceRef<tProfile | undefined> = resource({
-    loader: ({ request }) =>
-      this.databaseService.getUserByUsername(this._usernameRouteParam()),
-  });
+  // _usernameRouteParam = signal('');
+  // userResource: ResourceRef<tProfile | undefined> = resource({
+  //   loader: ({ request }) =>
+  //     this.databaseService.getUserByUsername(this._usernameRouteParam()),
+  // });
 
   // Computed signal for the user object
-  _user = computed(() => this.userResource.value());
+  databaseService = inject(DatabaseService);
+  storeGlobal = inject(StoreGlobalService);
 
-  // Computed signal for the user's themes
-  _userThemes: Signal<tMemTheme[] | undefined> = computed(
-    () => this._user()?.themes,
+  _user$: Signal<tProfile | null | undefined> = toSignal(
+    this.databaseService.getSelectedUser$(),
+    { initialValue: null as tProfile | null },
   );
 
-  constructor(
-    private databaseService: DatabaseService,
-    private route: ActivatedRoute,
-  ) {}
+  _userThemes: Signal<tMemTheme[] | undefined> = computed(
+    () => this._user$()?.themes,
+  );
+
+  constructor(private route: ActivatedRoute) {}
+
+  hasUserRunToDo(): boolean {
+    return this.storeGlobal.hasUserRunToDo();
+  }
 
   dev() {}
 
-  ngOnInit(): void {
-    // Subscribe to route parameters and update the username signal
-    this.route.paramMap.subscribe((params) => {
-      const username = params.get('username');
-      if (username) {
-        console.error('UserName');
-        this._usernameRouteParam.set(username);
-      } else {
-        console.error('No username found in route parameters.');
-      }
-    });
-  }
- }
+  ngOnInit(): void {}
+}

@@ -32,7 +32,6 @@ export class ManageScreenComponent implements OnInit {
   isCreatingTheme: WritableSignal<boolean> = signal(false);
   isCreatingMemcard: WritableSignal<boolean> = signal(false);
 
-
   public databaseService = inject(DatabaseService);
 
   constructor(
@@ -58,12 +57,11 @@ export class ManageScreenComponent implements OnInit {
   });
 
   onMemcardCreationEnd() {
-    this.isCreatingMemcard.set(false)
+    this.isCreatingMemcard.set(false);
   }
 
   onSelect(themeId: string) {
     this.storeGlobalService.setSelectedTheme(themeId);
-
   }
 
   isThereAnActiveUser() {}
@@ -79,7 +77,7 @@ export class ManageScreenComponent implements OnInit {
   ngOnInit(): void {}
 
   onDeleteTheme(themeId: string) {
-    this.databaseService.deleteTheme(themeId)
+    this.databaseService.deleteTheme(themeId);
   }
 
   onRenameTheme(themeId: string) {

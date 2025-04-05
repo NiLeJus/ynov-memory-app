@@ -1,4 +1,6 @@
-<button class="btn-neuro" (click)="onCreateUser()">New profile</button>
+
+
+<button class="btn-neuro mx-auto mb-3" (click)="onCreateUser()">New profile</button>
 @if (_users()) { @for ( user of _users(); track user.id) {
 <app-profile-tab [_user]="user" />
 } } @else {

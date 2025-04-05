@@ -37,7 +37,7 @@ hr.dashed {
 }
 
 body {
-  background-color: $dark;
+  background-color: $light;
 }
 
 .rotate-svg-0 {
@@ -65,9 +65,8 @@ body {
     2.5px 2.5px 5px 0px #a6abbd;
 }
 
-
 h1 {
-  font-family: "VT323";
+  font-family: "Advent Pro";
 }
 
 .brand-typo {
@@ -88,21 +87,17 @@ h1 {
 .app-container {
   max-width: 480px;
   min-height: 100svh;
-
 }
-.btn-neuro {
-  /* Positionnement horizontal centré */
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
 
-  /* Espacement vertical */
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+.btn-neuro {
+  display: block;
 
   /* Espacement horizontal (padding) */
   padding-left: 3rem;
   padding-right: 3rem;
+
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   border-radius: 50px;
   border: 1px solid #fff;
@@ -126,14 +121,33 @@ h1 {
   cursor: pointer;
   font-size: 1.2rem;
   transition: background-color 0.3s ease;
+  min-width: max-content;
+}
+
+.btn-neuro-sm {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.btn-neuro-prim {
+  color: $dark;
+  background-color: $primary;
 }
 
 .btn-neuro-dng {
-  color: rgb(255, 91, 91); /* Couleur du texte */
+  color: rgb(255, 91, 91);
+}
+
+.btn-profile-bar {
+}
+
+.btn-profile-bar:hover {
+  background-color: #a7ff95;
+  color: $dark !important;
 }
 
 .btn-neuro-val {
-  background-color: #a7ff95; /* Changement de couleur au survol */
+  background-color: #a7ff95;
 }
 
 .btn-neuro:hover {
@@ -151,5 +165,9 @@ h1 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre */
 }
 
-.btn-neu {
+.btn-neuro-sm {
+}
+
+.cust-rounded-end {
+  border-radius: 0% 50px 50px 0%;
 }

@@ -1,7 +1,7 @@
-<div class="neuro-effect ps-3 my-2 pt-1">
-  <div class="d-flex flex-row justify-content-between align-middle">
-    @if (isRenaming()) {
-      <span class="input-group-text" id="basic-addon1">Username</span>
+@if (isRenaming()) {
+  <app-profile-creation (notifyProcessEnded)="onValidateRenaiming()" />
+
+  <!-- <span class="input-group-text" id="basic-addon1">Username</span>
       <input
         type="text"
         class="form-control"
@@ -15,17 +15,12 @@
       </button>
       <button class="btn btn-danger" (click)="onModifyProfile(false)">
         Annuler
-      </button>
-    } @else {
-      <div class="d-flex flex-row">
-        <h1 class="col">{{ _user()?.name }}</h1>
-
-        <div class="d-flex flex-row text-center ms-5">
-          <div class="d-flex flex-column mx-2">
-            <p>{{ _user()?.statistics?.scoreAllTime }}</p>
-          </div>
-        </div>
-      </div>
+      </button> -->
+} @else {
+  <div class="neuro-effect ps-3 my-2">
+    <div class="d-flex flex-row justify-content-between align-items-center">
+        <p class="col fw-bold fs-4">{{ _user()?.name }}</p>
+        <p>{{ _user()?.statistics?.scoreAllTime }}</p>
 
       <div class="">
         <button class="btn">
@@ -38,13 +33,13 @@
           <img src="pen.svg" />
         </button>
         <button
-          class="btn fw-bold text-success"
+          class="btn btn-profile-bar fw-bold text-success cust-rounded-end me-1"
           (click)="onUserSelection()"
           [routerLink]="['/board', _user()?.name]"
         >
           Go
         </button>
       </div>
-    }
+    </div>
   </div>
-</div>
+}
