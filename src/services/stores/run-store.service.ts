@@ -1,8 +1,9 @@
 import { tMemTheme } from './../../_models/profile.model';
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { tMemcard } from 'src/_models/memcard.model';
+import { MemcardActionsService } from '../actions/memcard.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,9 @@ export class RunStore {
   public cardsLeftToRun = signal<tMemcard[]>([]);
   public cardRunned = signal<tMemcard[]>([]);
   public isPlayerRunning = signal<boolean>(false);
+  themesLeftToRun = signal<tMemTheme[]>([]);
+
+  memcardActions = inject(MemcardActionsService);
 
   switchIsPlayerRunning(newState?: boolean) {
     this.isPlayerRunning.set(newState ?? !this.isPlayerRunning());
@@ -23,7 +27,7 @@ export class RunStore {
 
   constructor() {}
 
-  private removeFirstCard(hasPassed: boolean): void {
+  private removeFirstCard(): void {
     this.cardsLeftToRun.update((cards) => {
       if (cards.length === 0) return [];
       const [removed, ...remaining] = cards;
@@ -32,11 +36,19 @@ export class RunStore {
     });
   }
 
-  themesLeftToRun = signal<tMemTheme[]>([]);
+  notifyValidation(hasPassed: boolean, memcard: tMemcard) {
+    const updatedMemcard: tMemcard = this.memcardActions.processCard(
+      memcard,
+      hasPassed,
+    );
 
-  notifyValidation(hasPassed: boolean, memcardId: tMemcard['id']) {
-    
-    this.removeFirstCard(hasPassed);
+    this.memcardActions.updateMemcardInDB(updatedMemcard);
+
+    this.cardsLeftToRun.update((cards) => {
+      return [{ ...updatedMemcard }, ...cards.slice(1)];
+    });
+
+    this.removeFirstCard();
   }
 
   initRun() {
@@ -54,9 +66,7 @@ export class RunStore {
 
   flattenEntry(themes: tMemTheme[]): tMemcard[] {
     // Aplatir toutes les cartes en un seul tableau
-    const flattenCards: tMemcard[] = themes
-      .map((theme) => theme.cards) // Extraire les cartes de chaque thème
-      .flat(); // Aplatir tous les tableaux de cartes en un seul tableau
+    const flattenCards: tMemcard[] = themes.map((theme) => theme.cards).flat();
 
     return flattenCards;
   }
@@ -64,4 +74,10 @@ export class RunStore {
   updateMemcardInDB() {}
 
   hasBeenProceed(memcardId: tMemcard['id'], hasPassed: boolean) {}
+
+  onRunFinished() {
+    this.cardRunned.set([]);
+    this.cardsLeftToRun.set([]);
+    this.isPlayerRunning.set(false);
+  }
 }

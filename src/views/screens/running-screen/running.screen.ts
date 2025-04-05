@@ -32,10 +32,6 @@ export class RunningScreenComponent {
 
   //#region USER EVENTS
 
-  onValidate(memcardId: tMemcard['id'], hasPassed: boolean) {
-    this.runStore.hasBeenProceed(memcardId, hasPassed);
-  }
-
   receivedPayload!: tEventPayload;
 
   handleNextCard($event: tEventPayload) {}

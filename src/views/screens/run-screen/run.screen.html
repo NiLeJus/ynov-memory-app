@@ -1,7 +1,7 @@
 <div class="d-flex flex-column justify-content-center">
   <h1 class="text-center">Run</h1>
 
-  <atm-button-quit textToDisplay="Quit" button   />
+  <atm-button-quit textToDisplay="Quit" button />
 
   <div class="btn-group" role="group" aria-label=" radio2 toggle button group">
     <input
@@ -11,7 +11,6 @@
       id="vbtn-radio1"
       autocomplete="off"
       checked
-
     />
     <label class="btn btn-outline-primary" for="vbtn-radio1">For Real !</label>
     <input
@@ -59,12 +58,13 @@
   </div>
 </div>
 
-@if (userThemes) {
+@if (_userThemes$()) {
 <ul
   class="list-group list-group-flush accordion accordion-flush"
   id="accordionFlushExample"
 >
-  @for ( theme of userThemes; track $index) { @if (isMemThemeChecked(theme)) {
+  @for ( theme of _userThemes$(); track $index) { @if (isMemThemeChecked(theme))
+  {
 
   <li class="list-group-item d-flex justify-content-between align-items-center">
     <div class="ms-1">

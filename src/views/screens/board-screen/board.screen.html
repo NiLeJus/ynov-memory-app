@@ -1,6 +1,13 @@
 <app-header [_profileStats]="_user()?.statistics" [_username]="_user()?.name" />
 
-<hr class="dashed" />
+<div class="d-flex flex-row justify-content-center">
+  <button class="btn btn-primary" [routerLink]="['/run']">Run</button>
+  <button class="btn btn-dark" [routerLink]="['/manage', _user()?.name]">
+    Manage
+  </button>
+  <button class="btn btn-primary" (click)="dev()">dev</button>
+  <hr class="dashed" />
+</div>
 
 <main class="container d-flex flex-column">
   <!-- <app-run-preview-section [_themes]="this._userThemes()" /> -->
@@ -8,10 +15,3 @@
 </main>
 
 <app-memory-card-sm />
-
-<button class="btn btn-primary" [routerLink]="['/run']">Run</button>
-<button>Train</button>
-<button class="btn btn-dark" [routerLink]="['/manage', _user()?.name]">
-  Manage
-</button>
-<button class="btn btn-primary" (click)="dev()">dev</button>

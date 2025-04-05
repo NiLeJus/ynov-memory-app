@@ -1,15 +1,17 @@
+import { DatabaseService } from 'src/services/database/database.service';
 import { tMemcard } from 'src/_models/memcard.model';
 import { MockerService } from './../../../services/mocker.service';
 import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { ButtonComponent } from '../../atoms/button/button.component';
 import { ButtonQuitComponent } from '../../atoms/button-quit/button-quit.component';
 import { eRunTypes } from 'src/_models/enums/app.enums';
-import { tMemTheme } from 'src/_models/profile.model';
+import { tMemTheme, tProfile } from 'src/_models/profile.model';
 import { DateStore } from 'src/services/stores/date-store.service';
 import { DateTime } from 'luxon';
 import { RunStore } from 'src/services/stores/run-store.service';
 import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-run-screen',
@@ -25,6 +27,7 @@ export class RunScreenComponent {
   ENUM_RUN_TYPES = eRunTypes;
   readonly eRunTypes = Object.values(this.ENUM_RUN_TYPES); // Transforme en Array pour itérer
   public mockerService = inject(MockerService);
+  public databaseService = inject(DatabaseService);
 
   constructor(
     private router: Router,
@@ -32,17 +35,25 @@ export class RunScreenComponent {
     public dateStore: DateStore,
   ) {}
 
-  userThemes: tMemTheme[] = this.mockerService.getMockThemeData();
+  // Conversion du flux constant en signal Angular pour une gestion réactive
+  _user$: Signal<tProfile | null | undefined> = toSignal(
+    this.databaseService.getSelectedUser$(),
+    { initialValue: null as tProfile | null },
+  );
+
+  // Conversion du flux constant en signal Angular pour une gestion réactive
+  _userThemes$ = computed(() => {
+    return this._user$()?.themes;
+  });
 
   hasUserRunToDo(): boolean {
-    const arr = this.userThemes.map((theme) => {
+    const arr = this._userThemes$()?.map((theme) => {
       return this.cardsToValidate(theme);
-    });
+    }) ?? [];
 
-    return arr.some((theme) => {
-      theme = false;
-    });
+    return arr.some((isValid) => !isValid);
   }
+
 
   cardsToValidate(theme: tMemTheme): tMemcard[] | false {
     const _now = DateTime.fromISO(this.dateStore.now()).startOf('day');
@@ -124,12 +135,12 @@ export class RunScreenComponent {
   }
 
   onValidateRun() {
-    this.pushMemcardToDo(this.userThemes);
+    if (this._userThemes$()) {
+      this.pushMemcardToDo(this._userThemes$()!);
+    }
   }
 
-  handleNextCard() {
-    
-  }
+  handleNextCard() {}
 
   //#endregion
 }

@@ -48,6 +48,7 @@ export class DatabaseService {
               // Remplace la carte trouvée par le nouvel objet Memcard
               theme.cards[cardIndex] = updatedMemcard;
               await db.users.put(user); // Sauvegarde l'utilisateur mis à jour
+              console.log(updatedMemcard);
               return { status: 'ok' };
             }
           }
@@ -66,7 +67,6 @@ export class DatabaseService {
     }
   }
 
-  // Dans votre DatabaseService
   async addMockUser(
     mockProfile: tProfile,
   ): Promise<{ status: 'ok' | 'error'; error?: any }> {
@@ -355,6 +355,19 @@ export class DatabaseService {
         error,
       );
       return undefined;
+    }
+  }
+
+  async isNameTakenInDB(username: string): Promise<boolean> {
+    try {
+      const user = await this.getUserByUsername(username);
+      return !!user;
+    } catch (error) {
+      console.error(
+        `Erreur lors de la vérification du nom d'utilisateur "${username}":`,
+        error,
+      );
+      return false;
     }
   }
 

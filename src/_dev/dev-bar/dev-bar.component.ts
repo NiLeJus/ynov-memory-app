@@ -3,7 +3,7 @@ import { DateStore } from './../../services/stores/date-store.service';
 import { DatabaseService } from '../../services/database/database.service';
 import { Component, inject, WritableSignal } from '@angular/core';
 import { DevModeService } from './../dev-mode.service';
-import { MemcardActions } from 'src/services/actions/memcard.actions';
+import { MemcardActionsService } from 'src/services/actions/memcard.actions';
 import { DateTime } from 'luxon';
 import { tMemcard } from 'src/_models/memcard.model';
 
@@ -15,18 +15,16 @@ import { tMemcard } from 'src/_models/memcard.model';
 })
 export class DevBarComponent {
   public dateStore = inject(DateStore);
-  formatedActualDate = this.dateStore.$now;
+  formatedActualDate = this.dateStore.$nowFormatted;
 
   constructor(
     public devModeService: DevModeService,
-    public memecardActions: MemcardActions,
+    public memecardActions: MemcardActionsService,
     public databaseService: DatabaseService,
     public mockerService: MockerService,
   ) {}
 
-  dev() {
-    this.memecardActions.processNewDate();
-  }
+  dev() {}
 
   async onPopulateDB() {
     const results = await this.databaseService.addMockUser(
@@ -39,6 +37,4 @@ export class DevBarComponent {
   onPrintNow() {
     console.log(this.dateStore.now());
   }
-
-
 }

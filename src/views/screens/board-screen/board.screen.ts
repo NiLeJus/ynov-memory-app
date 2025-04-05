@@ -35,10 +35,7 @@ import { DatabaseService } from 'src/services/database/database.service';
   styleUrl: './board.screen.scss',
 })
 export class BoardScreenComponent implements OnInit {
-  // Signal to hold the username from the route
   _usernameRouteParam = signal('');
-
-  // Resource to fetch the user by username
   userResource: ResourceRef<tProfile | undefined> = resource({
     loader: ({ request }) =>
       this.databaseService.getUserByUsername(this._usernameRouteParam()),
@@ -71,7 +68,4 @@ export class BoardScreenComponent implements OnInit {
       }
     });
   }
-
-  memoryCards: tMemcard[] = []; // Stocke les données localement
-  ngOnDestroy(): void {}
-}
+ }

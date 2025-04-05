@@ -1,26 +1,30 @@
-<!-- <h1 class="ms-2">New Profile</h1> -->
+<div class="input-group has-validation mb-3 px-2">
+  <div class="w-100">
+    <input
+      type="text"
+      class="form-control"
+      (input)="handleInputChange()"
+      [(ngModel)]="inputUsername"
+      placeholder="Username"
+      [class.is-invalid]="isNameTakenFlag"
+    />
+    @if (isNameTakenFlag) {
+      <div class="invalid-feedback d-block">
+        <!-- Ajoutez "d-block" -->
+        Ce nom est déjà pris
+      </div>
+    }
 
-<div class="input-group mb-3 px-2">
-  <input
-    type="text"
-    class="form-control"
-    [(ngModel)]="inputUsername"
-    placeholder="Username"
-    aria-label="Username"
-    aria-describedby="basic-addon1"
-  />
+    <button
+      class="btn btn-primary"
+      (click)="onValidate()"
+      [disabled]="!isInputValid() || isNameTakenFlag"
+    >
+      Valider
+    </button>
 
-  <button
-    class="btn btn-primary"
-    (click)="onValidate()"
-    [disabled]="!isInputValid()"
-  >
-    Valider
-  </button>
-  <button
-    class="btn btn-danger"
-    (click)="this.notifyProcessEnded.emit(true)"
-  >
-    Annuler
-  </button>
+    <button class="btn btn-danger" (click)="notifyProcessEnded.emit(true)">
+      Annuler
+    </button>
+  </div>
 </div>

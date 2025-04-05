@@ -45,6 +45,10 @@ body {
   transform: rotate(0deg);
 }
 
+.invalid-feedback {
+  display: contents;
+}
+
 .neuro-effect {
   border-radius: 50px;
   border: 1px solid #fff;

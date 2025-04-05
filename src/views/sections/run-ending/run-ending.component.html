@@ -1,1 +1,11 @@
 <h1 class="text-center">Run finished</h1>
+
+@for (memcard of runnedMemcards; track $index) {
+  <div class="card d-flex flex-row justify-content-between">
+    <p>{{ memcard.title }}</p>
+    <p>{{ memcard.Historic[0].statusAt }}</p>
+    <button (click)="onClickDev(memcard)">Dev</button>
+  </div>
+}
+
+<button class="btn-danger" (click)="onNext()">Retour</button>

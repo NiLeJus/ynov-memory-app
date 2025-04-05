@@ -139,12 +139,13 @@ export class FactoriesService {
     const actualValLevel = 2;
     const newValLevel = actualValLevel + 1;
 
-    let nextDate: any = DateTime.fromISO(this.dateStore.now()); // Value to be retured
+    let nextDate: any = DateTime.fromISO(this.dateStore.now());
+
     //Determine si il faut appliquer un downgrade ou upgrade
     if (hasPassed) {
       nextDate = nextDate.plus({ days: 1 });
     } else {
-      nextDate = nextDate.plus({ days: 1 });
+      nextDate = nextDate.minus({ days: 1 });
     }
 
     nextDate = nextDate.toISODate();

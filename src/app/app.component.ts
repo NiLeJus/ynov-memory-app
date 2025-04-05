@@ -1,4 +1,3 @@
-import { MemcardActions } from '../services/actions/memcard.actions';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DevBarComponent } from '../_dev/dev-bar/dev-bar.component';
@@ -9,6 +8,7 @@ import { ManageScreenComponent } from 'src/views/screens/manage-screen/manage-sc
 import { CardDisplayerComponent } from 'src/views/sections/card-displayer/card-displayer.component';
 import { CreateMemorycardComponent } from 'src/views/sections/create-memorycard/create-memorycard.component';
 import { NotificationService } from 'src/services/notification.service.ts.service';
+import { InputListenerComponent } from "../views/shared-components/input-listener/input-listener.component";
 
 @Component({
   selector: 'app-root',
@@ -21,7 +21,8 @@ import { NotificationService } from 'src/services/notification.service.ts.servic
     ModalDispComponent,
     CardDisplayerComponent,
     BrandHeaderComponent,
-  ],
+    InputListenerComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

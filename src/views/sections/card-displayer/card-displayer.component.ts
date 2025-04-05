@@ -2,6 +2,7 @@ import {
   Component,
   effect,
   EventEmitter,
+  HostListener,
   inject,
   input,
   Input,
@@ -66,9 +67,61 @@ export class CardDisplayerComponent implements OnInit {
 
   //#region EVENTS & USERINPUT
 
-  onValidate(hasPassed: boolean, memecardId: tMemcard['id']) {
+  onValidate(hasPassed: boolean, memecard: tMemcard) {
     this.switchIsRevealed();
-    this.runStore.notifyValidation(hasPassed, memecardId);
+    this.runStore.notifyValidation(hasPassed, memecard);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'ArrowUp':
+        console.log('Fleche haut pressed');
+        this.onArrowUp();
+        break;
+      case 'ArrowDown':
+        console.log('Fleche bas pressed');
+        this.onArrowDown();
+        break;
+      case 'ArrowLeft':
+        console.log('Fleche gauche pressed');
+        this.onArrowLeft();
+        break;
+      case 'ArrowRight':
+        console.log('Flèche droite pressée');
+        this.onArrowRight();
+        break;
+    }
+  }
+
+  onArrowUp(): void {
+    if (this.isRevealed()) {
+    } else {
+      this.switchIsRevealed(true);
+    }
+  }
+
+  onArrowDown(): void {
+    if (this.isRevealed()) {
+    } else {
+      this.switchIsRevealed(true);
+    }
+  }
+
+  onArrowLeft(): void {
+    if (this.isRevealed()) {
+      this.onValidate(false, this.memecard!);
+    } else {
+      this.switchIsRevealed();
+    }
+  }
+
+  onArrowRight(): void {
+    if (this.isRevealed()) {
+      this.onValidate(true, this.memecard!);
+    } else {
+      this.switchIsRevealed();
+    }
   }
 
   //#endregion
@@ -108,8 +161,6 @@ export class CardDisplayerComponent implements OnInit {
     console.log(`This card has a streak of ${count} of ${lastStatus}`);
     return count;
   }
-
-
 
   //Utilisé pour compter le nb de fois que la carte a étée jouée
   historicEntries() {
