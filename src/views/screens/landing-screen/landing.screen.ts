@@ -24,11 +24,7 @@ import { MemcardActionsService } from 'src/services/actions/memcard.actions';
 
 @Component({
   selector: 'app-landing-screen',
-  imports: [
-    CommonModule,
-    ProfileTabComponent,
-    ProfileCreationComponent,
-  ],
+  imports: [CommonModule, ProfileTabComponent, ProfileCreationComponent],
   templateUrl: './landing.screen.html',
   styleUrl: './landing.screen.scss',
 })
@@ -43,7 +39,6 @@ export class LandingScreenComponent implements OnInit {
   // Writable signal to hold user data
 
   ngOnInit(): void {}
-
 
   isCreatingNewUser: WritableSignal<boolean> = signal(false);
 

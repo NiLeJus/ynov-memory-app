@@ -15,8 +15,10 @@ export class CreateNewThemeComponent {
     private iptValidator: InputValidator,
   ) {}
 
-  @Output() notifyProcessEnded = new EventEmitter<boolean>();
-
+  @Output() notifyProcessEnded = new EventEmitter<{
+    status: boolean;
+    themeId?: string;
+  }>();
 
   //#region USER INPUTS
 
@@ -27,16 +29,25 @@ export class CreateNewThemeComponent {
   isInputValid(): boolean {
     return (
       this.iptValidator.isMaxLengthMet(this.newThemeName, 25) &&
-      this.iptValidator.isMinLengthMet(this.newThemeName, 5)
+      this.iptValidator.isMinLengthMet(this.newThemeName, 3)
     );
   }
 
-  onValidate() {
-    this.databaseService.registerNewTheme(this.newThemeName);
-    this.onCancel();
+  public async onValidate() {
+    const result = await this.databaseService.registerNewTheme(
+      this.newThemeName,
+    );
+
+    if (result.status != 'ok') {
+      throw new Error(
+        'Theme was not registered properly in the database service',
+      );
+    }
+
+    this.onCancel(result.themeId);
   }
 
-  onCancel() {
-    this.notifyProcessEnded.emit(true);
+  onCancel(themeId?: string) {
+    this.notifyProcessEnded.emit({ status: true, themeId });
   }
 }

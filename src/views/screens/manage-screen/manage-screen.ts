@@ -28,24 +28,18 @@ import { tMemTheme, tProfile } from 'src/_models/profile.model';
   templateUrl: './manage-screen.html',
   styleUrl: './manage-screen.scss',
 })
-export class ManageScreenComponent implements OnInit {
-  isCreatingTheme: WritableSignal<boolean> = signal(false);
-  isCreatingMemcard: WritableSignal<boolean> = signal(false);
-
+export class ManageScreenComponent {
+  //#region DEPENDENCIES
   public databaseService = inject(DatabaseService);
+  public storeGlobalService = inject(StoreGlobalService);
+  //#endregion
 
-  constructor(
-    private route: ActivatedRoute,
-    public storeGlobalService: StoreGlobalService,
-  ) {}
-
-  // Conversion du flux constant en signal Angular pour une gestion réactive
+  //#region DATA
   _user: Signal<tProfile | null | undefined> = toSignal(
     this.databaseService.getSelectedUser$(),
     { initialValue: null as tProfile | null },
   );
 
-  // Conversion du flux constant en signal Angular pour une gestion réactive
   _userThemes = computed(() => {
     return this._user()?.themes;
   });
@@ -55,41 +49,60 @@ export class ManageScreenComponent implements OnInit {
       return theme.id == this.storeGlobalService.slcThemeId();
     });
   });
+  //#endregion
 
-  onMemcardCreationEnd() {
-    this.isCreatingMemcard.set(false);
-  }
+  //#region MEMTHEME RELATED
 
-  onSelect(themeId: string) {
-    this.storeGlobalService.setSelectedTheme(themeId);
-  }
+  isCreatingTheme: WritableSignal<boolean> = signal(false);
 
-  isThereAnActiveUser() {}
-
-  switchIsCreating() {
+  switchIsCreatingTheme() {
     this.isCreatingTheme.set(!this.isCreatingTheme());
   }
 
-  dev() {
-    console.log(this._selected_theme());
+  onSelectTheme(themeId: string) {
+    this.storeGlobalService.setSelectedTheme(themeId);
   }
-
-  ngOnInit(): void {}
 
   onDeleteTheme(themeId: string) {
     this.databaseService.deleteTheme(themeId);
+
+    if (this.storeGlobalService.getSlcThemeId() === themeId) {
+      console.log(this.storeGlobalService.getSlcThemeId());
+      console.log(themeId);
+      this.storeGlobalService.setSelectedTheme(null);
+      this.isCreatingMemcard.set(false);
+    }
+  }
+
+  onThemeCreationEnd() {
+    this.isCreatingTheme.set(false);
   }
 
   onRenameTheme(themeId: string) {
     console.error('Not implementé yet');
   }
 
+  //#endregion
+
+  //#region MEMCARD RELATED
+
+  isCreatingMemcard: WritableSignal<boolean> = signal(false);
+
+  onMemcardCreationEnd() {
+    this.isCreatingMemcard.set(false);
+  }
+
   onDeleteCard(memcardId: string) {
     this.databaseService.deleteMemcard(memcardId);
   }
 
-  debbug(memcard: any) {
-    console.log(memcard);
-    console.log(JSON.stringify(this._selected_theme(), null, 2));
-  }
+  //#endregion
+
+  //#region DEV
+
+  // dev() {
+  //   console.log(this.storeGlobalService.slcThemeId());
+  // }
+
+  //#endregion
 }

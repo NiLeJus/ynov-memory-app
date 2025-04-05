@@ -124,6 +124,10 @@ h1 {
   min-width: max-content;
 }
 
+.btn-neuro:disabled {
+  background-color: #bbb;
+}
+
 .btn-neuro-sm {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -150,12 +154,12 @@ h1 {
   background-color: #a7ff95;
 }
 
-.btn-neuro:hover {
+.btn-neuro:not(:disabled):hover {
   background-color: #555; /* Changement de couleur au survol */
   color: cyan;
 }
 
-.btn-neuro-dng:hover {
+.btn-neuro-dng:not(:disabled):hover {
   background-color: rgb(255, 91, 91);
   color: #555; /* Couleur du texte */
 }

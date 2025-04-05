@@ -99,7 +99,9 @@ export class DatabaseService {
 
   async registerNewTheme(
     name: string,
-  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+  ): Promise<
+    { status: 'ok'; themeId: string } | { status: 'error'; error: any }
+  > {
     try {
       const newTheme: tMemTheme = {
         id: crypto.randomUUID(),
@@ -120,7 +122,7 @@ export class DatabaseService {
         });
       }
 
-      return { status: 'ok' };
+      return { status: 'ok', themeId: newTheme.id };
     } catch (error) {
       console.error('Error registering new theme:', error);
       return { status: 'error', error };
