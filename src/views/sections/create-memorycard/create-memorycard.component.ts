@@ -1,5 +1,11 @@
 import { DatabaseService } from 'src/services/database/database.service';
-import { Component, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { AddContentComponent } from './add-content/add-content.component';
 import { LockedContentComponent } from './locked-content/locked-content.component';
 
@@ -50,6 +56,8 @@ export class CreateMemorycardComponent {
   //#region USER INPUT & FORMS
   newCardTitle: string = '';
   selCardType: eMemcardType = this.ENUM_MEMORYCARD_TYPE.Classic; //Default
+
+  @Output() notifyProcessEnded = new EventEmitter<boolean>();
 
   onInputChange(newValue: eMemcardType): void {
     this.selCardType = newValue;
@@ -125,11 +133,14 @@ export class CreateMemorycardComponent {
     } else {
       this.databaseService.addNewCard(newMemcard);
     }
+    this.onQuit();
+  }
+
+  onQuit() {
+    this.notifyProcessEnded.emit(false);
   }
 
   onPreview() {
     console.log(this.rectoContent);
   }
-
-  dev() {}
 }

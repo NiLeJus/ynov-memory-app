@@ -1,30 +1,18 @@
 @if (isRenaming()) {
   <app-profile-creation (notifyProcessEnded)="onValidateRenaiming()" />
 
-  <!-- <span class="input-group-text" id="basic-addon1">Username</span>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newUsername"
-        [value]="_user()?.name"
-        aria-label="user()?.name"
-        aria-describedby="basic-addon1"
-      />
-      <button class="btn btn-success" (click)="onValidateRenaiming()">
-        Valider
-      </button>
-      <button class="btn btn-danger" (click)="onModifyProfile(false)">
-        Annuler
-      </button> -->
 } @else {
   <div class="neuro-effect ps-3 my-2">
     <div class="d-flex flex-row justify-content-between align-items-center">
-        <p class="col fw-bold fs-4">{{ _user()?.name }}</p>
-        <p>{{ _user()?.statistics?.scoreAllTime }}</p>
+      <p class="col fw-bold fs-4">{{ _user()?.name }}</p>
+      <p>{{ _user()?.statistics?.scoreAllTime }}</p>
 
       <div class="">
-        <button class="btn">
-          <img src="more-horiz.svg" />
+        <button class="btn" (click)="onDownload(this._user()!.id)">
+          <img
+            class="align-self-center px-0"
+            src="/app-icons/ico-download.svg"
+          />
         </button>
         <button class="btn btn-red" (click)="onDeleteProfile()">
           <img src="trash.svg" />

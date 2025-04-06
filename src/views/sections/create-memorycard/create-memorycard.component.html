@@ -1,24 +1,21 @@
-<div class="container d-flex flex-column">
-  <div>
-    <button type="button" class="btn btn-outline-primary" (click)="onPreview()">
-      Generate
-    </button>
-    <button
-      type="button"
-      class="btn btn-outline-primary"
-      (click)="onValidate()"
-    >
-      Clear Inputs
-    </button>
-  </div>
-
+<div class="container d-flex flex-column neuro-panel px-3 py-3">
   <div class="flex-column d-flex">
     <h5 class="">Nouvelle Carte</h5>
   </div>
-
+  <div class="input-group">
+    <button type="button" class="btn btn-outline-dark active disabled d-flex">
+      Titre de la carte
+    </button>
+    <input
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      type="text"
+      [(ngModel)]="newCardTitle"
+    />
+  </div>
   <!-- Memorycard Type -->
   <div class="d-flex flex-row justify-content-center py-2">
-    @for (cardType of this.memorycardTypes; track $index) {
+    <!-- @for (cardType of this.memorycardTypes; track $index) {
       <div class="form-check justify-content-around d-flex flex-column">
         <label class="form-check-label" [for]="'memoryCard-' + $index">
           {{ cardType }}
@@ -33,19 +30,19 @@
           (change)="onInputChange(cardType)"
         />
       </div>
-    }
+    } -->
   </div>
 
-  <div class="d-flex flex-row justify-content-center">
+  <!-- <div class="d-flex flex-row justify-content-center">
     <div class="bg-dark px-5 py-3 rounded">
       <h6 class="text-light text-center">
         {{ this.pickedCardTypeDescr[selCardType] }}
       </h6>
     </div>
-  </div>
+  </div> -->
 
   <!--START RECTO PART-->
-  <div class="justify-content-center d-flex flex-column text-center mt-5">
+  <div class="justify-content-center d-flex flex-column text-center mt-3">
     <h4>Recto/Question</h4>
 
     <label for="exampleFormControlInput1" class="form-label"
@@ -53,17 +50,6 @@
     >
 
     <!-- Title Input  -->
-    <div class="input-group">
-      <button type="button" class="btn btn-outline-dark active disabled">
-        <p>Titre de la carte</p>
-      </button>
-      <input
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        type="text"
-        [(ngModel)]="newCardTitle"
-      />
-    </div>
 
     <div class="d-flex justify-content-center flex-column text-center"></div>
 
@@ -112,8 +98,6 @@
       ></textarea>
     </div> -->
 
-
-
     @for (item of versoContent; track $index) {
       <app-locked-content
         class="mt-2"
@@ -146,5 +130,6 @@
       Preview
     </button>
     <button class="btn btn-secondary" (click)="onValidate()">Valider</button>
+    <button class="btn btn-danger" (click)="onQuit()">Quit</button>
   </div>
 </div>

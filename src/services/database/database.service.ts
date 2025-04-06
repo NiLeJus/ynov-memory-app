@@ -4,6 +4,7 @@ import { db } from '../../_data/db';
 import { tMemTheme, tProfile } from 'src/_models/profile.model';
 import { StoreGlobalService } from '../stores/global-store/global-store.service';
 import { tMemcard } from 'src/_models/memcard.model';
+import { Profile } from '../actions/profile.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -335,6 +336,11 @@ export class DatabaseService {
     return;
   }
 
+  async getUserByID(userID: tProfile['id']): Promise<tProfile | undefined> {
+    const result = await db.users.get(userID);
+    return result;
+  }
+
   getAllUsers$(): Observable<tProfile[]> {
     return liveQuery(() => db.users.toArray());
   }
@@ -412,6 +418,14 @@ export class DatabaseService {
     } catch (error) {
       console.error('Error adding user:', error);
       return { status: 'error', error }; // Return error status and the error itself
+    }
+  }
+
+  async registerUserFromJSON(userData: tProfile) {
+    try {
+      await db.users.put(userData);
+    } catch (error) {
+      throw new Error("Erreur pour l'ajout d'utilisateur from json");
     }
   }
   //#endregion

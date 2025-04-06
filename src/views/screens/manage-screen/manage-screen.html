@@ -1,34 +1,50 @@
+<app-header
+  [_profileStats]="_user$()?.statistics"
+  [_username]="_user$()?.name"
+/>
+
 <div>
   <div class="container text-center">
     <button (click)="switchIsCreatingTheme()" class="my-2 btn btn-outline-dark">
       Create New Theme
     </button>
-    <div class="row">
+    @if (!this.isCreatingMemcard()) {
+    <div class="col">
       <!-- Themes Part -->
       @if (_userThemes()) { @for (theme of _userThemes(); track theme.id) {
-      <div class="card-body row">
-        <h5 class="card-title text-capitalize">{{ theme.name }}</h5>
-        <div>
+      <div
+        role="button"
+        class="neuro-panel clickable d-flex flex-row bg-light align-items-center my-2 rounded-2 justify-content-between"
+        (mouseenter)="onHoverMemTheme(theme.id)"
+        (mouseleave)="onLeaveMemTheme(theme.id)"
+        (click)="handleClick(theme.id); $event.stopPropagation()"
+        [class.selected]="storeGlobalService.slcThemeId() === theme.id"
+      >
+        <div class="d-flex flex-row align-items-center">
+          <h5 class="card-title text-capitalize ms-2">{{ theme.name }}</h5>
           <button
             href="#"
-            class="btn btn-outline-dark"
-            (click)="onSelectTheme(theme.id)"
+            class="btn"
+            (click)="onRenameTheme(theme.id); $event.stopPropagation()"
           >
-            Select
+            <img src="pen.svg" />
+          </button>
+        </div>
+        <div class="flex-end d-flex">
+          <button
+            class="btn"
+            (click)="onDeleteTheme(theme.id); $event.stopPropagation()"
+          >
+            <img src="trash.svg" />
           </button>
           <button
-            href="#"
-            class="btn btn-outline-dark"
-            (click)="onRenameTheme(theme.id)"
+            class="btn"
+            (click)="onAddContentToTheme(theme.id); $event.stopPropagation()"
           >
-            Rename
-          </button>
-          <button
-            href="#"
-            class="btn btn-outline-dark"
-            (click)="onDeleteTheme(theme.id)"
-          >
-            Supr
+            <img
+              class="align-self-center px-0"
+              src="/app-icons/ico-add-content.svg"
+            />
           </button>
         </div>
       </div>
@@ -36,18 +52,10 @@
     </div>
     @if (this.isCreatingTheme()) {
     <app-create-new-theme (notifyProcessEnded)="onThemeCreationEnd()" />
-    }
+    } }
 
     <!-- MEMECARD PART -->
-
     @if (this.storeGlobalService.getSlcThemeId() !== null) {
-    <button
-      href="#"
-      class="btn btn-outline-dark"
-      (click)="this.isCreatingMemcard.set(!this.isCreatingMemcard()) "
-    >
-      Create New Card
-    </button>
     <br />
 
     @if (this.isCreatingMemcard() && this.storeGlobalService.getSlcThemeId() !=
@@ -61,9 +69,24 @@
     @for (memcard of theme.cards; track $index) {
 
     <!-- Contenu de la carte -->
-    <div class="card">
-      {{ memcard.title }}
-      <button (click)="onDeleteCard(memcard.id)">supr</button>
+    <div
+      class="d-flex align-items-center flex-row bg-light-subtle justify-content-between rounded-5 py-1 mt-3"
+    >
+      <p class="ms-2 mb-0 text-truncate">{{ memcard.title }}</p>
+
+      <div>
+        <button
+          href="#"
+          class="btn"
+          (click)="onRenameTheme(theme.id); $event.stopPropagation()"
+        >
+          <img src="pen.svg" />
+        </button>
+
+        <button type="button" class="btn">
+          <img src="/app-icons/ico-trash.svg" />
+        </button>
+      </div>
     </div>
     }
   </div>

@@ -26,14 +26,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-board-screen',
-  imports: [
-    RouterLink,
-    CommonModule,
-    HeaderComponent,
-    MemoryCardSmComponent,
-    RunPreviewSectionComponent,
-    BrandHeaderComponent,
-  ],
+  imports: [RouterLink, CommonModule, HeaderComponent, MemoryCardSmComponent],
   templateUrl: './board.screen.html',
   styleUrl: './board.screen.scss',
 })
@@ -63,7 +56,12 @@ export class BoardScreenComponent implements OnInit {
     return this.storeGlobal.hasUserRunToDo();
   }
 
-  dev() {}
+  isBtnRunDisabled: boolean = false;
 
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    this.isBtnRunDisabled = await !this.storeGlobal.hasUserRunToDo();
+    console.log('isBtnRunDisabled:', this.isBtnRunDisabled);
+  }
+
+  dev() {}
 }

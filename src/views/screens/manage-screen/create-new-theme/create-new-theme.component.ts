@@ -43,7 +43,6 @@ export class CreateNewThemeComponent {
         'Theme was not registered properly in the database service',
       );
     }
-
     this.onCancel(result.themeId);
   }
 

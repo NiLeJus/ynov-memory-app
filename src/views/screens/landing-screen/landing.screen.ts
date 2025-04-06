@@ -21,10 +21,16 @@ import { ProfileCreationComponent } from './components/profile-creation/profile-
 import { ProfileTabComponent } from './components/profile-tab/profile-tab.component';
 import { tProfile } from 'src/_models/profile.model';
 import { MemcardActionsService } from 'src/services/actions/memcard.actions';
+import { LoadJsonDataComponent } from './components/load-json-data/load-json-data.component';
 
 @Component({
   selector: 'app-landing-screen',
-  imports: [CommonModule, ProfileTabComponent, ProfileCreationComponent],
+  imports: [
+    CommonModule,
+    ProfileTabComponent,
+    ProfileCreationComponent,
+    LoadJsonDataComponent,
+  ],
   templateUrl: './landing.screen.html',
   styleUrl: './landing.screen.scss',
 })
@@ -35,8 +41,6 @@ export class LandingScreenComponent implements OnInit {
   _users: Signal<tProfile[]> = toSignal(this.databaseService.getAllUsers$(), {
     initialValue: [],
   });
-
-  // Writable signal to hold user data
 
   ngOnInit(): void {}
 
@@ -49,4 +53,7 @@ export class LandingScreenComponent implements OnInit {
   onProfileCreationEnd() {
     this.isCreatingNewUser.set(false);
   }
+
+  onUpload() {}
+
 }

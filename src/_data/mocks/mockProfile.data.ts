@@ -3,13 +3,12 @@ import { MemcardContentObj, MemcardPrototype } from 'src/_models/memcard.model';
 
 export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
   new MemcardPrototype(
-    'What carries the Discworld through space?',
+    'About the structure of the Discworld',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
         'What carries the Discworld through space?',
         eContentType.Text,
-        'A question about the structure of the Discworld.',
       ),
     ],
     [
@@ -22,13 +21,13 @@ export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    'What directions replace cardinal points on the Discworld?',
+    'Navigation in the Discworld',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
         'What directions replace cardinal points on the Discworld?',
         eContentType.Text,
-        'A question about navigation in the Discworld.',
+        'A question about ',
       ),
     ],
     [
@@ -41,13 +40,12 @@ export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    'Where do the gods of the Discworld live?',
+    'About divine geography.',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
         'Where do the gods of the Discworld live?',
         eContentType.Text,
-        'A question about divine geography.',
       ),
     ],
     [
@@ -60,13 +58,12 @@ export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    'What happens when enough people believe in something on the Discworld?',
+    'About belief and reality',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
         'What happens when enough people believe in something on the Discworld?',
         eContentType.Text,
-        'A question about belief and reality.',
       ),
     ],
     [
@@ -79,13 +76,12 @@ export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    'What races populate the Discworld?',
+    'About the inhabitants of the Disc',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
         'What races populate the Discworld?',
         eContentType.Text,
-        'A question about inhabitants of the Disc.',
       ),
     ],
     [
@@ -101,7 +97,7 @@ export const _MOCK_MEMCARD_TERRYPRATCHET: MemcardPrototype[] = [
 
 export const _MOCK_MEMCARD_KARLMARX: MemcardPrototype[] = [
   new MemcardPrototype(
-    'Une question sur les origines de Karl Marx.',
+    'Les origines de Karl Marx.',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
@@ -119,7 +115,7 @@ export const _MOCK_MEMCARD_KARLMARX: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    "Une question sur l'œuvre principale de Marx.",
+    "L'œuvre principale de Marx",
     eMemcardType.Classic,
     [
       new MemcardContentObj(
@@ -137,7 +133,7 @@ export const _MOCK_MEMCARD_KARLMARX: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    'Avec qui Karl Marx a-t-il co-écrit le Manifeste du parti communiste ?',
+    'Un collaborateur de Marx',
     eMemcardType.Classic,
     [
       new MemcardContentObj(
@@ -155,7 +151,7 @@ export const _MOCK_MEMCARD_KARLMARX: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    "Une question sur la philosophie de l'histoire selon Marx.",
+    "La philosophie de l'histoire selon Marx",
     eMemcardType.Classic,
     [
       new MemcardContentObj(
@@ -173,7 +169,7 @@ export const _MOCK_MEMCARD_KARLMARX: MemcardPrototype[] = [
     0,
   ),
   new MemcardPrototype(
-    "Une question sur l'exil de Marx.",
+    "L'exil de Marx",
     eMemcardType.Classic,
     [
       new MemcardContentObj(

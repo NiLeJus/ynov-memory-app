@@ -89,6 +89,39 @@ h1 {
   min-height: 100svh;
 }
 
+.neuro-panel {
+  border-radius: 24px;
+  background: #f1f5f9;
+  box-shadow:
+    4px 4px 8px 0px #c9d9e8,
+    -4px -4px 8px 0px #fff;
+  transition: all ease 0.5s;
+}
+
+.neuro-panel.clickable:hover {
+  background: #bdbdbd;
+  box-shadow:
+    2px 2px 8px 0px #c9d9e8,
+    -2px -2px 8px 0px #fff;
+  transition: all ease 0.5s;
+}
+
+.neuro-panel.selected {
+  color: rgb(122, 184, 255);
+  background:
+    linear-gradient(
+      318deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(255, 255, 255, 0.4) 105.18%
+    ),
+    #e7ebf0 !important;
+  background-blend-mode: soft-light, normal;
+  box-shadow:
+    -2.5px -2.5px 5px 0px #fafbff inset,
+    2.5px 2.5px 5px 0px #a6abbd inset;
+  transition: all ease 0.5s;
+}
+
 .btn-neuro {
   display: block;
 
@@ -155,18 +188,22 @@ h1 {
 }
 
 .btn-neuro:not(:disabled):hover {
-  background-color: #555; /* Changement de couleur au survol */
-  color: cyan;
+  background-color: #555;
+  color: #e0e0e0;
+}
+
+.btn-neuro:not(:disabled):hover img {
+  filter: brightness(0) saturate(100%) invert(63%) sepia(0%) saturate(4346%)
+    hue-rotate(142deg) brightness(130%) contrast(119%);
 }
 
 .btn-neuro-dng:not(:disabled):hover {
   background-color: rgb(255, 91, 91);
-  color: #555; /* Couleur du texte */
+  color: #555;
 }
 
-/* Effet "neuro" (exemple avec une ombre) */
 .btn-neuro {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .btn-neuro-sm {

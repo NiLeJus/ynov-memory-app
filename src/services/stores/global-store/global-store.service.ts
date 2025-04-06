@@ -33,8 +33,8 @@ export class StoreGlobalService implements OnInit {
     localStorage.setItem('lastKnownUser', newValue.toString());
   }
 
-  setSelectedTheme(newValue: number | string | null) {
-    this.slcThemeId.set(String(newValue));
+  setSelectedTheme(newValue: string | null) {
+    this.slcThemeId.set(newValue);
   }
 
   getSlcThemeId(): string | null {

@@ -21,6 +21,7 @@ export enum eMemcardStatus {
   Validated = 'VALIDATED',
   Creation = 'CREATION',
   Pending = 'PENDING',
+  Missed = 'MISSED',
 }
 
 export enum eContentType {

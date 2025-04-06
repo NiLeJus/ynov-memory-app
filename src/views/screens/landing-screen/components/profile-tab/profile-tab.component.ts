@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  inject,
   input,
   signal,
   WritableSignal,
@@ -11,7 +12,8 @@ import { DatabaseService } from 'src/services/database/database.service';
 import { AlertService } from 'src/services/displayer/alert.service';
 import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
 import { tProfile } from 'src/_models/profile.model';
-import { ProfileCreationComponent } from "../profile-creation/profile-creation.component";
+import { ProfileCreationComponent } from '../profile-creation/profile-creation.component';
+import { ProfileExportService } from 'src/services/json-services/export/profile-export.service';
 
 @Component({
   selector: 'app-profile-tab',
@@ -22,11 +24,11 @@ import { ProfileCreationComponent } from "../profile-creation/profile-creation.c
 export class ProfileTabComponent {
   readonly _user = input<tProfile>();
   newUsername = '';
-  constructor(
-    private databaseService: DatabaseService,
-    private alertService: AlertService,
-    private storeGlobalService: StoreGlobalService,
-  ) {}
+
+  databaseService = inject(DatabaseService);
+  alertService = inject(AlertService);
+  storeGlobalService = inject(StoreGlobalService);
+  profileExportService = inject(ProfileExportService);
 
   isRenaming: WritableSignal<boolean> = signal(false);
 
@@ -56,6 +58,10 @@ export class ProfileTabComponent {
     } else {
       console.error('User or User ID is undefined.');
     }
+  }
+
+  async onDownload(userId: tProfile['id']) {
+    await this.profileExportService.exportUserData(userId);
   }
 
   async onValidateRenaiming(): Promise<void> {

@@ -1,8 +1,5 @@
 import { DateStore } from '../stores/date-store.service';
-import {
-  HistoricEntryObj,
-  tHistoricEntry,
-} from '../../_models/memcard.model';
+import { HistoricEntryObj, tHistoricEntry } from '../../_models/memcard.model';
 import { Injectable, OnInit } from '@angular/core';
 import {
   eMemcardType,
@@ -16,7 +13,7 @@ import { _DAYS_SPACING } from 'src/_data/days-spacing.table';
 @Injectable({
   providedIn: 'root',
 })
-export class Profile implements OnInit {
+export class Profile {
   //#region CORE STATE
   ENUM_MEMCARD_STATUS = eMemcardStatus;
   readonly memcardStatus = Object.values(this.ENUM_MEMCARD_STATUS); // Transforme en tableau pour itéré
@@ -86,5 +83,4 @@ export class Profile implements OnInit {
       _nextDate,
     );
   }
-
 }
