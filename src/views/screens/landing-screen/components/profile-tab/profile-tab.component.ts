@@ -3,6 +3,7 @@ import {
   computed,
   inject,
   input,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -11,13 +12,25 @@ import { FormsModule } from '@angular/forms';
 import { DatabaseService } from 'src/services/database/database.service';
 import { AlertService } from 'src/services/displayer/alert.service';
 import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
-import { tProfile } from 'src/_models/profile.model';
+import { tMemTheme, tProfile } from 'src/_models/profile.model';
 import { ProfileCreationComponent } from '../profile-creation/profile-creation.component';
 import { ProfileExportService } from 'src/services/json-services/export/profile-export.service';
+import { IndicatorHasRunComponent } from '../../../../atoms/indicator-has-run/indicator-has-run.component';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DateTime } from 'luxon';
+import { tMemcard } from 'src/_models/memcard.model';
+import { DateStore } from 'src/services/stores/date-store.service';
+import { TextHasRunComponent } from "../../../../atoms/text-has-run/text-has-run.component";
 
 @Component({
   selector: 'app-profile-tab',
-  imports: [FormsModule, RouterLink, ProfileCreationComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    ProfileCreationComponent,
+    IndicatorHasRunComponent,
+    TextHasRunComponent
+],
   templateUrl: './profile-tab.component.html',
   styleUrl: './profile-tab.component.scss',
 })
@@ -25,6 +38,7 @@ export class ProfileTabComponent {
   readonly _user = input<tProfile>();
   newUsername = '';
 
+  public dateStore = inject(DateStore);
   databaseService = inject(DatabaseService);
   alertService = inject(AlertService);
   storeGlobalService = inject(StoreGlobalService);
@@ -86,5 +100,44 @@ export class ProfileTabComponent {
         'danger',
       );
     }
+  }
+
+  // Conversion du flux constant en signal Angular pour une gestion réactive
+  _userThemes$ = computed(() => {
+    return this._user()?.themes;
+  });
+
+  hasUserRunToDo(): boolean {
+    const themes = this._userThemes$() ?? [];
+
+    return themes.some((theme) => {
+      const cards = this.cardsToValidate(theme);
+      return Array.isArray(cards) && cards.length > 0;
+    });
+  }
+
+  cardsToValidate(theme: tMemTheme): tMemcard[] | false {
+    const _now = DateTime.fromISO(this.dateStore.now()).startOf('day');
+    if (!_now.isValid) {
+      throw new Error('Invalid date: _now is not a valid DateTime');
+    }
+
+    let filteredMemcard = theme.cards.filter((memcard) => {
+      if (!memcard.Historic || !memcard.Historic[0].nexValidationDate) {
+        throw new Error('Invalid : memcard.Historic is null');
+      }
+
+      const nextValidationDate = DateTime.fromISO(
+        memcard.Historic[0].nexValidationDate,
+      );
+
+      if (!nextValidationDate.isValid) {
+        throw new Error('Invalid date: _now is not a valid DateTime');
+      }
+
+      return nextValidationDate.startOf('day').hasSame(_now, 'day');
+    });
+
+    return filteredMemcard;
   }
 }

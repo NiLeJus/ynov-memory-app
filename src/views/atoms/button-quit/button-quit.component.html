@@ -1,6 +1,7 @@
 <button
-  class="btn-neuro btn-neuro-dng mt-0"
-  (click)="returnToProfileSelection()"
+  class="btn-neuro btn-neuro-dng btn-neuro-sm mt-0 mx-auto"
+  (click)="onPerformAction()"
+  [class.btn-neuro-sm]="isSm ?? false"
 >
   {{ textToDisplay }}
 </button>

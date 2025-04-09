@@ -2,12 +2,14 @@
   [_profileStats]="_user$()?.statistics"
   [_username]="_user$()?.name"
 />
+<atm-button-quit
+  textToDisplay="se déconnecter"
+  actionToPerform="goQuit"
+  [isSm]="true"
+/>
 
 <div class="d-flex flex-row justify-content-center mt-3">
-  <button
-    class="btn-neuro btn-neuro-prim mx-1"
-    [routerLink]="['/manage', _user$()?.name]"
-  >
+  <button class="btn-neuro btn-neuro-prim mx-1" [routerLink]="['/manage']">
     Manage
   </button>
   <button

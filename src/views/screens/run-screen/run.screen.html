@@ -1,5 +1,10 @@
 <div class="d-flex flex-column justify-content-center">
-  <atm-button-quit class="mx-auto my-2" textToDisplay="Quit" button />
+  <atm-button-quit
+    class="mx-auto my-2"
+    textToDisplay="Quit"
+    actionToPerform="goTo"
+    pathToNavigate="/board"
+  />
   <h1 class="text-center">Run</h1>
 
   @if (hasUserRunToDo()) { }
@@ -54,33 +59,39 @@
     class="accordion-collapse collapse"
     data-bs-parent="#accordionFlushExample"
   >
-    @if (theme.cards && theme.cards.length > 0) {
-      @for ( memcard of theme.cards;
+    @if (theme.cards && theme.cards.length > 0) { @for ( memcard of theme.cards;
     track $index) {
-    <li
-      class="list-group-item d-flex justify-content-between align-items-center"
+    <div
+      class="m-3 neuro-panel  align-items-center d-flex flex-row justify-content-between text-start ps-2 my-2"
     >
-      <div class="ms-1">
-        <input
-          class="form-check-input me-1"
-          type="checkbox"
-          id="card-checkbox-{{$index}}"
-          [checked]="isMemThemeChecked(theme)"
-        />
-        <label class="form-check-label" for="card-checkbox-{{$index}}" hidden>
-          {{ memcard.title }}
-        </label>
-        {{ memcard.title }}
-      </div>
-      <span>
-        <span
-          [hidden]="!isMemThemeChecked(theme)"
-          class="badge text-bg-primary rounded-pill"
+      <img
+        class="ico-val-level me-2"
+        [src]="this.memcardIcon.valIcoPath(memcard.Historic[0].valLevel)"
+      />
+      @if (memcard.Historic[0].statusAt === this.ENUM_MEMCARD_STATUS.Validated)
+      {
+      <img class="align-self-center px-0 me-2" src="/app-icons/ico-val.svg" />
+      } @if ( memcard.Historic[0].statusAt ===
+      this.ENUM_MEMCARD_STATUS.NotValidated ) {
+      <img class="align-self-center px-0 me-2" src="/app-icons/ico-deval.svg" />
+      }
+      <h6 class="p-0 m-0 ms-2 me-auto align-top d-flex">{{ memcard.title }}</h6>
+
+      <div>
+        <!-- <button
+          href="#"
+          class="btn"
+          (click)="onRenameMemcard(); $event.stopPropagation()"
         >
-          {{ memcard.Historic[0].valLevel }}
-        </span>
-      </span>
-    </li>
+          <img src="pen.svg" />
+        </button> -->
+
+        <button type="button" class="btn">
+          <img src="/app-icons/ico-trash.svg" />
+        </button>
+        <button type="button" class="btn" (click)="dev2(memcard)">DEV</button>
+      </div>
+    </div>
     } }
   </div>
 

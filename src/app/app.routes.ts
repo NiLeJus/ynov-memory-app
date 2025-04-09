@@ -11,12 +11,12 @@ export const routes: Routes = [
   { path: 'run', component: RunScreenComponent, title: 'Pre-Run' },
   { path: 'running', component: RunningScreenComponent, title: 'Running' },
   {
-    path: 'manage/:username',
+    path: 'manage',
     component: ManageScreenComponent,
     title: 'Manage',
   },
   {
-    path: 'board/:username',
+    path: 'board',
     component: BoardScreenComponent,
     title: 'Board -',
   },

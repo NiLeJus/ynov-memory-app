@@ -1,11 +1,13 @@
 @if (isRenaming()) {
   <app-profile-creation (notifyProcessEnded)="onValidateRenaiming()" />
 } @else {
-  <div class="neuro-effect ps-3 my-2">
+  <div class="neuro-effect ps-1 my-2">
     <div class="d-flex flex-row justify-content-between align-items-center">
+      <atm-indicator-has-run class="me-1" [isLightUp]="hasUserRunToDo()" />
       <p class="col fs-6">{{ _user()?.name }}</p>
-      <p>{{ _user()?.statistics?.scoreAllTime }}</p>
+      <atm-text-has-run />
 
+      <p>{{ _user()?.statistics?.scoreAllTime }}</p>
       <div class="">
         <button class="btn" (click)="onDownload(this._user()!.id)">
           <img
@@ -22,7 +24,7 @@
         <button
           class="btn btn-profile-bar fw-bold text-success cust-rounded-end"
           (click)="onUserSelection()"
-          [routerLink]="['/board', _user()?.name]"
+          [routerLink]="['/board']"
         >
           Go
         </button>

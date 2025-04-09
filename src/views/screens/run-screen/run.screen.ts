@@ -3,13 +3,19 @@ import { tMemcard } from 'src/_models/memcard.model';
 import { MockerService } from './../../../services/mocker.service';
 import { Component, computed, inject, Signal } from '@angular/core';
 import { ButtonQuitComponent } from '../../atoms/button-quit/button-quit.component';
-import { eRunTypes } from 'src/_models/enums/app.enums';
+import {
+  eContentType,
+  eMemcardStatus,
+  eMemcardType,
+  eRunTypes,
+} from 'src/_models/enums/app.enums';
 import { tMemTheme, tProfile } from 'src/_models/profile.model';
 import { DateStore } from 'src/services/stores/date-store.service';
 import { DateTime } from 'luxon';
 import { RunStore } from 'src/services/stores/run-store.service';
 import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MemcardIconService } from 'src/services/memcard-icon.service';
 
 @Component({
   selector: 'app-run-screen',
@@ -20,7 +26,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class RunScreenComponent {
   //#region Core
 
+  memcardIcon = inject(MemcardIconService);
+
   isRunComplete: boolean = true;
+  ENUM_MEMOCARD_TYPE = eMemcardType;
+  ENUM_MEMCARD_CONTENT = eContentType;
+  ENUM_MEMCARD_STATUS = eMemcardStatus;
+  readonly memcardStatus = Object.values(this.ENUM_MEMCARD_STATUS); // Transforme en Array pour itérer
 
   ENUM_RUN_TYPES = eRunTypes;
   readonly eRunTypes = Object.values(this.ENUM_RUN_TYPES); // Transforme en Array pour itérer
@@ -130,4 +142,6 @@ export class RunScreenComponent {
     }
   }
   //#endregion
+
+  dev2(memcard: any) {}
 }

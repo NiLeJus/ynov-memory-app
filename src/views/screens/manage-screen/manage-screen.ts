@@ -24,6 +24,7 @@ import {
 import { tMemcard } from 'src/_models/memcard.model';
 import { MemcardIconService } from 'src/services/memcard-icon.service';
 import { RunStore } from 'src/services/stores/run-store.service';
+import { ButtonQuitComponent } from '../../atoms/button-quit/button-quit.component';
 
 @Component({
   selector: 'app-manage-screen',
@@ -33,6 +34,7 @@ import { RunStore } from 'src/services/stores/run-store.service';
     CreateNewThemeComponent,
     ButtonComponent,
     HeaderComponent,
+    ButtonQuitComponent,
   ],
   templateUrl: './manage-screen.html',
   styleUrl: './manage-screen.scss',
@@ -165,8 +167,8 @@ export class ManageScreenComponent {
 
   //#region DEV
 
-  dev() {
-    console.log(this.storeGlobalService.slcThemeId());
+  dev(memcard: tMemcard) {
+    console.log('memcard :', memcard);
   }
 
   //#endregion

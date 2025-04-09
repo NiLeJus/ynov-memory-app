@@ -36,7 +36,6 @@ export class MemcardStatsService {
           break;
       }
     });
-    console.log('val time', valNb);
 
     return valNb;
   }
@@ -54,7 +53,6 @@ export class MemcardStatsService {
           break;
       }
     });
-    console.log('deval time', devalNb);
     return devalNb;
   }
 
@@ -73,7 +71,6 @@ export class MemcardStatsService {
           break;
       }
     });
-    console.log('runned time', runnedNb);
     return runnedNb;
   }
 
@@ -106,10 +103,8 @@ export class MemcardStatsService {
     let toReturn: string;
 
     if (firstHistoric.statusAt === this.ENUM_MEMCARD_STATUS.Creation) {
-      console.log('oldest historic is creation');
       toReturn = firstHistoric.date;
     } else {
-      console.log('oldest historic is not creation');
       toReturn =
         memcardHistoric.find((entry) => {
           entry.statusAt === this.ENUM_MEMCARD_STATUS.Creation;
@@ -121,9 +116,5 @@ export class MemcardStatsService {
     return toReturn;
   }
 
-  getScore(memcarStats: tMemCardStatistics) {
-
-    
-
-  }
+  getScore(memcarStats: tMemCardStatistics) {}
 }

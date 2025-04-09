@@ -23,10 +23,11 @@ import { tProfile } from 'src/_models/profile.model';
 import { tMemTheme } from 'src/_models/profile.model';
 import { DatabaseService } from 'src/services/database/database.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ButtonQuitComponent } from "../../atoms/button-quit/button-quit.component";
 
 @Component({
   selector: 'app-board-screen',
-  imports: [RouterLink, CommonModule, HeaderComponent, MemoryCardSmComponent],
+  imports: [RouterLink, CommonModule, HeaderComponent, MemoryCardSmComponent, ButtonQuitComponent],
   templateUrl: './board.screen.html',
   styleUrl: './board.screen.scss',
 })
@@ -61,6 +62,10 @@ export class BoardScreenComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.isBtnRunDisabled = await !this.storeGlobal.hasUserRunToDo();
     console.log('isBtnRunDisabled:', this.isBtnRunDisabled);
+  }
+
+  countUserCard() {
+    const memcards = this._user$()?.themes
   }
 
   dev() {}
