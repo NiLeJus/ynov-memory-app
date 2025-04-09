@@ -1,4 +1,17 @@
 .bg-grey {
   background-color: gray;
-  color: gray
+  color: gray;
+}
+
+.editable-input {
+  border: none;
+  outline: none;
+  font-size: inherit;
+  color: inherit;
+  background: $light;
+  width: auto;
+}
+
+.editable-input:focus {
+  outline: none; /* Empêche tout effet visuel au focus */
 }

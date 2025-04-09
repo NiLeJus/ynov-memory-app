@@ -8,7 +8,8 @@ import { ManageScreenComponent } from 'src/views/screens/manage-screen/manage-sc
 import { CardDisplayerComponent } from 'src/views/sections/card-displayer/card-displayer.component';
 import { CreateMemorycardComponent } from 'src/views/sections/create-memorycard/create-memorycard.component';
 import { NotificationService } from 'src/services/notification.service.ts.service';
-import { InputListenerComponent } from "../views/shared-components/input-listener/input-listener.component";
+import { InputListenerComponent } from '../views/shared-components/input-listener/input-listener.component';
+import { SwUpdate } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
@@ -21,18 +22,26 @@ import { InputListenerComponent } from "../views/shared-components/input-listene
     ModalDispComponent,
     CardDisplayerComponent,
     BrandHeaderComponent,
-    InputListenerComponent
-],
+    InputListenerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'memory-app';
+  constructor(private updates: SwUpdate) {}
 
   private notifService = inject(NotificationService);
 
   ngOnInit() {
     this.notifService.init();
-  }
 
+
+    //Pour update
+    this.updates.versionUpdates.subscribe((evt) => {
+      if (evt.type === 'VERSION_READY') {
+        this.updates.activateUpdate().then(() => document.location.reload());
+      }
+    });
+  }
 }

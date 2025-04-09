@@ -20,17 +20,43 @@
         (click)="handleClick(theme.id); $event.stopPropagation()"
         [class.selected]="storeGlobalService.slcThemeId() === theme.id"
       >
-        <div class="d-flex flex-row align-items-center">
-          <h5 class="card-title text-capitalize ms-2">{{ theme.name }}</h5>
+        <h5
+          class="card-title text-capitalize ms-2"
+          [hidden]="isRenamingTheme()"
+        >
+          {{ theme.name }}
+        </h5>
+        <div
+          class="input-group editable-input mb-0"
+          [hidden]="!isRenamingTheme()"
+        >
+          <input
+            type="text"
+            class="form-control"
+            placeholder=""
+            aria-label="Example text with button addon"
+            aria-describedby="button-addon1"
+            [value]="theme.name"
+          />
+          <button
+            class="btn btn-outline-success editable-input"
+            type="button"
+            id="button-addon1"
+            (click)="onValidateThemeRename(); $event.stopPropagation()"
+          >
+            <img src="app-icons/ico-check.svg" />
+          </button>
+        </div>
+
+        <div class="flex-end d-flex">
           <button
             href="#"
             class="btn"
-            (click)="onRenameTheme(theme.id); $event.stopPropagation()"
+            [hidden]="isRenamingTheme()"
+            (click)="onRenameTheme(true); $event.stopPropagation()"
           >
             <img src="pen.svg" />
           </button>
-        </div>
-        <div class="flex-end d-flex">
           <button
             class="btn"
             (click)="onDeleteTheme(theme.id); $event.stopPropagation()"
@@ -88,7 +114,7 @@
         <button
           href="#"
           class="btn"
-          (click)="onRenameTheme(theme.id); $event.stopPropagation()"
+          (click)="onRenameMemcard(); $event.stopPropagation()"
         >
           <img src="pen.svg" />
         </button>

@@ -42,6 +42,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig },
     importProvidersFrom(HammerModule),
-    provideServiceWorker('ngsw-worker.js')
+    provideServiceWorker('ngsw-worker.js'), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
   ],
 };

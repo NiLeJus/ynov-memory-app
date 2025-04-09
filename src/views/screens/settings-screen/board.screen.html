@@ -1,0 +1,28 @@
+<app-header
+  [_profileStats]="_user$()?.statistics"
+  [_username]="_user$()?.name"
+/>
+
+<div class="d-flex flex-row justify-content-center mt-3">
+  <button
+    class="btn-neuro btn-neuro-prim mx-1"
+    [routerLink]="['/manage', _user$()?.name]"
+  >
+    Manage
+  </button>
+  <button
+    class="btn-neuro btn-neuro-val mx-1"
+    [routerLink]="['/run']"
+    [disabled]="isBtnRunDisabled"
+  >
+    Run
+  </button>
+</div>
+
+<main class="container d-flex flex-column text-center mt-1">
+  @if (hasUserRunToDo()) {
+  <p class="fs-5 mt-5">No cards to run today</p>
+  }
+</main>
+
+<app-memory-card-sm />

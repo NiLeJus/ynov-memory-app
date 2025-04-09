@@ -72,6 +72,7 @@ export class ManageScreenComponent {
   //#region MEMTHEME RELATED
 
   isCreatingTheme: WritableSignal<boolean> = signal(false);
+  isRenamingTheme: WritableSignal<boolean> = signal(false);
 
   switchIsCreatingTheme() {
     this.isCreatingTheme.set(!this.isCreatingTheme());
@@ -96,8 +97,12 @@ export class ManageScreenComponent {
     this.isCreatingTheme.set(false);
   }
 
-  onRenameTheme(themeId: string) {
-    console.error('Not implementé yet');
+  onRenameTheme(newState?: boolean): void {
+    this.isRenamingTheme.update((value: boolean) => newState ?? !value);
+  }
+
+  onValidateThemeRename() {
+    this.isRenamingTheme.set(false);
   }
 
   onAddContentToTheme(themeId: string) {
@@ -144,6 +149,9 @@ export class ManageScreenComponent {
   //#region MEMCARD RELATED
 
   isCreatingMemcard: WritableSignal<boolean> = signal(false);
+  isRenamingMemcard: WritableSignal<boolean> = signal(false);
+
+  onRenameMemcard() {}
 
   onMemcardCreationEnd() {
     this.isCreatingMemcard.set(false);
