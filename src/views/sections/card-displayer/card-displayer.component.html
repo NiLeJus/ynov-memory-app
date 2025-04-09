@@ -1,63 +1,124 @@
-<div class="neuro-effect memcard d-flex flex-column mt-5">
-  @if (memecard) {
-    <div class="memcard-header d-flex flex-row bg-light text-center">
-      <div class="col">
-        <h6>Runned</h6>
-        <h5>{{ memecard.Historic.length + 1 }}</h5>
-      </div>
-      <div class="col text-center">
-        <h6>Val Lvl</h6>
-        <h5>{{ memecard.Historic[0].valLevel }}</h5>
-      </div>
-      <div class="col">
-        <h6>Val count</h6>
-        <h5>{{ this.val() }}</h5>
-      </div>
-      <div class="col">
-        <h6>Deval count</h6>
-        <h5>{{ this.deval() }}</h5>
-      </div>
-    </div>
-    <hr />
+<div
+  class="neuro-panel memcard d-flex flex-column mt-5 pb-3"
+  (swipeleft)="onSwipeLeft()"
+  (swiperight)="onSwipeRight()"
+  (swipeup)="onSwipeUp()"
+  (swipedown)="onSwipeDown()"
+>
+  @if (memcard) {
+    <div
+      class="memcard-header d-flex flex-row bg-light text-center justify-content-between align-items-center pt-3 px-2"
+      (swipeleft)="onSwipeLeft()"
+      (swiperight)="onSwipeRight()"
+      (swipeup)="onSwipeUp()"
+      (swipedown)="onSwipeDown()"
+    >
+      <div class="left-wrapper">
+        <!-- <h6>Runned</h6> -->
+        <!-- <p class="stats-displayer">
+          {{ this.memcardStats.processRunnedNb(memcard.Historic) }}
+        </p> -->
+        <!-- <h6>Val Lvl</h6> -->
+        <!-- <h6>Val count</h6> -->
+        <p class="stats-displayer">
+          {{ this.memcardStats.processValNb(memcard.Historic) }}
+          <img class="align-self-center px-0" src="/app-icons/ico-val.svg" />
+        </p>
+        <!-- <h6>Deval count</h6> -->
+        <p class="stats-displayer">
+          {{ this.memcardStats.processDevalNb(memcard.Historic) }}
+          <img class="align-self-center px-0" src="/app-icons/ico-deval.svg" />
+        </p>
 
-    <h3 class="text-center p-3">{{ memecard.title }}</h3>
-    @if (memecard.recto.length > 0) {
-      @for (rectoContent of memecard.recto; track $index) {
-        <h5 class="">{{ rectoContent.description }}</h5>
-      }
-    }
+        @let streakStatObj = this.streakHandler(memcard.Historic);
+        <!-- <h6>Streak</h6> -->
+        @if (streakStatObj) {
+          <p class="stats-displayer">
+            {{ streakStatObj.streak }}
 
-    @if (!isRevealed()) {
-      <button class="btn-neuro btn-neuro-dng" (click)="onReveal()">
-        Retourner
-      </button>
-    }
-
-    @if (isRevealed()) {
-      <hr />
-      <div class="verso-container text-center">
-        <h4>Answer</h4>
-        @for (versoContent of memecard.verso; track $index) {
-          <h1>{{ versoContent.value }}</h1>
-          <h5>{{ versoContent?.description }}</h5>
+            @if (streakStatObj.status === this.ENUM_MEMCARD_STATUS.Validated) {
+              <img
+                class="align-self-center px-0"
+                src="/app-icons/ico-streak-val.svg"
+              />
+            }
+            @if (
+              streakStatObj.status === this.ENUM_MEMCARD_STATUS.NotValidated
+            ) {
+              <img
+                class="align-self-center px-0"
+                src="/app-icons/ico-streak-deval.svg"
+              />
+            }
+          </p>
         }
       </div>
-    }
 
-    @if (isRevealed()) {
-      <div class="d-flex flex-row">
-        <button
-          class="btn-neuro btn-neuro-dng"
-          (click)="onValidate(false, memecard)"
-        >
-          Faux</button
-        ><button
-          class="btn-neuro btn-neuro-val"
-          (click)="onValidate(true, memecard)"
-        >
-          Juste
-        </button>
+      <div class="center-wrapper">
+        <p class="val-level-displayer d-flex flex-column strong">
+          <img
+            class="align-self-center ico-val-level px-0"
+            [src]="this.memcardIcon.valIcoPath(memcard.Historic[0].valLevel)"
+          />
+          <!-- {{ memcard.Historic[0].valLevel }} -->
+        </p>
       </div>
-    }
+
+      <div class="right-wrapper">
+        <p class="stats-displayer">
+          {{ this.memcardStats.getCreationDate(memcard.Historic) }}
+        </p>
+
+        <p class="stats-displayer">
+          {{ this.memcard.Statistics.totalPoints }} pts
+        </p>
+      </div>
+    </div>
+    <hr class="pt-0 mt-0 w-75 mx-auto" />
+    <div class="px-5 text-center">
+      <p class="text-center p-3">{{ memcard.title }}</p>
+      @if (memcard.recto.length > 0) {
+        @for (rectoContent of memcard.recto; track $index) {
+          <h5 class="">{{ rectoContent.value }}</h5>
+          <!-- <p class="">{{ rectoContent.description }}</p> -->
+        }
+      }
+
+      @if (!isRevealed()) {
+        <button
+          class="btn-neuro btn-neuro-dng mx-auto mt-5"
+          (click)="onReveal()"
+        >
+          Retourner
+        </button>
+      }
+
+      @if (isRevealed()) {
+        <hr class="pt-0 mt-0 w-75 mx-auto" />
+        <div class="verso-container text-center px-1">
+          <p>Answer</p>
+          @for (versoContent of memcard.verso; track $index) {
+            <h5>{{ versoContent.value }}</h5>
+            <p>{{ versoContent?.description }}</p>
+          }
+        </div>
+      }
+
+      @if (isRevealed()) {
+        <div class="d-flex flex-row justify-content-center mt-5">
+          <button
+            class="btn-neuro btn-neuro-dng"
+            (click)="onValidate(false, memcard)"
+          >
+            Faux</button
+          ><button
+            class="btn-neuro btn-neuro-val"
+            (click)="onValidate(true, memcard)"
+          >
+            Juste
+          </button>
+        </div>
+      }
+    </div>
   }
 </div>

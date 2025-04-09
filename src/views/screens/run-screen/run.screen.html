@@ -54,7 +54,8 @@
     class="accordion-collapse collapse"
     data-bs-parent="#accordionFlushExample"
   >
-    @if (theme.cards && theme.cards.length > 0) { @for ( memcard of theme.cards;
+    @if (theme.cards && theme.cards.length > 0) {
+      @for ( memcard of theme.cards;
     track $index) {
     <li
       class="list-group-item d-flex justify-content-between align-items-center"
@@ -80,9 +81,7 @@
         </span>
       </span>
     </li>
-    } } @else {
-    <p>Aucune carte disponible pour ce thème.</p>
-    }
+    } }
   </div>
 
   } }

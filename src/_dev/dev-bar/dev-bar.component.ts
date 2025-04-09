@@ -27,6 +27,7 @@ export class DevBarComponent {
   dev() {}
 
   async onPopulateDB() {
+    console.log('pressed');
     const results = await this.databaseService.addMockUser(
       this.mockerService.generateMockData(),
     );

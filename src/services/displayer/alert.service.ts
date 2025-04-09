@@ -6,7 +6,6 @@ export class AlertService {
   private alertPlaceholder: HTMLElement | null;
 
 
-
   private _alerts: any[] = [];
   alerts = new Subject<any[]>();
 

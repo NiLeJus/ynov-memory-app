@@ -15,7 +15,7 @@ export class MemcardObj {
     public verso: tMemcardContent[],
     public validationLevel: number = 0,
     public Historic: tHistoricEntry[],
-    public Statistics?: tMemCardStatistics,
+    public Statistics: tMemCardStatistics,
   ) {}
 }
 
@@ -27,7 +27,7 @@ export class MemcardPrototype {
     public cardType: eMemcardType,
     public recto: tMemcardContent[],
     public verso: tMemcardContent[],
-    public validationLevel: number = 0,
+    public validationLevel: number = 0, //! To delete
   ) {}
 }
 
@@ -59,12 +59,21 @@ export type tMemcardContent = InstanceType<typeof MemcardContentObj>;
 
 //#region  STATISTICS & HISTORIC ENTRY
 
-export interface tMemCardStatistics {
-  validationTotal: number;
-  devaluationTotal: number;
-  maxLevelReached: number;
-  totalPoints: number;
+export class StatisticsObj {
+  constructor(
+    // public validationTotal: number,
+    // public devaluationTotal: number,
+    // public maxLevelReached: number,
+    public totalPoints: number,
+  ) {}
 }
+
+export type tMemCardStatistics = {
+  // validationTotal: number;
+  // devaluationTotal: number;
+  // maxLevelReached: number;
+  totalPoints: number;
+};
 
 export class HistoricEntryObj {
   constructor(
@@ -77,3 +86,11 @@ export class HistoricEntryObj {
 export type tHistoricEntry = InstanceType<typeof HistoricEntryObj>;
 
 //#endregion
+
+//Used for displaying streak
+export class StreakStatObj {
+  constructor(
+    public status: eMemcardStatus,
+    public streak: number,
+  ) {}
+}

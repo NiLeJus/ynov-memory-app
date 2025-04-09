@@ -1,3 +1,35 @@
 .memcard {
-  height: 90vh;
+  border-radius: 20px;
+}
+
+.stats-displayer {
+  color: #626262;
+  img {
+    width: 1em;
+  }
+}
+
+.memcard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-wrapper,
+.right-wrapper {
+  flex: 1;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-around;
+}
+
+.center-wrapper {
+  flex: none;
+  width: 50px;
+  text-align: center;
+  transform: translateY(-13px);
+}
+
+.ico-val-level {
+  width: 2rem;
 }

@@ -5,16 +5,25 @@ import { Injectable } from '@angular/core';
 })
 export class MediaTreatmentService {
   /**
-   * Transforme un fichier en Blob
-   * @param file - Le fichier à convertir
-   * @returns Un objet Blob
+   * Convertit un fichier image sélectionné par l'utilisateur en Blob.
+   * doc : https://developer.mozilla.org/en-US/docs/Web/API/FileReader
    */
-  fileToBlob(file: File): Blob {
-    if (!(file instanceof File)) {
-      throw new Error("Le fichier fourni n'est pas valide.");
-    }
-
-    // Retourner directement le fichier comme Blob
-    return new Blob([file], { type: file.type });
+  async convertFileToBlob(file: File): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        try {
+          const blob = new Blob([reader.result as ArrayBuffer], {
+            type: file.type,
+          });
+          resolve(blob);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () =>
+        reject(new Error('Erreur lors de la lecture du fichier'));
+      reader.readAsArrayBuffer(file);
+    });
   }
 }

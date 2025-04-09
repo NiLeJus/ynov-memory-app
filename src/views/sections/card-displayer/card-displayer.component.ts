@@ -17,7 +17,10 @@ import {
   eMemcardStatus,
 } from 'src/_models/enums/app.enums';
 import { tEventPayload } from 'src/_models/generics.model';
-import { MemcardObj, tMemcard } from 'src/_models/memcard.model';
+import { MemcardObj, StreakStatObj, tMemcard } from 'src/_models/memcard.model';
+import { InputModDetector } from 'src/services/input-mod-detector.service';
+import { MemcardIconService } from 'src/services/memcard-icon.service';
+import { MemcardStatsService } from 'src/services/memcard-stats.service';
 import { RunStore } from 'src/services/stores/run-store.service';
 
 @Component({
@@ -28,6 +31,9 @@ import { RunStore } from 'src/services/stores/run-store.service';
 })
 export class CardDisplayerComponent implements OnInit {
   runStore = inject(RunStore);
+  private modalityService = inject(InputModDetector); //Laisser unused
+  public memcardStats = inject(MemcardStatsService);
+  public memcardIcon = inject(MemcardIconService);
 
   //#region DEPENDENCIES ENUMS
   ENUM_MEMOCARD_TYPE = eMemcardType;
@@ -38,14 +44,14 @@ export class CardDisplayerComponent implements OnInit {
   //#endregion
 
   //#region INPUT / DATA
-  @Input('currentMemcard') memecard?: tMemcard;
+  @Input('currentMemcard') memcard?: tMemcard;
   @Output() onNotifyParent = new EventEmitter<tEventPayload>();
 
   val = signal(0);
   deval = signal(0);
 
   get historic(): MemcardObj['Historic'] {
-    return this.memecard?.Historic ?? [];
+    return this.memcard?.Historic ?? [];
   }
   //#endregion
 
@@ -59,10 +65,7 @@ export class CardDisplayerComponent implements OnInit {
 
   //#region COMPONENT LIFECYCLE
   constructor() {}
-  ngOnInit(): void {
-    this.calculateStats();
-    this.calculateStreak();
-  }
+  ngOnInit(): void {}
   //#endregion
 
   //#region EVENTS & USERINPUT
@@ -70,6 +73,10 @@ export class CardDisplayerComponent implements OnInit {
   onValidate(hasPassed: boolean, memecard: tMemcard) {
     this.switchIsRevealed();
     this.runStore.notifyValidation(hasPassed, memecard);
+  }
+
+  onReveal() {
+    this.switchIsRevealed();
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -110,66 +117,43 @@ export class CardDisplayerComponent implements OnInit {
 
   onArrowLeft(): void {
     if (this.isRevealed()) {
-      this.onValidate(false, this.memecard!);
+      this.onValidate(false, this.memcard!);
     } else {
-      this.switchIsRevealed();
+      return;
     }
   }
 
   onArrowRight(): void {
     if (this.isRevealed()) {
-      this.onValidate(true, this.memecard!);
+      this.onValidate(true, this.memcard!);
     } else {
-      this.switchIsRevealed();
+      return;
     }
+  }
+
+  onSwipeUp(event?: HammerInput): void {
+    console.log('Swipe haut', event?.deltaY);
+    this.onArrowUp();
+  }
+
+  onSwipeDown(event?: HammerInput): void {
+    console.log('Swipe bas', event?.deltaY);
+    this.onArrowDown();
+  }
+
+  onSwipeLeft(event?: HammerInput): void {
+    console.log('Swipe gauche', event?.deltaX);
+    this.onArrowLeft();
+  }
+
+  onSwipeRight(event?: HammerInput): void {
+    console.log('Swipe droit', event?.deltaX);
+    this.onArrowRight();
   }
 
   //#endregion
 
-  calculateStats() {
-    this.historic.forEach((entry: any) => {
-      switch (entry?.statusAt) {
-        case this.ENUM_MEMCARD_STATUS.Validated:
-          this.val.set(this.val() + 1);
-          console.log(this.val());
-          break;
-        case eMemcardStatus.NotValidated:
-          this.deval.set(this.deval() + 1);
-          console.log(this.deval());
-          break;
-      }
-    });
-  }
-
-  calculateStreak(): number {
-    const lastStatus = this.historic[0]?.statusAt; // Dernier statut
-    let count = 0;
-
-    if (lastStatus === this.ENUM_MEMCARD_STATUS.Creation) {
-      return count;
-    }
-
-    // Parcour entries pour calculer la streak
-    for (const entry of this.historic) {
-      if (entry?.statusAt === lastStatus) {
-        count++;
-      } else {
-        break;
-      }
-    }
-
-    console.log(`This card has a streak of ${count} of ${lastStatus}`);
-    return count;
-  }
-
-  //Utilisé pour compter le nb de fois que la carte a étée jouée
-  historicEntries() {
-    if (this.memecard?.Historic) {
-      return this.memecard?.Historic.length;
-    } else return 0;
-  }
-
-  onReveal() {
-    this.switchIsRevealed();
+  streakHandler(memcardHistoric: tMemcard['Historic']): StreakStatObj | void {
+    return this.memcardStats.calculateStreak(memcardHistoric);
   }
 }

@@ -1,7 +1,12 @@
-<div class="bg-primary text-light d-flex flex-row justify-content-center dev-bar">
-  DEV BAR
-  <button (click)="onPopulateDB()">Populate Db</button>
-  <button (click)="dateStore.passOneDay()">Pass One day</button>
-  <button (click)="databaseService.clearWholeDB()">Clear Whole DB</button>
+<div
+  class="bg-primary text-light d-flex flex-row dev-bar"
+>
+  <button class="btn" (click)="dateStore.passOneDay()">Pass One day</button>
+  <button class="btn" (click)="databaseService.clearWholeDB()">
+    Clear Whole DB
+  </button>
+  <button type="button" class="btn" (click)="onPopulateDB()">
+    Populate Db
+  </button>
   <p>{{ formatedActualDate() }}</p>
 </div>

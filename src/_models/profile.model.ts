@@ -4,9 +4,9 @@ export class ProfileObj {
   constructor(
     public id: string,
     public name: string,
+    public themes: tMemTheme[],
+    public statistics: tProfileStats,
     public nextSession?: number | null,
-    public themes?: tMemTheme[],
-    public statistics?: tProfileStats,
   ) {}
 }
 

@@ -10,10 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { eContentType } from 'src/_models/enums/app.enums';
-import {
-  tMemcardContent,
-  MemcardContentObj,
-} from 'src/_models/memcard.model';
+import { tMemcardContent, MemcardContentObj } from 'src/_models/memcard.model';
 import { MediaTreatmentService } from 'src/services/media-treatment.service';
 
 @Component({
@@ -74,12 +71,10 @@ export class AddContentComponent {
       const file = input.files[0];
 
       try {
-        const blob = await this.mediaTreatmentService.fileToBlob(file);
+        const blob = await this.mediaTreatmentService.convertFileToBlob(file);
 
-        // Exemple : Générer une URL pour afficher l'image
         console.log('URL Blob :', blob);
 
-        // Afficher l'image dans le DOM
         this.fileBlobInput.set(blob);
       } catch (error) {
         console.error('Erreur lors du traitement de l’image :', error);
@@ -92,10 +87,7 @@ export class AddContentComponent {
   FactoryContent() {
     switch (this.mediaTypeSlct()) {
       case this.ENUM_CONTENT_TYPE.Text:
-        return new MemcardContentObj(
-          this.textValueInput(),
-          eContentType.Text,
-        );
+        return new MemcardContentObj(this.textValueInput(), eContentType.Text);
       default:
         return new MemcardContentObj(
           this.fileBlobInput(),

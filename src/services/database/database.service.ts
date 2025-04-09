@@ -4,7 +4,6 @@ import { db } from '../../_data/db';
 import { tMemTheme, tProfile } from 'src/_models/profile.model';
 import { StoreGlobalService } from '../stores/global-store/global-store.service';
 import { tMemcard } from 'src/_models/memcard.model';
-import { Profile } from '../actions/profile.actions';
 
 @Injectable({
   providedIn: 'root',

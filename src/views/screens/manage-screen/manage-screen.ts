@@ -13,12 +13,27 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DatabaseService } from 'src/services/database/database.service';
 import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
 import { tMemTheme, tProfile } from 'src/_models/profile.model';
-import { ButtonComponent } from "../../atoms/button/button.component";
-import { HeaderComponent } from "../../shared-components/header/header.component";
+import { ButtonComponent } from '../../atoms/button/button.component';
+import { HeaderComponent } from '../../shared-components/header/header.component';
+import { Router } from '@angular/router';
+import {
+  eMemcardType,
+  eContentType,
+  eMemcardStatus,
+} from 'src/_models/enums/app.enums';
+import { tMemcard } from 'src/_models/memcard.model';
+import { MemcardIconService } from 'src/services/memcard-icon.service';
+import { RunStore } from 'src/services/stores/run-store.service';
 
 @Component({
   selector: 'app-manage-screen',
-  imports: [CommonModule, CreateMemorycardComponent, CreateNewThemeComponent, ButtonComponent, HeaderComponent],
+  imports: [
+    CommonModule,
+    CreateMemorycardComponent,
+    CreateNewThemeComponent,
+    ButtonComponent,
+    HeaderComponent,
+  ],
   templateUrl: './manage-screen.html',
   styleUrl: './manage-screen.scss',
 })
@@ -26,6 +41,15 @@ export class ManageScreenComponent {
   //#region DEPENDENCIES
   public databaseService = inject(DatabaseService);
   public storeGlobalService = inject(StoreGlobalService);
+
+  memcardIcon = inject(MemcardIconService);
+
+  //#region DEPENDENCIES ENUMS
+  ENUM_MEMOCARD_TYPE = eMemcardType;
+  ENUM_MEMCARD_CONTENT = eContentType;
+  ENUM_MEMCARD_STATUS = eMemcardStatus;
+  readonly memcardStatus = Object.values(this.ENUM_MEMCARD_STATUS); // Transforme en Array pour itérer
+
   //#endregion
 
   //#region DATA

@@ -1,9 +1,7 @@
 import { DatabaseService } from 'src/services/database/database.service';
 import { tMemcard } from 'src/_models/memcard.model';
 import { MockerService } from './../../../services/mocker.service';
-import { StoreGlobalService } from 'src/services/stores/global-store/global-store.service';
 import { Component, computed, inject, Signal } from '@angular/core';
-import { ButtonComponent } from '../../atoms/button/button.component';
 import { ButtonQuitComponent } from '../../atoms/button-quit/button-quit.component';
 import { eRunTypes } from 'src/_models/enums/app.enums';
 import { tMemTheme, tProfile } from 'src/_models/profile.model';
@@ -15,7 +13,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-run-screen',
-  imports: [ButtonComponent, ButtonQuitComponent],
+  imports: [ButtonQuitComponent],
   templateUrl: './run.screen.html',
   styleUrl: './run.screen.scss',
 })
@@ -47,13 +45,13 @@ export class RunScreenComponent {
   });
 
   hasUserRunToDo(): boolean {
-    const arr = this._userThemes$()?.map((theme) => {
-      return this.cardsToValidate(theme);
-    }) ?? [];
+    const themes = this._userThemes$() ?? [];
 
-    return arr.some((isValid) => !isValid);
+    return themes.some((theme) => {
+      const cards = this.cardsToValidate(theme);
+      return Array.isArray(cards) && cards.length > 0;
+    });
   }
-
 
   cardsToValidate(theme: tMemTheme): tMemcard[] | false {
     const _now = DateTime.fromISO(this.dateStore.now()).startOf('day');
@@ -99,22 +97,18 @@ export class RunScreenComponent {
 
   dev(theme: tMemTheme) {
     console.log('inputed Theme: ', theme);
+    console.log(this.hasUserRunToDo());
   }
 
   pushMemcardToDo(themes: tMemTheme[]) {
-    // 1. Récupération des cartes à valider
     const allCardsToValidate = themes
       .map((theme) => this.cardsToValidate(theme)) // Retourne un tableau de (false | MemcardObj[])
       .flatMap((result) => (result === false ? [] : result)); // Filtre les false et aplatit
 
-    // 2. Vérification du résultat
     if (allCardsToValidate.length === 0) {
       console.log('Aucune carte à valider');
       return;
     }
-
-    // 3. Logique de traitement
-    console.log('Cartes à valider:', allCardsToValidate);
 
     const rep = this.storeRun.setMemcardsToRun(allCardsToValidate);
     console.log('Réponse du store:', rep);
@@ -130,17 +124,10 @@ export class RunScreenComponent {
   //#region Component State
   userWantsTo: eRunTypes = eRunTypes.Train;
 
-  switchRunType(newRunType: eRunTypes) {
-    this.userWantsTo = newRunType;
-  }
-
   onValidateRun() {
     if (this._userThemes$()) {
       this.pushMemcardToDo(this._userThemes$()!);
     }
   }
-
-  handleNextCard() {}
-
   //#endregion
 }

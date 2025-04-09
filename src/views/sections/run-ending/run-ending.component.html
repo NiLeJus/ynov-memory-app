@@ -1,11 +1,25 @@
-<h1 class="text-center">Run finished</h1>
+<h1 class="text-center mb-4">Run finished</h1>
 
 @for (memcard of runnedMemcards; track $index) {
-  <div class="card d-flex flex-row justify-content-between">
-    <p>{{ memcard.title }}</p>
-    <p>{{ memcard.Historic[0].statusAt }}</p>
-    <button (click)="onClickDev(memcard)">Dev</button>
+  <div
+    class="neuro-panel h-3em align-items-center d-flex flex-row justify-content-between text-start ps-2 my-2"
+  >
+    <img
+      class="ico-val-level me-2"
+      [src]="this.memcardIcon.valIcoPath(memcard.Historic[0].valLevel)"
+    />
+    @if (memcard.Historic[0].statusAt === this.ENUM_MEMCARD_STATUS.Validated) {
+      <img class="align-self-center px-0 me-2" src="/app-icons/ico-val.svg" />
+    }
+    @if (
+      memcard.Historic[0].statusAt === this.ENUM_MEMCARD_STATUS.NotValidated
+    ) {
+      <img class="align-self-center px-0 me-2" src="/app-icons/ico-deval.svg" />
+    }
+    <h6 class="p-0 m-0 ms-2 me-auto align-top d-flex">
+      {{ memcard.title }}
+    </h6>
   </div>
 }
 
-<button class="btn-danger" (click)="onNext()">Retour</button>
+<button class="btn-neuro- btn-neuro-dng  mx-auto mt-5" (click)="onNext()">Retour</button>

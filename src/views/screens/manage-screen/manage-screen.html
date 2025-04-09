@@ -68,11 +68,21 @@
   <div class="cards-container">
     @for (memcard of theme.cards; track $index) {
 
-    <!-- Contenu de la carte -->
     <div
-      class="d-flex align-items-center flex-row bg-light-subtle justify-content-between rounded-5 py-1 mt-3"
+      class="neuro-panel h-3em align-items-center d-flex flex-row justify-content-between text-start ps-2 my-2"
     >
-      <p class="ms-2 mb-0 text-truncate">{{ memcard.title }}</p>
+      <img
+        class="ico-val-level me-2"
+        [src]="this.memcardIcon.valIcoPath(memcard.Historic[0].valLevel)"
+      />
+      @if (memcard.Historic[0].statusAt === this.ENUM_MEMCARD_STATUS.Validated)
+      {
+      <img class="align-self-center px-0 me-2" src="/app-icons/ico-val.svg" />
+      } @if ( memcard.Historic[0].statusAt ===
+      this.ENUM_MEMCARD_STATUS.NotValidated ) {
+      <img class="align-self-center px-0 me-2" src="/app-icons/ico-deval.svg" />
+      }
+      <h6 class="p-0 m-0 ms-2 me-auto align-top d-flex">{{ memcard.title }}</h6>
 
       <div>
         <button
@@ -88,6 +98,9 @@
         </button>
       </div>
     </div>
+
+    <!-- Contenu de la carte -->
+
     }
   </div>
   }

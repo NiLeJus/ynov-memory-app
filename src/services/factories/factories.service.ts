@@ -12,6 +12,8 @@ import {
   tMemcardPrototype,
   HistoricEntryObj,
   tHistoricEntry,
+  tMemCardStatistics,
+  StatisticsObj,
 } from 'src/_models/memcard.model';
 import {
   MemThemeObj,
@@ -42,7 +44,6 @@ export class FactoriesService {
     return new ProfileObj(
       crypto.randomUUID(),
       name,
-      null,
       profileThemes,
       this.makeStatObj(),
     );
@@ -52,11 +53,6 @@ export class FactoriesService {
 
   //#region THEMES
 
-  /**
-   * Show a Bootstrap alert dynamically.
-   * @param message The message to display in the alert.
-   * @param type
-   */
   makeMemTheme(name: tMemTheme['name'], cards: tMemcard[]): tMemTheme {
     return new MemThemeObj(crypto.randomUUID(), name, cards);
   }
@@ -82,6 +78,7 @@ export class FactoriesService {
       verso,
       0,
       this.createNewHistoric(),
+      this.createNewStatistic(),
     );
     console.log('Created Memory Card', newMemoryCard);
     return newMemoryCard;
@@ -104,6 +101,7 @@ export class FactoriesService {
           memcard.verso,
           0,
           this.createNewHistoric(),
+          this.createNewStatistic(),
         );
       });
     } else {
@@ -117,6 +115,7 @@ export class FactoriesService {
           payload.verso,
           0,
           this.createNewHistoric(),
+          this.createNewStatistic(),
         ),
       ];
     }
@@ -132,6 +131,10 @@ export class FactoriesService {
         _nextDate,
       ),
     ];
+  }
+
+  createNewStatistic(): tMemCardStatistics {
+    return new StatisticsObj(0);
   }
 
   processNewDate(hasPassed: boolean = true): string {

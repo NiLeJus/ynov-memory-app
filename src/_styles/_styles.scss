@@ -1,5 +1,8 @@
+//Design System related
 @import "colors.tokens";
 @import "font-families.tokens";
+@import "./effects.token.scss";
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 input[type="file"]::file-selector-button {
@@ -69,6 +72,10 @@ h1 {
   font-family: "Advent Pro";
 }
 
+button {
+  touch-action: manipulation;
+}
+
 .brand-typo {
   font-family: "VT323";
   color: rgb(81, 81, 81);
@@ -89,8 +96,17 @@ h1 {
   min-height: 100svh;
 }
 
+.neuro-panel-sm {
+  border-radius: 20px;
+  box-shadow:
+    8px 8px 16px 0px #c9d9e8,
+    -8px -8px 16px 0px #fff;
+}
+
 .neuro-panel {
   border-radius: 24px;
+  background-clip: padding-box;
+
   background: #f1f5f9;
   box-shadow:
     4px 4px 8px 0px #c9d9e8,

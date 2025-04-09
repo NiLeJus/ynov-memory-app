@@ -1,4 +1,3 @@
-import { DatabaseService } from 'src/services/database/database.service';
 import {
   Component,
   EventEmitter,
@@ -6,14 +5,18 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+
+import { tMemcardContent } from 'src/_models/memcard.model';
+
 import { AddContentComponent } from './add-content/add-content.component';
 import { LockedContentComponent } from './locked-content/locked-content.component';
-
-import { FormsModule } from '@angular/forms';
 import { eMemcardType, eContentType } from 'src/_models/enums/app.enums';
-import { tMemcardContent } from 'src/_models/memcard.model';
+
 import { FactoriesService } from 'src/services/factories/factories.service';
 import { InputValidator } from 'src/services/validator/input-validator.service';
+import { DatabaseService } from 'src/services/database/database.service';
 
 @Component({
   selector: 'app-create-memorycard',
