@@ -4,7 +4,8 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Pour tester
 
-npm install -g @angular/cli
+npm install -g @angular/cli 
+npm install 
 
 To start a local development server, run:
 
@@ -32,11 +33,10 @@ Click on the logo to make the dev bar appears, it's gonna be easier to test. Tes
 - Figma => export d'icons et maquettage partiel. 
 - Figjam => whiteboard pour visualiser et décharger mentalement sur les tache complexe
 - RunJS => espace en isolation pour tester du javascript / Typescript 
+- Perplexity => moteur de recherche IA. C'est vraiment top pour apprendre car il cite les sources
 
 
 ## Deployment 
-
-Is available on :
 
 Le script pour le déploiement se trouve dans : github/workflow.
 
@@ -54,16 +54,19 @@ Il y a une branche main-save sur le github. En fait y'a un moment ou j'ai push -
 ## Features
 
 # Création de catégories, thèmes et cartes
+
 Ajouter / Supprimer / Rename un profile
 Ajouter / Supprimer un thème (rename pas implémenté à ce jour)
 Ajouter / Supprimer un thème dans un thème (pas implémenté à ce jour)
 Ajouter / Supprimer une carte (rename et modification pas implémenté à ce jour)
 
-Video pas implémenté. Je me demande si c'est aussi chiant que les images ou c'est aussi facile que le son. 
+Video pas implémenté. Je me demande si c'est aussi chiant que les images ou c'est aussi facile que le son.  
 
-Sachant que les medias sont 'Blobisé' j'sais pas si une video c'est vraiment viable avec ce système. Ou alors il faudrait les compressées. Ce que j'ai essayé de faire à un moment avec une lib webassembly. Alors je l'ai plus en tête (car oui ça a pas marché), mais je sais que c'est celle sur laquelle Sharp est build.
+Notifications : ne marche pas (Bon je pense que en fait je suis parti sur un truc trop compliqué alors que je pouvais faire plus simple)
 
-Bon c'est sur que en terme de perf ça va pas être top, mais c'est la solution la plus simple que j'ai trouvé pour pouvoir récupérer les images depuis l'export des données en json.
+Sachant que les medias sont 'Blobisé' j'sais pas si une video c'est vraiment viable avec ce système. Ou alors il faudrait les compressées. Ce que j'ai essayé de faire pour les images à un moment avec une lib webassembly. Alors je l'ai plus en tête (car oui ça a pas marché), mais je sais que c'est celle sur laquelle Sharp est build.
+
+Bon c'est sur que en terme de perf ça va pas être top de stocker dans idb les blob, mais c'est la solution la plus simple que j'ai trouvé pour pouvoir récupérer les images depuis l'export des données en json.
 
 
 #	Révision et répétition espacée
@@ -84,19 +87,21 @@ Au début je suis parti sur une archi et arborescence bien pour un petit projet,
 
 En Angular il me semble qu'il y a des stores de lib tierces, mais les services sont amplement suffisants. Cela demande une organisation (dont j'ai manqué) pour éviter les références circulaires. 
 
-Pour le router mes routes sont dans src/app/app.routes.ts et le router dans le src/app/app.component.html
+Pour le router mes routes sont dans src/app/app.routes.ts et le router dans le src/app/app.component.html. Puis j'appel le service Router pour effectuer des actions. C'est assez simple comparé à un React Router Dom.
 
 
 # Qualité du code HTML et validité
 
-Pour cela et l'accessibilité bootstrap 5.3 aide pas mal. Il manquerait des titre aux pages et des alt sur les media et images (réactif ?). Je pense que certain bouton ne sont pas aussi accessibles. J'ai bien les data-XXX mais c'est vrai que à débugger c'est bcp plus chiant car les  bug sont "bizarre". Après c'est quand même super pratique car on peut dégager plein de code des composants donc je pense que c'est un problème de skill de ma part.  
+Pour cela et l'accessibilité bootstrap 5.3 aide pas mal. Il manquerait des titre aux pages et des alt sur les media et images (réactif ?). Je pense que certain bouton ne sont pas très accessibles. 
+
+J'aime bien les data-XXX, mais c'est vrai que à débugger c'est bcp plus chiant car les  bug sont "bizarre". Après c'est quand même super pratique car on peut dégager plein de code des composants donc je pense que c'est un problème de skill de ma part.  
 
 
 # Responsiveness de l’application
 
 J'ai designer mobile first comme ça on se fait pas chier. Même si l'optique d'une ui plus adapté au format bureau est envisagée.
 
-Pour être honête, j'ai un problème sur mobile avec la fonction qui dans la base de donnée enregistre un thème. Il faut que j'investigue mais j'pense que je gère mal un appel dans mon service database, mais c'est marrant (non j'ai pleuré 2 fois) que ce soit que pour les thèmes.
+Pour être honnête, j'ai un problème sur mobile avec la fonction qui dans la base de donnée enregistre un thème. Il faut que j'investigue mais j'pense que je gère mal un appel dans mon service database, mais c'est marrant (non j'ai pleuré 2 fois) que ce soit que pour les thèmes et que sur mobile. Au moins le problème est cerné.
 
 
 #	Interface utilisateur et design
@@ -111,7 +116,7 @@ Cliquer sur la barre du logo trigger le devmode pour skipper facilement les jour
 
 # Atomique design
 
-Vraiment le seul truc que je veux atomiser c'est mon crâne right now. Y'a plein de composant qui devrait jarter dans un avenir proche. Exemple : Au lieu d'avoir un composant pour rename et un pour display. Bah je prend le même et je remplace le "hX" ou "p" par un input. Donc j vois où il y a de la réusabilité à faire.
+Vraiment le seul truc que je veux atomiser c'est mon crâne right now. Y'a plein de composant qui devrait purgé dans un avenir proche. Exemple : Au lieu d'avoir un composant pour rename et un pour display. Bah je prend le même et je remplace le "hX" ou "p" par un input. 
 
 Je reprend l'archi du design system de bootstrap en modifiant les tokens de couleur ou les fonts.
 
@@ -124,12 +129,12 @@ Video : non
 
  Bah j'ai essayé avec le framework intégré à angular pour les test mais bon faudrait que je bench dessus encore car c'est un peu compliqué. (En même temps angular si c'est simple c'est que c'est un rêve ou qu'on a pas compris un truc). Puis il y a un peu un biais de coût irrécupérables, car si on commence pas dès le début bah ça fait qu'on a une quantité énorme à faire ensuite. 
 
-J'pense je lance un lighthouse il va m'insulter (je suis dans le dénie)
+ J'ai quand même envoyé un test lighthouse, et même si y'a une marge de progression c'est moins pire que ce que j'imaginais.
 
 
 ## Phase de développement 
 
-Au début je codais tout propre et pourtant j'allais vraiment trop lentement. Ensuite quand j'ai du accélérer bah ouai j'ai écris des composant c'est vraiment dramatique. Mais bon vitesse et bon code c'est compliqué en tant que junior. Donc j'ai vraiment vu la qualité de mon code drop, cependant j'écrivais plus rapidement du code qui fonctionnais.
+Au début je codais tout propre et pourtant j'allais vraiment trop lentement. Ensuite quand j'ai du accélérer bah ouai j'ai écris des composant c'est vraiment dramatique. Mais bon vitesse et bon code c'est compliqué en tant que junior. Donc j'ai vraiment vu la qualité de mon code drop, cependant j'écrivais plus rapidement du code qui fonctionnais. "Rapidement" c'est sans compter l'entretient et l'absorbtion de la dette technique. Donc plus rapidement c'est très vite dit.
 
 
 ## De génie à idiot
@@ -182,7 +187,10 @@ J'ai aussi pu mettre en place de l'immutabilité (même si j'pense pas que c'ét
 
 Mentions spéciales : Les promesses, try => catch, fonction anonyme, l'opérateur '??' (alors lui c'est vraiment le goat)
 
-Par contre j'ai pris vraiment un grand plaisir à réaliser ce projet (on peu peut être parler d'hyperfixation)
+Par contre j'ai pris vraiment un grand plaisir à réaliser ce projet (on peu parler d'hyperfixation).
+
+Les PWA c'est vraiment incroyable. La seule limite d'un point de vue utilisateur c'est que le process est attaché à chrome/mozilla. Et donc, par exemple le mélangeur audio windows ne detecte que chrome (ce qui fait sens). 
+
 
 # Javascript jpp 
 
@@ -237,3 +245,4 @@ C'est toujours cool d'avoir un projet complet et qui est pas une TODOLIST. Donc 
 - RxJS
 - Web assembly
 - essayer de faire des commit potables
+- Approfondir le hors zonne de angular (faire tourner du code js en dehors de angular ce qui permet de lancer des truc dans un autre thread (je crois))
