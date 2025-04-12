@@ -45,9 +45,9 @@ export class StoreGlobalService implements OnInit {
     return this.currentUserId();
   }
 
-  hasUserRunToDo(): boolean {
-    return true;
-  }
+  // hasUserRunToDo(): boolean {
+  //   return true;
+  // }
 
   ngOnInit() {}
 

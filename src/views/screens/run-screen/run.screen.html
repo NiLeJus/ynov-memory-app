@@ -5,7 +5,16 @@
     actionToPerform="goTo"
     pathToNavigate="/board"
   />
-  <h1 class="text-center">Run</h1>
+
+  <div class="d-flex justify-content-center">
+    <button
+      class="btn-neuro btn-neuro-val mx-1 mb-4"
+      (click)="onValidateRun()"
+      [disabled]="!hasUserRunToDo()"
+    >
+      RUN
+    </button>
+  </div>
 
   @if (hasUserRunToDo()) { }
 </div>
@@ -17,41 +26,29 @@
 >
   @for ( theme of _userThemes$(); track $index) { @if (isMemThemeChecked(theme))
   {
-
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <div class="ms-1">
-      <input
-        class="form-check-input me-1"
-        type="checkbox"
-        id="checkbox-{{$index}}"
-        [checked]="isMemThemeChecked(theme)"
-      />
-      <label class="form-check-label" for="checkbox-{{$index}}" hidden>
-        {{ theme.name }}
-      </label>
+  <div
+    class="neuro-panel clickable d-flex flex-row bg-light align-items-center my-2 rounded-5 justify-content-between"
+  >
+    <h5 class="card-title text-capitalize ms-3">
       {{ theme.name }}
-    </div>
-    <span>
       <span
         [hidden]="!isMemThemeChecked(theme)"
-        class="badge text-bg-primary rounded-pill"
+        class="badge text-bg-success rounded-pill"
       >
         {{ countMemcardToValidate(theme) }}
       </span>
-    </span>
+    </h5>
+
     <!-- Bouton pour ouvrir l'accordéon -->
     <button
-      class="accordion-button collapsed w-auto"
+      class="accordion-button collapsed bg-light w-auto"
       type="button"
       data-bs-toggle="collapse"
       [attr.data-bs-target]="'#flush-collapse-' + $index"
       [attr.aria-controls]="'flush-collapse-' + $index"
       aria-expanded="false"
-    >
-      Toggle Accordion
-    </button>
-    <button (click)="dev(theme)">Dev</button>
-  </li>
+    ></button>
+  </div>
 
   <!-- Contenu de l'accordéon -->
   <div
@@ -62,50 +59,17 @@
     @if (theme.cards && theme.cards.length > 0) { @for ( memcard of theme.cards;
     track $index) {
     <div
-      class="m-3 neuro-panel  align-items-center d-flex flex-row justify-content-between text-start ps-2 my-2"
+      class="neuro-panel h-3em align-items-center d-flex flex-row justify-content-between text-start ps-2 my-2"
     >
       <img
         class="ico-val-level me-2"
         [src]="this.memcardIcon.valIcoPath(memcard.Historic[0].valLevel)"
       />
-      @if (memcard.Historic[0].statusAt === this.ENUM_MEMCARD_STATUS.Validated)
-      {
-      <img class="align-self-center px-0 me-2" src="/app-icons/ico-val.svg" />
-      } @if ( memcard.Historic[0].statusAt ===
-      this.ENUM_MEMCARD_STATUS.NotValidated ) {
-      <img class="align-self-center px-0 me-2" src="/app-icons/ico-deval.svg" />
-      }
       <h6 class="p-0 m-0 ms-2 me-auto align-top d-flex">{{ memcard.title }}</h6>
-
-      <div>
-        <!-- <button
-          href="#"
-          class="btn"
-          (click)="onRenameMemcard(); $event.stopPropagation()"
-        >
-          <img src="pen.svg" />
-        </button> -->
-
-        <button type="button" class="btn">
-          <img src="/app-icons/ico-trash.svg" />
-        </button>
-        <button type="button" class="btn" (click)="dev2(memcard)">DEV</button>
-      </div>
     </div>
     } }
   </div>
-
   } }
 </ul>
 
 }
-
-<div class="d-flex justify-content-center">
-  <button
-    class="btn-success btn"
-    (click)="onValidateRun()"
-    [disabled]="!hasUserRunToDo()"
-  >
-    RUN
-  </button>
-</div>

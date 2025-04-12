@@ -20,7 +20,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
 import { tMemcard } from 'src/_models/memcard.model';
 import { DateStore } from 'src/services/stores/date-store.service';
-import { TextHasRunComponent } from "../../../../atoms/text-has-run/text-has-run.component";
+import { TextHasRunComponent } from '../../../../atoms/text-has-run/text-has-run.component';
 
 @Component({
   selector: 'app-profile-tab',
@@ -29,8 +29,8 @@ import { TextHasRunComponent } from "../../../../atoms/text-has-run/text-has-run
     RouterLink,
     ProfileCreationComponent,
     IndicatorHasRunComponent,
-    TextHasRunComponent
-],
+    TextHasRunComponent,
+  ],
   templateUrl: './profile-tab.component.html',
   styleUrl: './profile-tab.component.scss',
 })
@@ -59,7 +59,7 @@ export class ProfileTabComponent {
   }
 
   onDeleteProfile(): any {
-    const user = this._user(); // Get the user object from the input signal
+    const user = this._user(); 
     if (user && user.id) {
       this.databaseService
         .deleteUserById(user.id)
@@ -102,7 +102,6 @@ export class ProfileTabComponent {
     }
   }
 
-  // Conversion du flux constant en signal Angular pour une gestion réactive
   _userThemes$ = computed(() => {
     return this._user()?.themes;
   });

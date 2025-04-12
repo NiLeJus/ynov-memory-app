@@ -29,9 +29,7 @@
               }
             ],
             "styles": ["src/_styles/_styles.scss"],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.js"]
           },
           "configurations": {
             "production": {
@@ -94,7 +92,7 @@
               }
             ],
             "styles": ["src/_styles/_styles.scss"],
-            "scripts": [],
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.js"],
             "karmaConfig": "karma.conf.js"
           }
         }

@@ -47,9 +47,9 @@ export class MemcardContentObj {
 
 export class MemcardContentPrototype {
   constructor(
-    public value: string | Blob | null,
-    public mediaType: eContentType | null,
-    public description?: string | null,
+    public value: string | Blob,
+    public mediaType: eContentType,
+    public description?: string,
   ) {}
 }
 

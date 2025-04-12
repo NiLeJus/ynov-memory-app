@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { InputModDetector } from './input-mod-detector.service';
+import { Injectable, inject } from '@angular/core';
 import { GenericIconsPathObj } from 'src/_models/generics.model';
 
 export class IconsPathObj {
@@ -14,12 +15,14 @@ export class IconsPathObj {
   providedIn: 'root',
 })
 export class ResponsiveIconsService {
-  isMobile = true;
+  inputModDetector = inject(InputModDetector);
+
+  isMobile = () => !this.inputModDetector.isKeyboardInput();
 
   private mobileIcons(): GenericIconsPathObj {
     return new GenericIconsPathObj({
-      left: 'icon1',
-      right: 'icon3',
+      left: 'app-icons/ico-double-arrow-right.svg',
+      right: 'app-icons/ico-double-arrow-left.svg',
       top: 'icon4',
       down: 'icon5',
     });
@@ -27,15 +30,19 @@ export class ResponsiveIconsService {
 
   private keyboardIcons(): GenericIconsPathObj {
     return new GenericIconsPathObj({
-      left: 'icon1',
-      right: 'icon3',
-      top: 'icon4',
-      down: 'icon5',
+      left: 'app-icons/ico-key-left.svg',
+      right: 'app-icons/ico-key-right.svg',
+      top: 'app-icons/ico-key-up.svg',
+      down: 'app-icons/ico-key-down.svg',
     });
   }
 
   getIcons(): GenericIconsPathObj {
-    return this.mobileIcons();
+    if (this.isMobile()) {
+      return this.mobileIcons();
+    } else {
+      return this.keyboardIcons();
+    }
   }
 
   constructor() {}

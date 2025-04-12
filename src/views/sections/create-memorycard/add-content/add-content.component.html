@@ -1,79 +1,81 @@
-<div class="flex-column d-flex">
-  <h5 class="">Ajouter du contenu</h5>
+<div class="flex-column d-flex mt-2">
+  <!-- <h5 class="">Ajouter du contenu</h5> -->
 
-  <div class="input-group">
-    <button
-      type="button"
-      class="btn btn-outline-dark"
+  <div
+    class="btn-group-sm mb-2 px-5"
+    role="group"
+    aria-label="Content type selector"
+  >
+    <input
+      type="radio"
+      class="btn-check"
+      name="btnradio"
+      id="btnradio1"
+      autocomplete="off"
+      checked
       (click)="onChangeMedia(ENUM_CONTENT_TYPE.Text)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Text)"
-    >
+    />
+    <label class="btn btn-outline-primary mx-1" for="btnradio1">
       <img src="/app-icons/ico-text-file.svg" />
-    </button>
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Image)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Image)"
-    >
-      <img src="/app-icons/ico-image-file.svg" />
-    </button>
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Video)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Video)"
-    >
-      <img src="/app-icons/ico-video-file.svg" />
-    </button>
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Audio)"
-      [class.active]="isMediaSelected(ENUM_CONTENT_TYPE.Audio)"
-    >
-      <img src="/app-icons/ico-audio-file.svg" />
-    </button>
+    </label>
 
+    <input
+      type="radio"
+      class="btn-check"
+      name="btnradio"
+      id="btnradio2"
+      autocomplete="off"
+      (click)="onChangeMedia(ENUM_CONTENT_TYPE.Image)"
+    />
+    <label class="btn btn-outline-primary mx-1" for="btnradio2">
+      <img src="/app-icons/ico-image-file.svg" />
+      <img src="/app-icons/ico-audio-file.svg" />
+    </label>
+  </div>
+
+  <div class="input-group d-flex w-100 flex-nowrap">
     @switch (mediaTypeSlct()) {
       @case (ENUM_CONTENT_TYPE.Text) {
         <textarea
           type="text"
           class="form-control"
-          placeholder="Recipient's username"
-          aria-label="Recipient's username with two button addons"
+          placeholder="Recto text"
+          aria-label="Recto text"
           [(ngModel)]="textValueInput"
         >
         </textarea>
       }
       @default {
-        <input
-          class="form-control form-control-sm"
-          type="file"
-          id="formFile"
-          (change)="onImageSelected($event)"
-        />
-        <textarea
-          type="text"
-          class="form-control"
-          placeholder="Description / Source (facultatif)"
-          [(ngModel)]="descrValueInput"
-        >
-        </textarea>
+        <div class="d-flex flex-column w-100">
+          <input
+            class="form-control"
+            type="file"
+            id="formFile"
+            (change)="onFileSelected($event)"
+            accept="image/*, audio/*"
+          />
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Description / Source (facultatif)"
+            [(ngModel)]="descrValueInput"
+          >
+          </textarea>
+        </div>
       }
     }
 
     <button type="button" class="btn btn-success" (click)="onValidate()">
       <img src="/app-icons/ico-check.svg" />
     </button>
-    <button type="button" class="btn btn-success" (click)="dev()">DEV</button>
   </div>
 </div>
-<div class="file-upload">
-  <!-- @if (this.selectedFile) {
-    <div>
-      <h3>Preview:</h3>
-      <img [src]="previewUrl" alt="Uploaded Photo" style="max-width: 300px" />
-    </div>
-  } -->
-</div>
+
+<!-- @if (previewUrl) {
+  <img
+    [src]="previewUrl"
+    class="img-thumbnail"
+    style="max-width: 150px"
+    alt="Aperçu de l'image"
+  />
+} -->

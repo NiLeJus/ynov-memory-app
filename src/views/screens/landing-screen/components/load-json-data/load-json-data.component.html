@@ -19,9 +19,9 @@
       </div>
 
       <div class="modal-body">
-        <label for="floatingInputValue">Must be a .memjson file</label>
         <div class="input-group">
           <input
+            #fileInput
             type="file"
             class="form-control"
             id="inputGroupFile04"
@@ -40,9 +40,10 @@
             Importer
           </button>
         </div>
+        <label for="floatingInputValue"> Must be a .memjson file</label>
       </div>
 
-      @if (uploadStatus) {
+      <!-- @if (uploadStatus) {
         <div
           class="alert mt-2"
           [ngClass]="{
@@ -52,13 +53,14 @@
         >
           {{ statusMessage }}
         </div>
-      }
+      } -->
 
       <div class="modal-footer">
         <button
           type="button"
           class="btn btn-neuro btn-neuro-dng btn-neuro-sm"
           data-bs-dismiss="modal"
+          (click)="clearFile()"
         >
           Close
         </button>

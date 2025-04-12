@@ -1,0 +1,28 @@
+@import "../../../_styles/colors.tokens.scss";
+.nav-link.active {
+  background-color: $primary; /* Couleur de fond */
+  color: white; /* Couleur du texte */
+}
+
+.inner-shadow-left {
+  box-shadow: 3px -3px 8px 0px rgba(0, 0, 0, 0.3) inset;
+  -webkit-box-shadow: 3px -3px 8px 0px rgba(0, 0, 0, 0.3) inset;
+  -moz-box-shadow: 3px -3px 8px 0px rgba(0, 0, 0, 0.3) inset;
+}
+.inner-shadow {
+  box-shadow: 1px -8px 11px -5px rgba(0,0,0,0.3) inset;
+  -webkit-box-shadow: 1px -8px 11px -5px rgba(0,0,0,0.3) inset;
+  -moz-box-shadow: 1px -8px 11px -5px rgba(0,0,0,0.3) inset;
+}
+
+#first-btn {
+  border-radius: 0% 0% 0% 5px;
+}
+
+#second-btn {
+  border-radius: 0% 0% 0% 0%;
+}
+
+#third-btn {
+  border-radius: 0% 24px 0% 0%;
+}

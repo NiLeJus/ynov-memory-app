@@ -15,16 +15,18 @@
   <button
     class="btn-neuro btn-neuro-val mx-1"
     [routerLink]="['/run']"
-    [disabled]="isBtnRunDisabled"
+    [disabled]="!hasUserRunToDo()"
   >
     Run
   </button>
 </div>
 
-<main class="container d-flex flex-column text-center mt-1">
-  @if (hasUserRunToDo()) {
+<div class="container d-flex flex-column text-center mt-1">
+  @if (!hasUserRunToDo()) {
   <p class="fs-5 mt-5">No cards to run today</p>
+  } @else {
+  <p class="fs-5 mt-5">Run To do</p>
   }
-</main>
+</div>
 
 <app-memory-card-sm />

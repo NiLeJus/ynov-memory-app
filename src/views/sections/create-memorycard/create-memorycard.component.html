@@ -1,109 +1,154 @@
-<div class="container d-flex flex-column neuro-panel px-3 py-3">
-  <div class="flex-column d-flex">
-    <h5 class="">Nouvelle Carte</h5>
-  </div>
-  <div class="input-group">
-    <button type="button" class="btn btn-outline-dark active disabled d-flex">
-      Titre de la carte
-    </button>
-    <input
-      class="form-control"
-      id="exampleFormControlTextarea1"
-      type="text"
-      [(ngModel)]="newCardTitle"
-    />
-  </div>
-  <!-- Memorycard Type -->
-
-  <!--START RECTO PART-->
-  <div class="justify-content-center d-flex flex-column text-center mt-3">
-    <h4>Recto/Question</h4>
-
-    <label for="exampleFormControlInput1" class="form-label"
-      >Question / Titre</label
+<div class="container d-flex flex-column neuro-panel px-0 py-0">
+  <div class="d-flex flex-row mb-4">
+    <h5 class="text-start me-auto mt-2 ms-3">Nouvelle Carte</h5>
+    <button
+      id="first-btn"
+      class="btn btn-sm btn-danger inner-shadow-left"
+      type="button"
+      (click)="onQuit()"
     >
-
-    <!-- Title Input  -->
-
-    <div class="d-flex justify-content-center flex-column text-center"></div>
-
-    @for (item of rectoContent; track $index) {
-      <app-locked-content
-        class="mt-2"
-        [_VALUE]="item.value"
-        [_CONTENT_TYPE]="item.mediaType"
-        (onDeleteMeEvent)="handleDeleteEntry($event, $index, 'recto')"
-      />
-    }
-
-    <div class="mt-2 d-flex flex-row justify-content-center">
-      <button
-        [class.btn-outline-primary]="!isAddingRectoContent()"
-        [class.btn-danger]="isAddingRectoContent()"
-        class="btn d-flex flex-column px-2 p3-1"
-        (click)="onRectoContent(!isAddingRectoContent())"
-      >
-        <img
-          [class.rotate-svg-45]="isAddingRectoContent()"
-          [class.rotate-svg-0]="!isAddingRectoContent()"
-          class="align-self-center px-0"
-          src="/app-icons/ico-add-content.svg"
-        />
-      </button>
-    </div>
-
-    @if (this.isAddingRectoContent()) {
-      <app-add-content (dataSent)="handleData($event, 'recto')" />
-    }
-  </div>
-
-  <!-- START VERSO PART  -->
-  <div class="justify-content-center d-flex flex-column text-center mt-5">
-    <h4>Verso/Réponse</h4>
-    <!-- Default Input  -->
-    <!-- <div class="input-group">
-      <button type="button" class="btn btn-outline-dark active disabled">
-        <img src="/app-icons/ico-text.svg" />
-      </button>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        rows="3"
-      ></textarea>
-    </div> -->
-
-    @for (item of versoContent; track $index) {
-      <app-locked-content
-        class="mt-2"
-        [_VALUE]="item.value"
-        [_CONTENT_TYPE]="item.mediaType"
-        (onDeleteMeEvent)="handleDeleteEntry($event, $index, 'verso')"
-      />
-    }
-    <div class="mt-2 d-flex flex-row justify-content-center">
-      <button
-        [class.btn-outline-primary]="!isAddingVersoContent()"
-        [class.btn-danger]="isAddingVersoContent()"
-        class="btn d-flex flex-column px-2 p3-1"
-        (click)="onVersoContent(!isAddingVersoContent())"
-      >
-        <img
-          [class.rotate-svg-45]="isAddingVersoContent()"
-          [class.rotate-svg-0]="!isAddingVersoContent()"
-          class="align-self-center px-0"
-          src="/app-icons/ico-add-content.svg"
-        />
-      </button>
-    </div>
-    @if (this.isAddingVersoContent()) {
-      <app-add-content (dataSent)="handleData($event, 'verso')" />
-    }
-  </div>
-  <div class="d-flex flex-row">
-    <button type="button" class="btn btn-outline-primary" (click)="onPreview()">
-      Preview
+      <img src="app-icons/ico-cancel.svg" />
     </button>
-    <button class="btn btn-secondary" (click)="onValidate()">Valider</button>
-    <button class="btn btn-danger" (click)="onQuit()">Quit</button>
+    <button
+      id="second-btn"
+      type="button"
+      class="btn btn-sm btn-primary inner-shadow"
+      (click)="onPreview()"
+    >
+      <img src="app-icons/ico-eye.svg" />
+    </button>
+    <button
+      id="third-btn"
+      class="btn btn-sm btn-success inner-shadow"
+      (click)="onValidate()"
+    >
+      <img src="app-icons/ico-check.svg" />
+    </button>
+  </div>
+
+  <div class="px-3">
+    <form class="form-floating">
+      <input
+        type="text"
+        class="form-control"
+        id="floatingInputValue"
+        name="newCardTitle"
+        placeholder="Titre"
+        [(ngModel)]="newCardTitle"
+      />
+      <label for="floatingInputValue">Titre de la carte</label>
+    </form>
+  </div>
+
+  <div class="justify-content-center d-flex flex-column text-center mt-3">
+    <ul
+      class="nav nav-tabs justify-content-center border-0 mb-1"
+      id="myTab"
+      role="tablist"
+    >
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link active px-5 pb-1"
+          id="recto-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#recto-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="recto-tab-pane"
+          aria-selected="true"
+        >
+          <span class="fs-5"> Recto </span>
+          <br />
+          <span class="small">Question</span>
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link px-5 pb-1"
+          id="verso-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#verso-tab-pane"
+          type="button"
+          role="tab"
+          aria-controls="verso-tab-pane"
+          aria-selected="false"
+        >
+          <span class="fs-5"> Verso </span>
+          <br />
+          <span class="small">Réponse</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content mb-3 px-3" id="myTabContent">
+      <div
+        class="tab-pane fade show active text-center"
+        id="recto-tab-pane"
+        role="tabpanel"
+        aria-labelledby="recto-tab"
+        tabindex="0"
+      >
+        @for (item of rectoContent; track $index) {
+          <app-locked-content
+            class="mt-2"
+            [_entry]="item"
+            [_CONTENT_TYPE]="item.mediaType"
+            (onDeleteMeEvent)="handleDeleteEntry($event, $index, 'recto')"
+          />
+        }
+
+        <button
+          [class.btn-outline-primary]="!isAddingRectoContent()"
+          [class.btn-danger]="isAddingRectoContent()"
+          class="btn d-flex flex-column px-2 mx-auto mt-4"
+          (click)="onRectoContent(!isAddingRectoContent())"
+        >
+          <img
+            [class.rotate-svg-45]="isAddingRectoContent()"
+            [class.rotate-svg-0]="!isAddingRectoContent()"
+            class="align-self-center px-0"
+            src="/app-icons/ico-add-content.svg"
+          />
+        </button>
+
+        @if (this.isAddingRectoContent()) {
+          <app-add-content (dataSent)="handleData($event, 'recto')" />
+        }
+      </div>
+
+      <div
+        class="tab-pane fade"
+        id="verso-tab-pane"
+        role="tabpanel"
+        aria-labelledby="verso-tab"
+        tabindex="1"
+      >
+        @for (item of versoContent; track $index) {
+          <app-locked-content
+            class="mt-2"
+            [_entry]="item"
+            [_CONTENT_TYPE]="item.mediaType"
+            (onDeleteMeEvent)="handleDeleteEntry($event, $index, 'verso')"
+          />
+        }
+        <button
+          [class.btn-outline-primary]="!isAddingVersoContent()"
+          [class.btn-danger]="isAddingVersoContent()"
+          class="btn d-flex flex-column px-2 mx-auto mt-4 border"
+          (click)="onVersoContent(!isAddingVersoContent())"
+        >
+          <img
+            [class.rotate-svg-45]="isAddingVersoContent()"
+            [class.rotate-svg-0]="!isAddingVersoContent()"
+            class="align-self-center px-0"
+            src="/app-icons/ico-add-content.svg"
+          />
+        </button>
+
+        @if (this.isAddingVersoContent()) {
+          <app-add-content (dataSent)="handleData($event, 'verso')" />
+        }
+      </div>
+    </div>
   </div>
 </div>

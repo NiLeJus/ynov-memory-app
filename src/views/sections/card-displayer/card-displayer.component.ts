@@ -1,5 +1,16 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  OnDestroy,
+  resource,
+} from '@angular/core';
+import {
+  ResponsiveIconsService,
+  IconsPathObj,
+} from './../../../services/responsive-icons.service';
+import {
   Component,
+  computed,
   effect,
   EventEmitter,
   HostListener,
@@ -8,24 +19,33 @@ import {
   Input,
   OnInit,
   Output,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import {
   eMemcardType,
   eContentType,
   eMemcardStatus,
 } from 'src/_models/enums/app.enums';
-import { tEventPayload } from 'src/_models/generics.model';
-import { MemcardObj, StreakStatObj, tMemcard } from 'src/_models/memcard.model';
+import { GenericIconsPathObj, tEventPayload } from 'src/_models/generics.model';
+import {
+  MemcardContentObj,
+  MemcardObj,
+  StreakStatObj,
+  tMemcard,
+} from 'src/_models/memcard.model';
 import { InputModDetector } from 'src/services/input-mod-detector.service';
+import { MediaTreatmentService } from 'src/services/media-treatment.service';
 import { MemcardIconService } from 'src/services/memcard-icon.service';
 import { MemcardStatsService } from 'src/services/memcard-stats.service';
 import { RunStore } from 'src/services/stores/run-store.service';
+import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-card-displayer',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './card-displayer.component.html',
   styleUrl: './card-displayer.component.scss',
 })
@@ -34,7 +54,9 @@ export class CardDisplayerComponent implements OnInit {
   private modalityService = inject(InputModDetector); //Laisser unused
   public memcardStats = inject(MemcardStatsService);
   public memcardIcon = inject(MemcardIconService);
+  constructor(private viewportScroller: ViewportScroller) {}
 
+  public responsiveIconsService = inject(ResponsiveIconsService);
   //#region DEPENDENCIES ENUMS
   ENUM_MEMOCARD_TYPE = eMemcardType;
   ENUM_MEMCARD_CONTENT = eContentType;
@@ -43,12 +65,19 @@ export class CardDisplayerComponent implements OnInit {
 
   //#endregion
 
+  iconsPathObj: GenericIconsPathObj = this.responsiveIconsService.getIcons();
+  mediaTreatmentService = inject(MediaTreatmentService);
+
   //#region INPUT / DATA
   @Input('currentMemcard') memcard?: tMemcard;
   @Output() onNotifyParent = new EventEmitter<tEventPayload>();
 
   val = signal(0);
   deval = signal(0);
+
+  async dev(versoContent: MemcardContentObj) {
+    console.log('versoContent', versoContent);
+  }
 
   get historic(): MemcardObj['Historic'] {
     return this.memcard?.Historic ?? [];
@@ -61,11 +90,13 @@ export class CardDisplayerComponent implements OnInit {
   switchIsRevealed(newState?: boolean) {
     this.isRevealed.set(newState ?? !this.isRevealed());
   }
+
+  toFalse() {
+    this.isRevealed.set(false);
+  }
   //#endregion
 
   //#region COMPONENT LIFECYCLE
-  constructor() {}
-  ngOnInit(): void {}
   //#endregion
 
   //#region EVENTS & USERINPUT
@@ -76,6 +107,7 @@ export class CardDisplayerComponent implements OnInit {
   }
 
   onReveal() {
+    this.scrollToAnchor('anchor');
     this.switchIsRevealed();
   }
 
@@ -155,5 +187,58 @@ export class CardDisplayerComponent implements OnInit {
 
   streakHandler(memcardHistoric: tMemcard['Historic']): StreakStatObj | void {
     return this.memcardStats.calculateStreak(memcardHistoric);
+  }
+
+  previewUrlsRecto: Map<number, string> = new Map();
+  previewUrlsVerso: Map<number, string> = new Map();
+
+  isValidBlob(content: any): content is Blob {
+    return content instanceof Blob && content.size > 0;
+  }
+
+  async generatePreviewRecto(index: number, blob: Blob): Promise<void> {
+    const url = await this.mediaTreatmentService.generatePreviewUrl(blob);
+    this.previewUrlsRecto.set(index, url);
+  }
+  async generatePreviewVerso(index: number, blob: Blob): Promise<void> {
+    const url = await this.mediaTreatmentService.generatePreviewUrl(blob);
+    this.previewUrlsVerso.set(index, url);
+  }
+
+  async loadPreviewsRecto(memcardRecto: any[]): Promise<void> {
+    for (let index = 0; index < memcardRecto.length; index++) {
+      const rectoContent = memcardRecto[index];
+      if (
+        rectoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Image &&
+        this.isValidBlob(rectoContent.value)
+      ) {
+        await this.generatePreviewRecto(index, rectoContent.value);
+      }
+    }
+  }
+
+  scrollToAnchor(anchor: string): void {
+    setTimeout(() => {
+      this.viewportScroller.scrollToAnchor(anchor);
+    }, 1000);
+  }
+
+  async loadPreviewsVerso(memcardRecto: any[]): Promise<void> {
+    for (let index = 0; index < memcardRecto.length; index++) {
+      const rectoContent = memcardRecto[index];
+      if (
+        rectoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Image &&
+        this.isValidBlob(rectoContent.value)
+      ) {
+        await this.generatePreviewVerso(index, rectoContent.value);
+      }
+    }
+  }
+
+  ngOnInit(): void {
+    const memcardRecto = this.memcard?.recto;
+    this.loadPreviewsRecto(memcardRecto!);
+    const memcardVerso = this.memcard?.verso;
+    this.loadPreviewsVerso(memcardVerso!);
   }
 }

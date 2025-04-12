@@ -34,8 +34,6 @@ export class RunningScreenComponent {
 
   receivedPayload!: tEventPayload;
 
-  handleNextCard($event: tEventPayload) {}
-
   //#endregion
 
   onQuit() {

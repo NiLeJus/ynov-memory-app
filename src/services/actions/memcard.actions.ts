@@ -20,6 +20,9 @@ export class MemcardActionsService {
 
   //#endregion
 
+
+
+
   /**
    * Calculate next date only and return it
    */
@@ -40,7 +43,11 @@ export class MemcardActionsService {
 
     let nextDate = initialDate.plus({ days: daysSpacingFn() });
 
-    console.log('nextdate', nextDate.toISODate()); // Format YYYY-MM-DD
+    if (daysSpacingFn() > 1) {
+      nextDate = initialDate.plus({ days: daysSpacingFn() + 1 });
+    }
+
+    console.log('nextdate', nextDate.toISODate());
 
     if (nextDate) {
       return nextDate.toISODate();
@@ -93,7 +100,7 @@ export class MemcardActionsService {
 
     const newHistoricEntry: tHistoricEntry = new HistoricEntryObj(
       newStatus(),
-      DateTime.now().toISODate(),
+      this.dateStore.$nowFormatted(),
       newValLevel,
       nextDate,
     );
