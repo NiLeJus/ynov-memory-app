@@ -3,6 +3,7 @@ import {
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
   EventEmitter,
+  inject,
   output,
   Output,
   signal,
@@ -24,12 +25,17 @@ export class AddContentComponent {
   //#region CORE
   ENUM_CONTENT_TYPE = eContentType; // Expose l'enum
   readonly memorycardTypes = Object.values(this.ENUM_CONTENT_TYPE); // Transforme en tableau pour itérer dessus
-  constructor(public mediaTreatmentService: MediaTreatmentService) {}
   //#endregion
+
+  mediaTreatmentService = inject(MediaTreatmentService);
 
   //#region COMPONENT LIFECYCLES
   ngOnDestroy() {}
-
+  previewUrl: string | null = null;
+  isImage = false;
+  fileName = '';
+  fileType = '';
+  error = '';
   //#endregion
 
   //#region FORMS & INPUT
@@ -37,13 +43,13 @@ export class AddContentComponent {
   mediaTypeSlct: WritableSignal<eContentType> = signal(
     this.ENUM_CONTENT_TYPE.Text,
   );
-  textValueInput2: string = '';
 
   textValueInput: WritableSignal<string> = signal('');
   descrValueInput: WritableSignal<string> = signal('');
   fileBlobInput: WritableSignal<Blob> = signal(new Blob());
 
   onChangeMedia(newContentType: eContentType) {
+    console.log('New Media type', newContentType);
     this.mediaTypeSlct.set(newContentType);
   }
 
@@ -52,46 +58,75 @@ export class AddContentComponent {
   }
 
   async onValidate() {
-    // this.isContentValid();
-    this.dataSent.emit(this.FactoryContent());
+    this.dataSent.emit(this.factoryContent());
     this.ngOnDestroy();
   }
+
   //#endregion
 
-  //#region EMIT EVENT & DATA
+  //#region EVENT OUTPUT DATA
   destroyComponent = signal(false);
   dataSent = output<tMemcardContent>();
+
   //#endregion
 
   dev() {}
 
-  async onImageSelected(event: Event): Promise<void> {
+  clearFile() {
+    this.previewUrl = null;
+    this.fileType = '';
+    this.error = '';
+  }
+
+  onImageSelected(event: Event): Promise<Blob> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
-
-      try {
-        const blob = await this.mediaTreatmentService.convertFileToBlob(file);
-
-        console.log('URL Blob :', blob);
-
-        this.fileBlobInput.set(blob);
-      } catch (error) {
-        console.error('Erreur lors du traitement de l’image :', error);
-      }
+      return this.mediaTreatmentService.convertFileToBlob(input.files[0]);
+    } else {
+      throw new Error('OnimageSected Error');
     }
   }
 
+  // Modification de la méthode onFileSelected
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) return;
+
+    try {
+      const blob = await this.mediaTreatmentService.convertFileToBlob(file);
+      this.fileBlobInput.set(blob);
+
+      this.previewUrl =
+        await this.mediaTreatmentService.generatePreviewUrl(blob);
+
+      this.fileName = file.name;
+      this.fileType = file.type;
+      this.isImage = this.mediaTreatmentService.isImageType(file);
+    } catch (err) {
+      this.error = 'Erreur lors du traitement du fichier';
+    }
+  }
   //#region FACTORY CONTENT
 
-  FactoryContent() {
+  factoryContent() {
+    if (this.mediaTreatmentService.isAudioType(this.fileBlobInput())) {
+      this.mediaTypeSlct.set(this.ENUM_CONTENT_TYPE.Audio);
+    }
+    console.log('file is', this.mediaTypeSlct());
+
     switch (this.mediaTypeSlct()) {
       case this.ENUM_CONTENT_TYPE.Text:
+        console.log('is text');
         return new MemcardContentObj(this.textValueInput(), eContentType.Text);
       default:
+        console.log('is else');
+        console.log(this.fileBlobInput());
         return new MemcardContentObj(
           this.fileBlobInput(),
           this.mediaTypeSlct(),
+          this.descrValueInput(),
         );
     }
   }

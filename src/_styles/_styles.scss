@@ -42,6 +42,11 @@ hr.dashed {
 
 body {
   background-color: $light;
+  caret-color: transparent;
+}
+
+input {
+  caret-color: auto;
 }
 
 .rotate-svg-0 {
@@ -179,8 +184,9 @@ button {
 }
 
 .btn-neuro-sm {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  font-size: 1em;
 }
 
 .btn-neuro-prim {
@@ -193,6 +199,9 @@ button {
 }
 
 .btn-profile-bar {
+  border: none;
+  height: 100%;
+  box-sizing: border-box !important;
 }
 
 .btn-profile-bar:hover {

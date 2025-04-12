@@ -19,9 +19,12 @@ import { BrandHeaderComponent } from '../../organism/brand-header/brand-header.c
 import { DatabaseService } from 'src/services/database/database.service';
 import { ProfileCreationComponent } from './components/profile-creation/profile-creation.component';
 import { ProfileTabComponent } from './components/profile-tab/profile-tab.component';
-import { tProfile } from 'src/_models/profile.model';
+import { tMemTheme, tProfile } from 'src/_models/profile.model';
 import { MemcardActionsService } from 'src/services/actions/memcard.actions';
 import { LoadJsonDataComponent } from './components/load-json-data/load-json-data.component';
+import { DateTime } from 'luxon';
+import { tMemcard } from 'src/_models/memcard.model';
+import { DateStore } from 'src/services/stores/date-store.service';
 
 @Component({
   selector: 'app-landing-screen',
@@ -36,6 +39,7 @@ import { LoadJsonDataComponent } from './components/load-json-data/load-json-dat
 })
 export class LandingScreenComponent implements OnInit {
   public databaseService = inject(DatabaseService);
+  public dateStore = inject(DateStore);
 
   // Conversion du flux constant en signal Angular pour une gestion réactive
   _users: Signal<tProfile[]> = toSignal(this.databaseService.getAllUsers$(), {
@@ -55,5 +59,6 @@ export class LandingScreenComponent implements OnInit {
   }
 
   onUpload() {}
+
 
 }

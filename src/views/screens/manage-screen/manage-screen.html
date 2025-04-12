@@ -2,11 +2,12 @@
   [_profileStats]="_user$()?.statistics"
   [_username]="_user$()?.name"
 />
+<atm-button-quit textToDisplay="Retour" actionToPerform="goBoard" />
 
 <div>
   <div class="container text-center">
     <button (click)="switchIsCreatingTheme()" class="my-2 btn btn-outline-dark">
-      Create New Theme
+      Nouveau thème
     </button>
     @if (!this.isCreatingMemcard()) {
     <div class="col">
@@ -122,10 +123,9 @@
         <button type="button" class="btn">
           <img src="/app-icons/ico-trash.svg" />
         </button>
+        <!-- <button type="button" class="btn" (click)="dev(memcard)">DEV</button> -->
       </div>
     </div>
-
-    <!-- Contenu de la carte -->
 
     }
   </div>

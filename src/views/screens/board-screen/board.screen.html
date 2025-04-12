@@ -2,27 +2,31 @@
   [_profileStats]="_user$()?.statistics"
   [_username]="_user$()?.name"
 />
+<atm-button-quit
+  textToDisplay="se déconnecter"
+  actionToPerform="goQuit"
+  [isSm]="true"
+/>
 
 <div class="d-flex flex-row justify-content-center mt-3">
-  <button
-    class="btn-neuro btn-neuro-prim mx-1"
-    [routerLink]="['/manage', _user$()?.name]"
-  >
+  <button class="btn-neuro btn-neuro-prim mx-1" [routerLink]="['/manage']">
     Manage
   </button>
   <button
     class="btn-neuro btn-neuro-val mx-1"
     [routerLink]="['/run']"
-    [disabled]="isBtnRunDisabled"
+    [disabled]="!hasUserRunToDo()"
   >
     Run
   </button>
 </div>
 
-<main class="container d-flex flex-column text-center mt-1">
-  @if (hasUserRunToDo()) {
+<div class="container d-flex flex-column text-center mt-1">
+  @if (!hasUserRunToDo()) {
   <p class="fs-5 mt-5">No cards to run today</p>
+  } @else {
+  <p class="fs-5 mt-5">Run To do</p>
   }
-</main>
+</div>
 
 <app-memory-card-sm />

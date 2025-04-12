@@ -5,6 +5,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
 
 @Injectable({
@@ -12,6 +13,7 @@ import { DateTime } from 'luxon';
 })
 export class DateStore {
   constructor() {}
+  dateChanged$ = toObservable(computed(() => this.daysToAdd()));
 
   daysToAdd = signal(0);
 

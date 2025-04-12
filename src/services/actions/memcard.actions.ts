@@ -20,12 +20,15 @@ export class MemcardActionsService {
 
   //#endregion
 
+
+
+
   /**
    * Calculate next date only and return it
    */
   private processNextDate(newValLevel: number): string {
-    const daysSpacing = _DAYS_SPACING;
-
+    const daysSpacingTable = _DAYS_SPACING;
+    console.log('arg newValLevel', newValLevel);
     const initialDate = DateTime.fromISO(this.dateStore.now());
     if (!initialDate.isValid) {
       throw new Error(
@@ -33,9 +36,18 @@ export class MemcardActionsService {
       );
     }
 
-    let nextDate = initialDate.plus({ days: daysSpacing[newValLevel] + 2 });
+    const daysSpacingFn = (): number => {
+      console.log('spacing days is', daysSpacingTable[newValLevel]);
+      return daysSpacingTable[newValLevel];
+    };
 
-    console.log(nextDate.toISODate()); // Format YYYY-MM-DD
+    let nextDate = initialDate.plus({ days: daysSpacingFn() });
+
+    if (daysSpacingFn() > 1) {
+      nextDate = initialDate.plus({ days: daysSpacingFn() + 1 });
+    }
+
+    console.log('nextdate', nextDate.toISODate());
 
     if (nextDate) {
       return nextDate.toISODate();
@@ -62,23 +74,33 @@ export class MemcardActionsService {
 
     const newStatus = () => {
       if (hasPassed) {
-        ++newValLevel;
+        console.log('newValLevel', newValLevel);
         return this.ENUM_MEMCARD_STATUS.Validated;
       } else {
-        --newValLevel;
         if (newValLevel < 0) {
           newValLevel = minValLevel;
         }
+        console.log('newValLevel', newValLevel);
         return this.ENUM_MEMCARD_STATUS.NotValidated;
       }
     };
 
+    if (hasPassed) {
+      ++newValLevel;
+      console.log('newValLevel', newValLevel);
+    } else {
+      --newValLevel;
+      if (newValLevel < 0) {
+        newValLevel = minValLevel;
+      }
+      console.log('newValLevel', newValLevel);
+    }
+
     let nextDate = this.processNextDate(newValLevel);
 
-    // Création d'une nouvelle entrée historique
     const newHistoricEntry: tHistoricEntry = new HistoricEntryObj(
       newStatus(),
-      DateTime.now().toISODate(),
+      this.dateStore.$nowFormatted(),
       newValLevel,
       nextDate,
     );

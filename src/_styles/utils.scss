@@ -10,6 +10,21 @@
   color: inherit;
   background: $light;
   width: auto;
+  background-color: $light !important;
+}
+
+.input-group {
+  border: none;
+  outline: none;
+  font-size: inherit;
+  color: inherit;
+  background: $light;
+  width: auto;
+  background-color: $light !important;
+}
+
+.input-group:focus {
+  outline: none;
 }
 
 .editable-input:focus {

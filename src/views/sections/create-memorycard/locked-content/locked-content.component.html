@@ -1,13 +1,50 @@
-<div class="input-group">
-  <button type="button" class="btn btn-outline-dark active disabled">
-    <img [src]="getIconToDisplay()" />
-  </button>
-  <textarea
-    [value]="_VALUE()"
-    class="form-control"
-    id="exampleFormControlTextarea1"
-    rows="auto"
-  ></textarea>
+<div class="input-group mt-2">
+  @if (this._entry.mediaType == "TEXT") {
+    <button type="button" class="btn btn-outline-dark disable">
+      <img src="app-icons/ico-text-file.svg" />
+    </button>
+    <textarea
+      [value]="_entry.value"
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="1"
+    ></textarea>
+  }
+
+  @if (this._entry.mediaType == "IMAGE") {
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      data-bs-toggle="modal"
+      [attr.data-bs-target]="'#' + uniqueId"
+    >
+      <img src="app-icons/ico-eye.svg" />
+    </button>
+    <textarea
+      [value]="_entry.description"
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="1"
+    ></textarea>
+  }
+
+  @if (this._entry.mediaType == "AUDIO") {
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      data-bs-toggle="modal"
+      [attr.data-bs-target]="'#' + uniqueId"
+    >
+      <img [src]="getIconToDisplay()" />
+    </button>
+    <textarea
+      [value]="_entry.description"
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="1"
+    ></textarea>
+  }
+
   <button type="button" class="btn btn-success" (click)="onModify()">
     <img src="/app-icons/ico-edit.svg" />
   </button>
@@ -15,6 +52,69 @@
     <img src="/app-icons/ico-trash.svg" />
   </button>
 </div>
-@if (this._CONTENT_TYPE() == "IMAGE") {
-  <img [src]="_VALUE()" />
+
+@if (previewUrl()) {
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    [id]="uniqueId"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="previewModalLabel"
+    aria-hidden="true"
+  >
+    @if (_entry.mediaType === "IMAGE") {
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="imageModalLabel">Prévisualisation</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <img
+              [src]="previewUrl()"
+              class="img-thumbnail"
+              style="max-width: 550px"
+              alt="Aperçu de l'image"
+            />
+            <p>{{ _entry.description }}</p>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (_entry.mediaType === "AUDIO") {
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="audioModalLabel">
+              Prévisualisation Son
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <audio controls #audioPlayer>
+              <source [src]="previewUrl()" [type]="blob()?.type" />
+              Votre navigateur ne supporte pas la lecture audio.
+            </audio>
+            <p>{{ _entry.description }}</p>
+
+            <!-- <button class="btn btn-sm btn-primary mt-2" (click)="playPause()">
+              {{ isPlaying() ? "Pause" : "Lecture" }}
+            </button> -->
+          </div>
+        </div>
+      </div>
+    }
+  </div>
 }

@@ -16,3 +16,12 @@ export class GenericIconsPathObj {
     });
   }
 }
+export class TimestampTrigger {
+  constructor(triggerAt: number) {}
+}
+
+declare global {
+  export interface NotificationOptions {
+    showTrigger?: TimestampTrigger;
+  }
+}

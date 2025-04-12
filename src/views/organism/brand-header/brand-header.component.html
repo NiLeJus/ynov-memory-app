@@ -1,6 +1,13 @@
-<div class="d-flex flex-row justify-content-center py-3">
-  <div class="d-flex flex-row align-items-center text-center">
-    <img class="mx-auto me-2" src="Logo-brand.svg" width="20px" alt="Logo" />
+@if (!isDevMode) {
+  <div
+    class="d-flex flex-row justify-content-center py-3"
+    (click)="handleClick(true)"
+  >
+    <img class="me-2" src="Logo-brand.svg" width="20px" alt="Logo" />
     <p class="brand-typo mb-0">MEMORY APP</p>
   </div>
-</div>
+}
+
+@if (isDevMode) {
+  <app-dev-bar />
+}

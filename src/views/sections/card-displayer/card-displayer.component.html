@@ -1,5 +1,5 @@
 <div
-  class="neuro-panel memcard d-flex flex-column mt-5 pb-3"
+  class="neuro-panel memcard d-flex flex-column mt-2 pb-3"
   (swipeleft)="onSwipeLeft()"
   (swiperight)="onSwipeRight()"
   (swipeup)="onSwipeUp()"
@@ -14,12 +14,6 @@
       (swipedown)="onSwipeDown()"
     >
       <div class="left-wrapper">
-        <!-- <h6>Runned</h6> -->
-        <!-- <p class="stats-displayer">
-          {{ this.memcardStats.processRunnedNb(memcard.Historic) }}
-        </p> -->
-        <!-- <h6>Val Lvl</h6> -->
-        <!-- <h6>Val count</h6> -->
         <p class="stats-displayer">
           {{ this.memcardStats.processValNb(memcard.Historic) }}
           <img class="align-self-center px-0" src="/app-icons/ico-val.svg" />
@@ -76,15 +70,44 @@
     </div>
     <hr class="pt-0 mt-0 w-75 mx-auto" />
     <div class="px-5 text-center">
-      <p class="text-center p-3">{{ memcard.title }}</p>
-      @if (memcard.recto.length > 0) {
-        @for (rectoContent of memcard.recto; track $index) {
-          <h5 class="">{{ rectoContent.value }}</h5>
-          <!-- <p class="">{{ rectoContent.description }}</p> -->
-        }
-      }
+      <h4 class="text-center p-3">{{ memcard.title }}</h4>
+
+      <hr class="pt-0 mt-0 w-75 mx-auto" />
 
       @if (!isRevealed()) {
+        @if (memcard.recto.length > 0) {
+          @for (rectoContent of memcard.recto; track $index) {
+            @if (
+              rectoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Image &&
+              isValidBlob(rectoContent.value)
+            ) {
+              <img
+                *ngIf="previewUrlsRecto.has($index)"
+                [src]="previewUrlsRecto.get($index)"
+                class="img-thumbnail"
+                alt="Aperçu de l'image"
+              />
+            }
+            @if (
+              rectoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Audio &&
+              isValidBlob(rectoContent.value)
+            ) {
+              <audio controls #audioPlayer>
+                <source
+                  *ngIf="previewUrlsRecto.has($index)"
+                  [src]="previewUrlsRecto.get($index)"
+                />
+                Votre navigateur ne supporte pas la lecture audio.
+              </audio>
+              <h5>{{ rectoContent.description }}</h5>
+            }
+            @if (rectoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Text) {
+              <h5>{{ rectoContent.value }}</h5>
+              <h5>{{ rectoContent.description }}</h5>
+            }
+          }
+        }
+
         <button
           class="btn-neuro btn-neuro-dng mx-auto mt-5"
           (click)="onReveal()"
@@ -94,29 +117,67 @@
       }
 
       @if (isRevealed()) {
-        <hr class="pt-0 mt-0 w-75 mx-auto" />
-        <div class="verso-container text-center px-1">
-          <p>Answer</p>
+        @if (memcard.verso.length > 0) {
           @for (versoContent of memcard.verso; track $index) {
-            <h5>{{ versoContent.value }}</h5>
-            <p>{{ versoContent?.description }}</p>
+            @if (
+              versoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Image &&
+              isValidBlob(versoContent.value)
+            ) {
+              <img
+                *ngIf="previewUrlsVerso.has($index)"
+                [src]="previewUrlsVerso.get($index)"
+                class="img-thumbnail"
+                alt="Aperçu de l'image"
+              />
+            }
+            @if (
+              versoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Audio &&
+              isValidBlob(versoContent.value)
+            ) {
+              <audio controls #audioPlayer>
+                <source
+                  *ngIf="previewUrlsVerso.has($index)"
+                  [src]="previewUrlsVerso.get($index)"
+                />
+                Votre navigateur ne supporte pas la lecture audio.
+              </audio>
+              <h5>{{ versoContent.description }}</h5>
+            }
+            @if (versoContent.mediaType === this.ENUM_MEMCARD_CONTENT.Text) {
+              <h5>{{ versoContent.value }}</h5>
+              <h5>{{ versoContent.description }}</h5>
+            }
           }
-        </div>
+        }
       }
 
       @if (isRevealed()) {
-        <div class="d-flex flex-row justify-content-center mt-5">
-          <button
-            class="btn-neuro btn-neuro-dng"
-            (click)="onValidate(false, memcard)"
-          >
-            Faux</button
-          ><button
-            class="btn-neuro btn-neuro-val"
-            (click)="onValidate(true, memcard)"
-          >
-            Juste
-          </button>
+        <button
+          class="btn-neuro btn-neuro-prim btn-neuro-sm mx-auto mb-3 mt-5 align-top"
+          (click)="onReveal()"
+        >
+          Revoir
+        </button>
+        <div class="d-flex flex-row justify-content-center">
+          <div class="d-flex flex-row">
+            <img class="ico-input-deval" src="app-icons/ico-key-left.svg" />
+            <button
+              class="btn-neuro btn-neuro-dng ms-1"
+              (click)="onValidate(false, memcard)"
+            >
+              Faux
+            </button>
+          </div>
+
+          <div class="d-flex flex-row">
+            <button
+              class="btn-neuro btn-neuro-val me-1"
+              (click)="onValidate(true, memcard)"
+            >
+              Juste
+            </button>
+            <img class="ico-input-val" src="app-icons/ico-key-right.svg" />
+          </div>
         </div>
       }
     </div>

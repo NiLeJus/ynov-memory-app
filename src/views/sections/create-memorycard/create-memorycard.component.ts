@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-
 import { tMemcardContent } from 'src/_models/memcard.model';
 
 import { AddContentComponent } from './add-content/add-content.component';
@@ -79,7 +78,6 @@ export class CreateMemorycardComponent {
         break;
       case 'recto':
         console.log(`received recto`);
-
         this.isAddingRectoContent.set(false);
         this.rectoContent.push(event);
         break;
@@ -96,13 +94,12 @@ export class CreateMemorycardComponent {
   }
 
   handleDeleteEntry($event: any, $index: any, rectoOrVerso: 'verso' | 'recto') {
-    console.log('received');
     switch (rectoOrVerso) {
       case 'verso':
-        this.versoContent.splice($index);
+        this.versoContent.splice($index, 1);
         break;
       case 'recto':
-        this.rectoContent.splice($index);
+        this.rectoContent.splice($index, 1);
         break;
     }
     return true;
