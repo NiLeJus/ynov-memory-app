@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 export class AlertService {
   private alertPlaceholder: HTMLElement | null;
 
-
   private _alerts: any[] = [];
   alerts = new Subject<any[]>();
 
@@ -19,11 +18,6 @@ export class AlertService {
     }
   }
 
-  /**
-   * Show a Bootstrap alert dynamically.
-   * @param message The message to display in the alert.
-   * @param type The type of alert (e.g., 'success', 'danger', 'info', etc.).
-   */
   showAlert(
     message: string,
     type:
@@ -34,23 +28,19 @@ export class AlertService {
       | 'warning'
       | 'info'
       | 'light'
-      | 'dark'
+      | 'dark',
   ) {
-    if (!this.alertPlaceholder) return;
-
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = `
-      <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    `;
-
-    this.alertPlaceholder.append(wrapper);
-
-    // Automatically remove the alert after a timeout
-    setTimeout(() => {
-      wrapper.remove();
-    }, 5000); // Adjust timeout as needed
+    //   if (!this.alertPlaceholder) return;
+    //   const wrapper = document.createElement('div');
+    //   wrapper.innerHTML = `
+    //     <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+    //       ${message}
+    //       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    //     </div>
+    //   `;
+    //   this.alertPlaceholder.append(wrapper);
+    //   setTimeout(() => {
+    //     wrapper.remove();
+    //   }, 5000);
   }
 }
