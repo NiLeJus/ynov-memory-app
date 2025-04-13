@@ -2,6 +2,8 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
+Disponible : https://nissme.fr/
+
 ## Pour tester
 
 npm install -g @angular/cli 
@@ -38,18 +40,20 @@ Click on the logo to make the dev bar appears, it's gonna be easier to test. Tes
 
 ## Deployment 
 
+Disponible : https://nissme.fr/
+
 Le script pour le déploiement se trouve dans : github/workflow.
 
-Il est encore en ftp car je suis vraiment mauvais en ssh je comprend pas un truc à un moment je pense. J'ai déjà prévu des cours avec Théo à ce sujet aha.
+Il est encore en ftp car je suis vraiment mauvais en ssh je comprend pas un truc à un moment je pense. 
 
-Je passe par O2switch car Français et c'est assez facile à prendre en main.
+Je passe par O2switch car Français et c'est assez facile à prendre en main. Y'a un fichier htaccess à config dessus.
 
 
 ## Branch on repo
 
-Je vais continuer ce projet donc sur le site web ce sera la dernière version. Cependant je garderai cette branche "main" en l'état pour être évaluer au moment du rendu. 
+Je vais continuer ce projet donc sur le site web ce sera la cette version. Et je garderai cette branche "main" en l'état pour être évaluer au moment du rendu. 
 
-Il y a une branche main-save sur le github. En fait y'a un moment ou j'ai push --force (oui je sais mais j'avais peur de rebase ou truc), donc j'ai quand même save au cas où cela aurait écrasé les historiques de commit existants (oui bon ok j'ai save car j'avais peur).  
+Il y a une branche main-save sur le github. En fait y'a un moment ou j'ai push --force (oui je sais mais j'avais peur de rebase ou truc), donc j'ai quand même save au cas où cela aurait écrasé les historiques de commit existants.  
 
 ## Features
 
@@ -67,7 +71,6 @@ Notifications : ne marche pas (Bon je pense que en fait je suis parti sur un tru
 Sachant que les medias sont 'Blobisé' j'sais pas si une video c'est vraiment viable avec ce système. Ou alors il faudrait les compressées. Ce que j'ai essayé de faire pour les images à un moment avec une lib webassembly. Alors je l'ai plus en tête (car oui ça a pas marché), mais je sais que c'est celle sur laquelle Sharp est build.
 
 Bon c'est sur que en terme de perf ça va pas être top de stocker dans idb les blob, mais c'est la solution la plus simple que j'ai trouvé pour pouvoir récupérer les images depuis l'export des données en json.
-
 
 #	Révision et répétition espacée
 
@@ -106,7 +109,9 @@ Pour être honnête, j'ai un problème sur mobile avec la fonction qui dans la b
 
 #	Interface utilisateur et design
 
-Bon de base j'avais fait une tite maquette mais en fait j'ai vite arrété car le nerf de la guerre et la vraie difficulté c'était le dev. Donc j'ai tout envoyé à la volée au fur et à mesure. Ca pourrait être bcp mieux et mais ça passe.
+Bon de base j'avais fait une tite maquette mais en fait j'ai vite arrêté car le nerf de la guerre et la vraie difficulté c'était le dev. Donc j'ai tout envoyé à la volée au fur et à mesure. Ca pourrait être bcp mieux et mais ça passe.
+
+![Texte alternatif](.github/images/maquette_screenshot.png)
 
 
 #	Données de test
@@ -242,6 +247,7 @@ C'est toujours cool d'avoir un projet complet et qui est pas une TODOLIST. Donc 
 # Suite de l'apprentissage 
 
 - TDD
+- Setup le ci cd en ssh
 - RxJS
 - Web assembly
 - essayer de faire des commit potables

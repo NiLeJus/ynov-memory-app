@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,22 @@ export class DateStore {
     DateTime.now().plus({ days: this.daysToAdd() }).toISODate(),
   );
 
+  getCurrentDate(): string {
+    return DateTime.now().plus({ days: this.daysToAdd() }).toISODate();
+  }
+
   passOneDay() {
     this.daysToAdd.update((value) => ++value);
+    this.triggerAction();
+  }
+
+  //Fire event
+
+  private triggerSubject = new Subject<void>();
+
+  triggerObservable = this.triggerSubject.asObservable();
+
+  triggerAction(): void {
+    this.triggerSubject.next();
   }
 }

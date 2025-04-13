@@ -59,7 +59,7 @@ export class ProfileTabComponent {
   }
 
   onDeleteProfile(): any {
-    const user = this._user(); 
+    const user = this._user();
     if (user && user.id) {
       this.databaseService
         .deleteUserById(user.id)
@@ -76,6 +76,10 @@ export class ProfileTabComponent {
 
   async onDownload(userId: tProfile['id']) {
     await this.profileExportService.exportUserData(userId);
+  }
+
+  onCancelRenaiming() {
+    this.isRenaming.set(false);
   }
 
   async onValidateRenaiming(): Promise<void> {
