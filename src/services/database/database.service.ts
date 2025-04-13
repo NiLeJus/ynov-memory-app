@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { liveQuery, Observable } from 'dexie';
 import { db } from '../../_data/db';
 import { tMemTheme, tProfile } from 'src/_models/profile.model';
@@ -16,6 +16,17 @@ import { tMemcard } from 'src/_models/memcard.model';
  */
 export class DatabaseService {
   public storeGlobalService = inject(StoreGlobalService);
+
+  private _USERSDATA$$ = liveQuery(() => db.users.toArray());
+  private usersSignal = signal<tProfile[]>([]);
+
+  constructor() {
+    this._USERSDATA$.subscribe((users) => {
+      this.usersSignal.set([...users]);
+    });
+  }
+
+  users$ = this.usersSignal.asReadonly();
 
   _USERSDATA$: Observable<tProfile[]> = liveQuery(() => db.users.toArray());
   _SELECTED_USERID$ = this.storeGlobalService.currentUserId;
@@ -48,6 +59,46 @@ export class DatabaseService {
               // Remplace la carte trouvée par le nouvel objet Memcard
               theme.cards[cardIndex] = updatedMemcard;
               await db.users.put(user); // Sauvegarde l'utilisateur mis à jour
+              console.log(updatedMemcard);
+              return { status: 'ok' };
+            }
+          }
+        }
+
+        throw new Error('Memcard not found in any theme');
+      });
+
+      return { status: 'ok' };
+    } catch (error) {
+      console.error(
+        `Error updating memcard with ID ${updatedMemcard.id}:`,
+        error,
+      );
+      return { status: 'error', error };
+    }
+  }
+
+  async updateMemcardByIDWithUserID(
+    updatedMemcard: tMemcard,
+    userId: tProfile['id'],
+  ): Promise<{ status: 'ok' | 'error'; error?: any }> {
+    if (userId === null) {
+      throw new Error('user id is not defined');
+    }
+
+    try {
+      await db.transaction('rw', db.users, async () => {
+        const user = await db.users.get(userId);
+        if (!user) throw new Error('User not found');
+
+        if (user.themes) {
+          for (const theme of user.themes) {
+            const cardIndex = theme.cards.findIndex(
+              (card) => card.id === updatedMemcard.id,
+            );
+            if (cardIndex !== -1) {
+              theme.cards[cardIndex] = updatedMemcard;
+              await db.users.put(user);
               console.log(updatedMemcard);
               return { status: 'ok' };
             }

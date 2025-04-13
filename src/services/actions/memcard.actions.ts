@@ -20,9 +20,6 @@ export class MemcardActionsService {
 
   //#endregion
 
-
-
-
   /**
    * Calculate next date only and return it
    */
@@ -46,6 +43,17 @@ export class MemcardActionsService {
     if (daysSpacingFn() > 1) {
       nextDate = initialDate.plus({ days: daysSpacingFn() + 1 });
     }
+
+    if (newValLevel === 1) {
+      nextDate = initialDate.plus({ days: 1 });
+      console.error('Is Tomorow');
+    }
+
+    //!piste pour trigger pas faites et level zero le lendemain
+    // if (newValLevel === 0) {
+    //   console.error('Is Tomorow');
+    //   nextDate = initialDate.plus({  });
+    // }
 
     console.log('nextdate', nextDate.toISODate());
 
@@ -108,7 +116,10 @@ export class MemcardActionsService {
     // Ajout immuable de la nouvelle entrée historique
     const newHistoric = [newHistoricEntry, ...currHistoric];
 
-    // Retour d'un nouvel objet memcard avec les modifications
+    console.log('memcard in process', {
+      ...memcard,
+      Historic: newHistoric,
+    });
     return {
       ...memcard,
       Historic: newHistoric,
@@ -128,24 +139,28 @@ export class MemcardActionsService {
     console.log('updating data in db');
     this.databaseService.updateMemcardByID(memcardToUpdate);
   }
+
+  updateMemcardInDBWithUserID(memcardToUpdate: tMemcard) {
+    console.log('updating data in db');
+  }
+
+  //! Old sans immuabilité
+  // oldProcessNextDate(memcardData: tMemcard, hasPassed: boolean) {
+  //   let memcard = memcardData;
+  //   let historic = memcard.Historic;
+  //   const defaultValLevel = 0;
+  //   let newValLevel = historic[0]?.valLevel ?? defaultValLevel;
+
+  //   const newStatus: eMemcardStatus = this.memcardStatus[+hasPassed];
+
+  //   let newHistoricEntry: tHistoricEntry = new HistoricEntryObj(
+  //     newStatus,
+  //     DateTime.now().toISODate(),
+  //     newValLevel,
+  //     this.processNewDate(hasPassed)!,
+  //   );
+  //   memcard.Historic?.unshift(newHistoricEntry);
+
+  //   return memcard;
+  //
 }
-
-//! Old sans immuabilité
-// oldProcessNextDate(memcardData: tMemcard, hasPassed: boolean) {
-//   let memcard = memcardData;
-//   let historic = memcard.Historic;
-//   const defaultValLevel = 0;
-//   let newValLevel = historic[0]?.valLevel ?? defaultValLevel;
-
-//   const newStatus: eMemcardStatus = this.memcardStatus[+hasPassed];
-
-//   let newHistoricEntry: tHistoricEntry = new HistoricEntryObj(
-//     newStatus,
-//     DateTime.now().toISODate(),
-//     newValLevel,
-//     this.processNewDate(hasPassed)!,
-//   );
-//   memcard.Historic?.unshift(newHistoricEntry);
-
-//   return memcard;
-// }

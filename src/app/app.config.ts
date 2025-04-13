@@ -24,7 +24,7 @@ class CustomHammerConfig extends HammerGestureConfig {
     swipe: {
       direction: Hammer.DIRECTION_ALL,
       threshold: 5,
-      velocity: 0.3, // Vitesse minimale },
+      velocity: 0.3,
     },
   };
 }
@@ -38,16 +38,15 @@ export const appConfig: ApplicationConfig = {
       url: (name: string) => `app-icons/${name}.svg`,
     }),
     provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
+      enabled: true,
+      scope: './',
       registrationStrategy: 'registerWhenStable:30000',
     }),
     provideHttpClient(),
     { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig },
-    importProvidersFrom(HammerModule),
-    provideServiceWorker('ngsw-worker.js'),
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
+    importProvidersFrom(HammerModule), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }),
   ],
 };
