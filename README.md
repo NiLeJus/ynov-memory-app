@@ -67,7 +67,7 @@ Notifications : ne marche pas (Bon je pense que en fait je suis parti sur un tru
 Sachant que les medias sont 'Blobisé' j'sais pas si une video c'est vraiment viable avec ce système. Ou alors il faudrait les compressées. Ce que j'ai essayé de faire pour les images à un moment avec une lib webassembly. Alors je l'ai plus en tête (car oui ça a pas marché), mais je sais que c'est celle sur laquelle Sharp est build.
 
 Bon c'est sur que en terme de perf ça va pas être top de stocker dans idb les blob, mais c'est la solution la plus simple que j'ai trouvé pour pouvoir récupérer les images depuis l'export des données en json.
-
+![Texte alternatif](.github/images/maquette_screenshot.png)
 
 #	Révision et répétition espacée
 
