@@ -74,7 +74,13 @@ Bon c'est sur que en terme de perf ça va pas être top de stocker dans idb les 
 
 #	Révision et répétition espacée
 
- L'espacement fonctionne cependant ont répète les espaces. Ainsi si l'espace est de 4 on le fait le 5eme jours. 
+
+ [edit 19 / 04] 
+En fait la suite est fausse. J'ai fait quelque recherches avec ma soeur et il s'avère que c'est faux. Du coup je vais setup un mode de selection pour la répétition et l'espacement. 
+![Texte alternatif](.github/images/courbe-debbinghaus.png)
+
+ 
+  L'espacement fonctionne cependant ont répète les espaces. Ainsi si l'espace est de 4 on le fait le 5eme jours. 
 
  Deplus pour garantir une pertinence dans l'apprentissage, une carte créée ne se fait pas le jour même. Cela ne sert en effet à rien (à mon sens et avec l'avis de ma soeur en psychologie cognitive). Le processus d'apprentissage espacé fonctionne le mieux quand il faut aller chercher dans sa mémoire "à long terme". Or quand on vient de rentrer la carte dans l'application celle ci se trouve toujours dans la mémoire de travail / instantanée. cf courbe de l'oublie. 
 
