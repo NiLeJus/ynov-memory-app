@@ -3,7 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { tMemcard } from 'src/_models/memcard.model';
-import { MemcardActionsService } from '../actions/memcard.service';
+import { MemcardActionsService } from '../../actions/memcard.service';
 
 @Injectable({
   providedIn: 'root',

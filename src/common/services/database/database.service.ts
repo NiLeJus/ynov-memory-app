@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { liveQuery, Observable } from 'dexie';
-import { StoreGlobalService } from '../global-store/global-store.service';
+import { StoreGlobalService } from '../stores/global-store/global-store.service';
 
 @Injectable({
   providedIn: 'root',
