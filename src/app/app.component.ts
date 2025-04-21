@@ -1,30 +1,22 @@
-import { ProfileObj, tProfile } from './../_models/profile.model';
 import { Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ModalDispComponent } from '../services/displayer/modal-disp/modal-disp.component';
-import { BrandHeaderComponent } from 'src/views/organism/brand-header/brand-header.component';
-import { LandingScreenComponent } from 'src/views/screens/landing-screen/landing.screen';
-import { ManageScreenComponent } from 'src/views/screens/manage-screen/manage-screen';
-import { CardDisplayerComponent } from 'src/views/sections/card-displayer/card-displayer.component';
-import { CreateMemorycardComponent } from 'src/views/sections/create-memorycard/create-memorycard.component';
-import { NotificationService } from 'src/services/notification.service';
-import { InputListenerComponent } from '../views/shared-components/input-listener/input-listener.component';
+
 import { SwUpdate } from '@angular/service-worker';
 import { DateTime } from 'luxon';
-import { MemcardObj, tHistoricEntry } from 'src/_models/memcard.model';
-import { MemcardActionsService } from 'src/services/actions/memcard.actions';
-import { DateStore } from 'src/services/stores/date-store.service';
-import { DatabaseService } from 'src/services/database/database.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { fadeAnimation } from 'src/anims/fade-animation';
 import { interval } from 'rxjs';
+import { fadeAnimation } from 'src/common/animations/fade-animation';
+import { MemcardActionsService } from 'src/common/services/actions/memcard.service';
+import { DatabaseService } from 'src/common/services/database/database.service';
+import { NotificationService } from 'src/common/services/notification.service';
+import { MemcardObj } from 'src/models/business/memcard.model';
+import { ProfileObj } from 'src/models/business/profile.model';
+import { BrandHeaderComponent } from 'src/views/shared-components/components/brand-header/brand-header.component';
+import { DateService } from 'src/common/services/stores/date-store.service';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    BrandHeaderComponent,
-  ],
+  imports: [RouterOutlet, BrandHeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   animations: [fadeAnimation],
@@ -34,7 +26,7 @@ export class AppComponent implements OnInit {
 
   private memcardActionsService = inject(MemcardActionsService);
   databaseService = inject(DatabaseService);
-  dateStore = inject(DateStore);
+  dateStore = inject(DateService);
   notificationService = inject(NotificationService);
 
   _users = this.databaseService.users$;

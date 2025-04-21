@@ -1,4 +1,3 @@
-import { MemcardObj } from 'src/_models/memcard.model';
 //#region MEMCARD
 
 import { DateFormatYMD } from './app.types';
@@ -7,15 +6,12 @@ import {
   eContentType,
   eMemcardStatus,
   eOrderFilter,
+  ineligibleMemcardStatus,
 } from './business.enums';
 import { DateTime } from 'luxon';
 
 const datePh: DateFormatYMD = '2024-04-19';
 
-/* Used for use case
- *
- *
- */
 export class MemcardObj {
   public Historic: HandlerHistoric;
   public Statistics: HandlerStatistics;
@@ -27,20 +23,41 @@ export class MemcardObj {
     public recto: tMemcardContent[],
     public verso: tMemcardContent[],
   ) {
-    this.Historic = new HandlerHistoric([]);
-    this.Statistics = new HandlerStatistics();
+    this.Historic = new HandlerHistoric(this, []);
+    this.Statistics = new HandlerStatistics(this);
   }
 
   static constructFromTemplate(
     memcardTemplate: MemcardTemplate,
-  ): tMemcard | void {}
+  ): tMemcard | void {
+    return new MemcardObj(
+      crypto.randomUUID(),
+      memcardTemplate.title,
+      memcardTemplate.cardType,
+      memcardTemplate.recto,
+      memcardTemplate.verso,
+    );
+  }
 
   get historics(): tHistoricEntry[] {
     return this.Historic.entries;
   }
 
+  get creationDate(): DateTime {
+    return this.historics[this.historics.length - 1].date;
+  }
+
   get valLevel(): number {
     return this.historics[0].valLevel;
+  }
+
+  get recentHistoEntry(): tHistoricEntry {
+    return this.historics[0];
+  }
+
+  get oldestHistoEntry(): tHistoricEntry {
+    console.warn('oldest histo entry is not', eMemcardStatus.Creation);
+    return this.historics[this.historics.length - 1];
   }
 
   onValidate() {
@@ -55,7 +72,13 @@ export class MemcardObj {
     return {};
   }
 
-  processNewValLevel(hasPassed: boolean) {}
+  processNewValLevel(hasPassed: boolean): number {
+    if (this.valLevel <= 0) {
+      return 0;
+    } else {
+      return hasPassed ? this.valLevel + 1 : this.valLevel - 1;
+    }
+  }
 }
 
 export type tMemcard = InstanceType<typeof MemcardObj>;
@@ -78,17 +101,15 @@ export type tMemcardTemplate = InstanceType<typeof MemcardTemplate>;
 //#endregion
 
 //#region  HISTORIC REL
-/* To manipulate historic
- *
- */
+/* To manipulate historic */
 export class HandlerHistoric {
-  constructor(public entries: tHistoricEntry[]) {
+  constructor(
+    private parent: MemcardObj,
+    public entries: tHistoricEntry[],
+  ) {
     this.onCreation(datePh);
   }
 
-  /* Return the amount of spaced day
-   * A utiliser à la création de l'historique pour la première fois
-   */
   private daysSpacing(valLevel: number): number {
     let spaceDays: number = 0;
 
@@ -180,24 +201,88 @@ export type tHistoricEntry = InstanceType<typeof HistoricEntry>;
  *
  */
 export class HandlerStatistics {
-  constructor() {}
+  constructor(private _parent: MemcardObj) {}
 
   get streak(): StreakStatObj {
-    return new StreakStatObj(eMemcardStatus.Validated, 10);
+    const historic: HistoricEntry[] = this._parent.historics;
+    return new StreakStatObj(
+      eMemcardStatus.Validated,
+      this._countStreak(historic[0].statusAt),
+    );
   }
 
   get devalAmount(): number {
-    return 0;
+    return this._count(eMemcardStatus.NotValidated);
   }
   get valAmount(): number {
-    return 0;
+    return this._count(eMemcardStatus.Validated);
   }
-
   get runnedAmount(): number {
-    return 0;
+    return this._countFromArray([
+      eMemcardStatus.NotValidated,
+      eMemcardStatus.Validated,
+    ]);
   }
 
   getStatObj() {}
+
+  /* Count the number of
+   *
+   */
+  private _count(toCount: eMemcardStatus): number {
+    let acc = 0;
+
+    this._parent.historics.forEach((entry: tHistoricEntry) => {
+      switch (entry?.statusAt) {
+        case toCount:
+          acc++;
+          break;
+        default:
+          break;
+      }
+    });
+    return acc;
+  }
+
+  private _countFromArray(toCount: eMemcardStatus[]): number {
+    return this._parent.historics.filter((entry: tHistoricEntry) =>
+      toCount.includes(entry?.statusAt),
+    );
+  }
+
+  private _countStreak(toCount: eMemcardStatus): number {
+    const historic = this._parent.historics;
+
+    let count = (): number => {
+      let count = 0;
+
+      for (const entry of historic) {
+        if (entry?.statusAt === toCount) {
+          count++;
+        } else {
+          break;
+        }
+      }
+      return count;
+    };
+
+    return count();
+  }
+
+  private _streak(): number {
+    const historic: HistoricEntry[] = this._parent.historics;
+
+    function isEligible(): boolean {
+      const mostRecentStatus = historic[0].statusAt;
+      return ineligibleMemcardStatus.includes(mostRecentStatus);
+    }
+
+    if (isEligible()) {
+      return {};
+    } else {
+      return {};
+    }
+  }
 }
 //#endregion
 
@@ -205,9 +290,11 @@ export class HandlerStatistics {
 
 export class MemcardContentObj {
   constructor(
-    public value: string | Blob,
+    public value: string | Blob, //^ check db performance, Should use file ref + dependencies
     public mediaType: eContentType,
     public description?: string,
+    public alt?: string,
+    public source?: string,
   ) {}
 }
 
@@ -222,7 +309,7 @@ export type tMemcardContent = InstanceType<typeof MemcardContentObj>;
 //Used for displaying streak
 export class StreakStatObj {
   constructor(
-    public status: eMemcardStatus,
+    public status: eMemcardStatus | 'none',
     public streak: number,
   ) {}
 }

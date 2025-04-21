@@ -25,6 +25,11 @@ export enum eMemcardStatus {
   Legacy = 'LEGACY',
 }
 
+export const ineligibleMemcardStatus: eMemcardStatus[] = [
+  eMemcardStatus.Creation,
+  eMemcardStatus.Legacy,
+];
+
 export enum eContentType {
   Text = 'TEXT',
   Image = 'IMAGE',

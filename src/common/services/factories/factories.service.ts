@@ -11,10 +11,7 @@ import {
   tMemcard,
   tMemcardContent,
   MemcardObj,
-  tMemcardPrototype,
   tHistoricEntry,
-  HistoricEntryObj,
-  tMemCardStatistics,
   HandlerStatistics,
 } from 'src/models/business/memcard.model';
 import {

@@ -52,8 +52,6 @@ class HandlerDate {
   static convertor() {}
 }
 
-
-
 export { HandlerDate };
 
 export enum eRepetitionType {
