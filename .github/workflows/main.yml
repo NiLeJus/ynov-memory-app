@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       # 3. Install dependencies
       - name: Install dependencies
@@ -25,7 +25,7 @@ jobs:
 
       # 4. Build Angular App
       - name: Build Angular App
-        run: npm ng build --configuration production
+        run: npm run ng build --configuration production
 
       # 4.5. Test Angular App 'ng test' for angular's test
       - name: Build Angular App
