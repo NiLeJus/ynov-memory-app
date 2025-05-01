@@ -32,69 +32,40 @@ jobs:
           LOGIN: ${{ secrets.O2SWITCH_LOGIN }}
           PASSWORD: ${{ secrets.O2SWITCH_PASSWORD }}
           SERVER: ${{ secrets.O2SWITCH_SERVER }}
-          IP: ${{ steps.ip.outputs.ip }}
+          IP: ${{ steps.get_ip.outputs.ip }}
         run: |
-
+          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
+      
+          echo "Récupération des IPs actuellement en whitelist..."
           RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=list")
-          echo "Raw RESPONSE: $RESPONSE"
-          
+          echo "Réponse brute : $RESPONSE"
+      
+          # Vérification JSON valide
           if ! echo "$RESPONSE" | jq -e . >/dev/null 2>&1; then
-            echo "La réponse n'est pas du JSON valide."
+            echo "Erreur : la réponse n'est pas du JSON valide."
             exit 61
           fi
-          
+      
+          # Vérification de la présence de la clé .data.list
           HAS_LIST=$(echo "$RESPONSE" | jq -e '.data.list' >/dev/null 2>&1 && echo "yes" || echo "no")
           if [ "$HAS_LIST" = "no" ]; then
-            echo "La clé .data.list n'existe pas dans la réponse."
+            echo "Erreur : la clé .data.list n'existe pas dans la réponse."
             exit 62
           fi
-          
+      
+          # Extraction des IPs uniques
           UNIQUE_IPS=$(echo "$RESPONSE" | jq -r '.data.list[] | .address' | sort -u)
-          echo "Unique IPs: $UNIQUE_IPS"
-          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
-          echo "Testing connectivity to the server..."
-          CONNECTIVITY_CHECK=$(curl -I https://$SERVER:2083)
-          echo "Connectivity Check: $CONNECTIVITY_CHECK"
-          if [[ $CONNECTIVITY_CHECK != *"200 OK"* ]]; then
-            echo "Error: Unable to connect to the server."
-            exit 60
-          fi
-          echo "Getting actual whitelisted IPs..."
-          RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=list")
-          echo "Full Response: $RESPONSE"
-          if [[ $RESPONSE == *"error"* ]]; then
-            echo "Error in getting whitelisted IPs: $RESPONSE"
-            exit 60
-          fi
-          # Check if the response is a valid JSON
-          if ! echo "$RESPONSE" | jq . > /dev/null 2>&1; then
-            echo "Error: The response is not a valid JSON."
-            exit 60
-          fi
-          UNIQUE_IPS=$(echo "$RESPONSE" | jq -r '.data.list[] | .address' | sort -u)
-          echo "Unique IPs: $UNIQUE_IPS"
+          echo "IPs à supprimer : $UNIQUE_IPS"
+      
+          # Suppression de toutes les anciennes IPs GitHub (in & out)
           for address in $UNIQUE_IPS; do
-            echo "Deleting this GitHub IP: $address (in & out)"
-            REMOVE_IN_RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$address&direction=in&port=22")
-            echo "Remove In Response: $REMOVE_IN_RESPONSE"
-            if [[ $REMOVE_IN_RESPONSE == *"error"* ]]; then
-              echo "Error in removing IP (in): $REMOVE_IN_RESPONSE"
-              exit 60
-            fi
-            sleep 3
-            REMOVE_OUT_RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$address&direction=out&port=22")
-            echo "Remove Out Response: $REMOVE_OUT_RESPONSE"
-            if [[ $REMOVE_OUT_RESPONSE == *"error"* ]]; then
-              echo "Error in removing IP (out): $REMOVE_OUT_RESPONSE"
-              exit 60
-            fi
-            sleep 3
+            echo "Suppression de l'IP $address (in)..."
+            curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$address&direction=in&port=22" | jq
+            sleep 2
+            echo "Suppression de l'IP $address (out)..."
+            curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$address&direction=out&port=22" | jq
+            sleep 2
           done
-          echo "All non-whitelisted IPs deleted!"
-          echo "Attempting to whitelist IP $IP..."
-          ADD_RESPONSE=$(curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=add")
-          echo "Add Response: $ADD_RESPONSE"
-          if [[ $ADD_RESPONSE == *"error"* ]]; then
-            echo "Error in whitelisting IP: $ADD_RESPONSE"
-            exit 60
-          fi
+      
+          echo "Ajout de l'IP du runner $IP à la whitelist..."
+          curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=add" | jq
