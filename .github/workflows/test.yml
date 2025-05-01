@@ -19,24 +19,10 @@ jobs:
         with:
           node-version: 22
 
-      # 3. Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # 4. Build Angular App
-      - name: Build Angular App
-        run: npm run ng build
-        
-      # # 4.5. Test Angular App 'ng test' for angular's test
-      # - name: Build Angular App
-      #   run: npm run test
-
-
       # 5. Get runner's public IP
       - name: Get runner's public IP
         id: ip
         uses: haythem/public-ip@v1.3
-
 
       # 6. Whitelist IP on o2Switch & clean old GitHub IPs
       - name: Whitelist runner IP on o2Switch and clean old GitHub IPs
@@ -47,6 +33,7 @@ jobs:
           SERVER: ${{ secrets.O2SWITCH_SERVER }}
           IP: ${{ steps.ip.outputs.ipv4 }}
         run: |
+          curl -I https://$SERVER:2083
           ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
           echo "Getting actual whitelisted IPs..."
           RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=list")
