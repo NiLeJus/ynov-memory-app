@@ -21,10 +21,11 @@ jobs:
 
       # 5. Get runner's public IP
       - name: Get runner's public IP
-        id: ip
-        uses: haythem/public-ip@v1.3
+        id: get_ip
+        run: |
+          IP=$(curl -s https://api.ipify.org)
+          echo "ip=$IP" >> "$GITHUB_OUTPUT"
 
-      # 6. Whitelist IP on o2Switch & clean old GitHub IPs
    # 6. Whitelist IP on o2Switch & clean old GitHub IPs
       - name: Whitelist runner IP on o2Switch and clean old GitHub IPs
         shell: bash
@@ -32,7 +33,7 @@ jobs:
           LOGIN: ${{ secrets.O2SWITCH_LOGIN }}
           PASSWORD: ${{ secrets.O2SWITCH_PASSWORD }}
           SERVER: ${{ secrets.O2SWITCH_SERVER }}
-          IP: ${{ steps.ip.outputs.ipv4 }}
+          IP: ${{ steps.ip.outputs.ip }}
         run: |
           ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
           echo "Testing connectivity to the server..."
