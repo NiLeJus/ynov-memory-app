@@ -26,7 +26,6 @@ jobs:
           IP=$(curl -s https://api.ipify.org)
           echo "ip=$IP" >> "$GITHUB_OUTPUT"
 
-   # 6. Whitelist IP on o2Switch & clean old GitHub IPs
       - name: Whitelist runner IP on o2Switch and clean old GitHub IPs
         shell: bash
         env:
