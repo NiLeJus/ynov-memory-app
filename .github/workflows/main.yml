@@ -66,12 +66,17 @@ jobs:
           curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=add" | jq
 
       # 7. Deploy to Server via SFTP
-      - name: Deploy to Server via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
-        with:
-          username: ${{ secrets.SFTP_USERNAME }}
-          server: ${{ secrets.SFTP_SERVER }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local_path: 'dist/memory-app/browser/'
-          remote_path: 'public_html/'
-          sftpArgs: '-o ConnectTimeout=5'
+ # 8. Cleanup IP from whitelist
+      - name: Remove runner IP from whitelist
+        shell: bash
+        env:
+          LOGIN: ${{ secrets.O2SWITCH_LOGIN }}
+          PASSWORD: ${{ secrets.O2SWITCH_PASSWORD }}
+          SERVER: ${{ secrets.O2SWITCH_SERVER }}
+          IP: ${{ steps.ip.outputs.ipv4 }}
+        run: |
+          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
+          echo "Removing IP $IP from whitelist..."
+          curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$IP&direction=in&port=22" | jq
+          sleep 3
+          curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$IP&direction=out&port=22" | jq
