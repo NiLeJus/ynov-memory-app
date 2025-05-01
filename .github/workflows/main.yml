@@ -25,7 +25,7 @@ jobs:
 
       # 4. Build Angular App
       - name: Build Angular App
-        run: npm run ng build --configuration production
+        run: npm run ng build memory-app --configuration production
 
       # 4.5. Test Angular App 'ng test' for angular's test
       - name: Build Angular App
