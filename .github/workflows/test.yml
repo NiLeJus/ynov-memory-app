@@ -34,6 +34,23 @@ jobs:
           SERVER: ${{ secrets.O2SWITCH_SERVER }}
           IP: ${{ steps.ip.outputs.ip }}
         run: |
+
+          RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=list")
+          echo "Raw RESPONSE: $RESPONSE"
+          
+          if ! echo "$RESPONSE" | jq -e . >/dev/null 2>&1; then
+            echo "La réponse n'est pas du JSON valide."
+            exit 61
+          fi
+          
+          HAS_LIST=$(echo "$RESPONSE" | jq -e '.data.list' >/dev/null 2>&1 && echo "yes" || echo "no")
+          if [ "$HAS_LIST" = "no" ]; then
+            echo "La clé .data.list n'existe pas dans la réponse."
+            exit 62
+          fi
+          
+          UNIQUE_IPS=$(echo "$RESPONSE" | jq -r '.data.list[] | .address' | sort -u)
+          echo "Unique IPs: $UNIQUE_IPS"
           ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
           echo "Testing connectivity to the server..."
           CONNECTIVITY_CHECK=$(curl -I https://$SERVER:2083)
