@@ -49,6 +49,11 @@ jobs:
             echo "Error in getting whitelisted IPs: $RESPONSE"
             exit 60
           fi
+          # Check if the response is a valid JSON
+          if ! echo "$RESPONSE" | jq . > /dev/null 2>&1; then
+            echo "Error: The response is not a valid JSON."
+            exit 60
+          fi
           UNIQUE_IPS=$(echo "$RESPONSE" | jq -r '.data.list[] | .address' | sort -u)
           echo "Unique IPs: $UNIQUE_IPS"
           for address in $UNIQUE_IPS; do
