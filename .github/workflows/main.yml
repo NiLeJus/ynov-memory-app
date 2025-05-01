@@ -1,4 +1,4 @@
-name: Build and Deploy Angular App via FTP
+name: Build and Deploy Angular App via SFTP on O2Switch
 
 on:
   push:
@@ -66,6 +66,16 @@ jobs:
           curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=add" | jq
 
       # 7. Deploy to Server via SFTP
+      - name: Deploy to Server via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          username: ${{ secrets.SFTP_USERNAME }}
+          server: ${{ secrets.SFTP_SERVER }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          local_path: 'dist/memory-app/browser/'
+          remote_path: 'public_html/'
+          sftpArgs: '-o ConnectTimeout=5'
+      
  # 8. Cleanup IP from whitelist
       - name: Remove runner IP from whitelist
         shell: bash
