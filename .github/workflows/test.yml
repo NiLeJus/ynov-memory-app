@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.O2SWITCH_LOGIN }}
           server: ${{ secrets.O2SWITCH_SERVER }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local_path: 'dist/memory-app/browser/'
+          local_path: 'dist/memory-app/browser/*'
           remote_path: 'public_html/'
           sftpArgs: '-o ConnectTimeout=5'
 
