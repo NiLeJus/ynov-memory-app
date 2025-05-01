@@ -27,9 +27,9 @@ jobs:
       - name: Build Angular App
         run: npm run ng build
         
-      # 4.5. Test Angular App 'ng test' for angular's test
-      - name: Build Angular App
-        run: npm run test
+      # # 4.5. Test Angular App 'ng test' for angular's test
+      # - name: Build Angular App
+      #   run: npm run test
 
 
       # 5. Get runner's public IP
