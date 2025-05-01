@@ -1,0 +1,65 @@
+name: Build and Deploy Angular App via SFTP on O2Switch
+
+on:
+  push:
+    branches:
+      - test-cicd
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Build Angular App
+      - name: Build Angular App
+        run: npm run ng build
+        
+      # # 4.5. Test Angular App 'ng test' for angular's test
+      # - name: Build Angular App
+      #   run: npm run test
+
+
+      # 5. Get runner's public IP
+      - name: Get runner's public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+
+      # 6. Whitelist IP on o2Switch & clean old GitHub IPs
+      - name: Whitelist runner IP on o2Switch and clean old GitHub IPs
+        shell: bash
+        env:
+          LOGIN: ${{ secrets.O2SWITCH_LOGIN }}
+          PASSWORD: ${{ secrets.O2SWITCH_PASSWORD }}
+          SERVER: ${{ secrets.O2SWITCH_SERVER }}
+          IP: ${{ steps.ip.outputs.ipv4 }}
+        run: |
+          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
+          echo "Getting actual whitelisted IPs..."
+          RESPONSE=$(curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=list")
+          echo "Response: $RESPONSE"
+          UNIQUE_IPS=$(echo "$RESPONSE" | jq -r '.data.list[] | .address' | sort -u)
+          echo "Unique IPs: $UNIQUE_IPS"
+          for address in $UNIQUE_IPS; do
+            echo "Deleting this GitHub IP: $address (in & out)"
+            curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$address&direction=in&port=22" | jq
+            sleep 3
+            curl -sX GET "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$address&direction=out&port=22" | jq
+            sleep 3
+          done
+          echo "All non-whitelisted IPs deleted!"
+          echo "Attempting to whitelist IP $IP..."
+          curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$PASSWORD@$SERVER:2083/$ENDPOINT?r=add" | jq
