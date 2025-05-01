@@ -3,7 +3,7 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 on:
   push:
     branches:
-      - test-cicd
+      - off
 
 jobs:
   build-and-deploy:
