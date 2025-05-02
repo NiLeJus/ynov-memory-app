@@ -18,7 +18,7 @@ jobs:
 
   test-app:
     name: Test Angular App
-    runs-on: self-hosted
+    runs-on: unbuntu #use self hosted for O2switch runner
     # needs: sast-analysis
     outputs: 
      dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
