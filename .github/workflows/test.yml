@@ -2,13 +2,56 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 
 on:
   push:
-    branches:
-      - test-cicd
+    branches: [release]
+  workflow_dispatch:
+    inputs:
+       run-sast:
+        description: "Run SAST analysis (true/false)"
+        required: true
+        type: boolean
+       run-deploy:
+        description: "Run deployment (true/false)"
+        required: true
+        type: boolean
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  sast-analysis:
+    name: SAST Security Scan
+    runs-on: ubuntu-latest 
+    if: ${{ inputs.run-sast }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run GitLab SAST for Angular
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/code \
+            -e "SAST_SRC_PATH=./src" \
+            -e "SAST_EXCLUDED_PATHS=**/*.spec.ts, node_modules/**" \
+            registry.gitlab.com/gitlab-org/security-products/analyzers/nodejs-scan:latest \
+            /code
+
+      - name: Upload SAST report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gl-sast-report
+          path: ./gl-sast-report.json
+
+      - name: Convert to SARIF format
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: gl-sast-report.json
+        
+
+
+test-app:
+  name: Test Angular App
+  runs-on: self-hosted
+  needs: sast-analysis
+  outputs: 
+     dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
+  steps:
       # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,30 +62,28 @@ jobs:
         with:
           node-version: 22
       
-      
-      # 3. Install dependencies
-      - name: Install dependencies
-        run: npm ci # == npm install mais env ci
-
-      # 4. Build Angular App
-      - name: Build Angular App
-        run: npm run ng build
-        
-    # 4.5. Test Angular App 'ng test' for angular's test
-      # - name: Test Angular App
-      #   run: npm run test
-
-
-    # 4.5. Security check
-    # Utilise plusieurs outils (Bandit, Safety, Checkov, Semgrep) et annote les lignes concernées dans les pull requests
       - name: Security check - super-sast-action
         uses: DrPlumcake/super-sast-action@v1.0
         with:
           project_path: .
           ignore_failure: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci # == npm install mais env ci
 
-      # 5. Get runner's public IP
+
+deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [test-app, sast-analysis]
+    if: ${{ inputs.run-deploy }}
+    steps:
+    
+      - name: Build Angular App
+        run: npm run ng build
+
+      #Get runner's public IP
       - name: Get runner's public IP
         id: get_ip
         run: |
@@ -59,18 +100,18 @@ jobs:
         run: |
           ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
       
-          # Encodage URL du mot de passe !important
+          # Encodage URL du mot de passe !IMPORTANT
           ENCODED_PASSWORD=$(echo -n "$PASSWORD" | jq -sRr @uri)
       
           echo "Ajout de l'IP du runner $IP à la whitelist..."
           ADD_RESPONSE=$(curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$ENCODED_PASSWORD@$SERVER:2083/$ENDPOINT?r=add")
           echo "Réponse de l'ajout : $ADD_RESPONSE"
       
-          # Vérification du succès (optionnel)
-          if [[ $ADD_RESPONSE == *"error"* ]]; then
-            echo "Erreur lors de l'ajout de l'IP : $ADD_RESPONSE"
-            exit 60
-          fi
+           # Check Success !USE FOR DEBUG!
+          # if [[ $ADD_RESPONSE == *"error"* ]]; then
+          #   echo "Erreur lors de l'ajout de l'IP : $ADD_RESPONSE"
+          #   exit 60
+          # fi
 
          # 7. Deploy to Server via SFTP
       - name: Deploy to Server via SFTP
