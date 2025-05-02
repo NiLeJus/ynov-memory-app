@@ -22,7 +22,7 @@ jobs:
       
       # 3. Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci # == npm install mais env ci
 
       # 4. Build Angular App
       - name: Build Angular App
@@ -31,6 +31,16 @@ jobs:
     # 4.5. Test Angular App 'ng test' for angular's test
       # - name: Test Angular App
       #   run: npm run test
+
+
+    # 4.5. Security check
+    # Utilise plusieurs outils (Bandit, Safety, Checkov, Semgrep) et annote les lignes concernées dans les pull requests
+      - name: Security check - super-sast-action
+        uses: DrPlumcake/super-sast-action@v1.0
+        with:
+          project_path: .
+          ignore_failure: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       # 5. Get runner's public IP
       - name: Get runner's public IP
@@ -49,7 +59,7 @@ jobs:
         run: |
           ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
       
-          # Encodage URL du mot de passe
+          # Encodage URL du mot de passe !important
           ENCODED_PASSWORD=$(echo -n "$PASSWORD" | jq -sRr @uri)
       
           echo "Ajout de l'IP du runner $IP à la whitelist..."
