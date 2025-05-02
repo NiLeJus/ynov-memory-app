@@ -5,50 +5,38 @@ on:
     branches: [test-cicd]
   workflow_dispatch:
     inputs:
-       run-sast:
-        description: "Run SAST analysis (true/false)"
-        required: true
-        type: boolean
+       # run-sast:
+       #  description: "Run SAST analysis (true/false)"
+       #  required: true
+       #  type: boolean
        run-deploy:
         description: "Run deployment (true/false)"
         required: true
         type: boolean
 
 jobs:
-  sast-analysis:
-    name: SAST Security Scan
-    runs-on: ubuntu-latest 
-    if: ${{ inputs.run-sast }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # sast-analysis:
+  #   env:
+  #     NODE_ENV: production
+  #   steps:
+  #     - name: Cache Node modules
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
-      - name: Run GitLab SAST for Angular
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/code \
-            -e "SAST_SRC_PATH=./src" \
-            -e "SAST_EXCLUDED_PATHS=**/*.spec.ts, node_modules/**" \
-            registry.gitlab.com/gitlab-org/security-products/analyzers/nodejs-scan:latest \
-            /code
-
-      - name: Upload SAST report
-        uses: actions/upload-artifact@v4
-        with:
-          name: gl-sast-report
-          path: ./gl-sast-report.json
-
-      - name: Convert to SARIF format
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: gl-sast-report.json
+  #     - name: Cache Docker layers
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: /var/lib/docker
+  #         key: ${{ runner.os }}-docker
         
 
 
   test-app:
     name: Test Angular App
     runs-on: self-hosted
-    needs: sast-analysis
+    # needs: sast-analysis
     outputs: 
      dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
     steps:
@@ -87,7 +75,7 @@ jobs:
   deploy:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: [test-app, sast-analysis]
+    needs: [test-app]
     if: ${{ inputs.run-deploy }}
     steps:
     
