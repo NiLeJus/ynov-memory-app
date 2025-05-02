@@ -15,23 +15,6 @@ on:
         type: boolean
 
 jobs:
-  # sast-analysis:
-  #   env:
-  #     NODE_ENV: production
-  #   steps:
-  #     - name: Cache Node modules
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: node_modules
-  #         key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-
-  #     - name: Cache Docker layers
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: /var/lib/docker
-  #         key: ${{ runner.os }}-docker
-        
-
 
   test-app:
     name: Test Angular App
@@ -50,16 +33,13 @@ jobs:
         with:
           node-version: 22
       
-      - name: Security check - super-sast-action
-        uses: DrPlumcake/super-sast-action@v1.0
-        with:
-          project_path: .
-          ignore_failure: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-
-      
       - name: Install dependencies
         run: npm ci # >= npm install 
+
+      #4.5. Test npm
+      - name: Test npm
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
 
       - name: Build Angular App
         run: npm run ng build
@@ -74,7 +54,7 @@ jobs:
 
   deploy:
     name: Deploy to Production
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [test-app]
     if: ${{ inputs.run-deploy }}
     steps:
@@ -141,3 +121,27 @@ jobs:
             curl -f -sX GET "https://$LOGIN:$ENCODED_PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$IP&direction=$direction&port=22" || true
             sleep 1
           done
+
+
+  # sast-analysis:
+  #   env:
+  #     NODE_ENV: production
+  #   steps:
+  #     - name: Cache Node modules
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+  #     - name: Cache Docker layers
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: /var/lib/docker
+  #         key: ${{ runner.os }}-docker
+        
+ # - name: Security check - super-sast-action
+ #        uses: DrPlumcake/super-sast-action@v1.0
+ #        with:
+ #          project_path: .
+ #          ignore_failure: true
+ #          repo_token: ${{ secrets.GITHUB_TOKEN }}
