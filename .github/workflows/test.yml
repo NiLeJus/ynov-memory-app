@@ -55,7 +55,7 @@ jobs:
     name: Deploy to Production
     runs-on: unbuntu
     needs: [test-app]
-    if: ${{ inputs.run-deploy }}
+    if: ${{ github.event.inputs.run-deploy == 'true' }} 
     steps:
     
       - name: Build Angular App
