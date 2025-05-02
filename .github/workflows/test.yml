@@ -3,16 +3,16 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 on:
   push:
     branches: [test-cicd]
-  workflow_dispatch:
-    inputs:
-       # run-sast:
-       #  description: "Run SAST analysis (true/false)"
-       #  required: true
-       #  type: boolean
-       run-deploy:
-        description: "Run deployment (true/false)"
-        required: true
-        type: boolean
+  # workflow_dispatch:
+  #   inputs:
+  #      # run-sast:
+  #      #  description: "Run SAST analysis (true/false)"
+  #      #  required: true
+  #      #  type: boolean
+  #      run-deploy:
+  #       description: "Run deployment (true/false)"
+  #       required: true
+  #       type: boolean
 
 jobs:
 
@@ -20,8 +20,10 @@ jobs:
     name: Test Angular App
     runs-on: self-hosted #use self hosted for O2switch runner
     # needs: sast-analysis
-    outputs: 
-     dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
+
+    ## Use for artifect when using 
+    # outputs: 
+    #  dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
     steps:
       # 1. Checkout code
       - name: Checkout code
@@ -43,19 +45,19 @@ jobs:
       - name: Build Angular App
         run: npm run ng build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: angular-build
-          path: dist/
+      # - name: Upload build artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: angular-build
+      #     path: dist/
 
 
 
   deploy:
     name: Deploy to Production
-    runs-on: unbuntu-latest
+    runs-on: self-hosted
     needs: [test-app]
-    if: ${{ github.event.inputs.run-deploy == 'true' }} 
+    # if: ${{ github.event.inputs.run-deploy == 'true' }} 
     steps:
     
       - name: Build Angular App
