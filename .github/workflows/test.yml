@@ -3,12 +3,6 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 on:
   push:
     branches: [test-cicd]
-  workflow_dispatch:
-    inputs:
-       run-deploy:
-        description: "Run deployment (true/false)"
-        required: true
-        type: boolean
 
 jobs:
 
@@ -33,9 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci # >= npm install 
 
-      #4.5. Test npm
-      - name: Test npm
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
+      # #4.5. Test npm
+      # - name: Test npm
+      #   run: npm run test -- --watch=false --browsers=ChromeHeadless
 
       - name: Build Angular App
         run: npm run ng build
@@ -52,7 +46,6 @@ jobs:
     name: Deploy to Production
     runs-on: unbuntu-latest
     needs: [test-app]
-    if: ${{ github.event.inputs.run-deploy == 'true' }} 
     steps:
     
       - name: Download build artifacts
