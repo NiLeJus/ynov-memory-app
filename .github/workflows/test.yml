@@ -3,27 +3,22 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 on:
   push:
     branches: [test-cicd]
-  # workflow_dispatch:
-  #   inputs:
-  #      # run-sast:
-  #      #  description: "Run SAST analysis (true/false)"
-  #      #  required: true
-  #      #  type: boolean
-  #      run-deploy:
-  #       description: "Run deployment (true/false)"
-  #       required: true
-  #       type: boolean
+  workflow_dispatch:
+    inputs:
+       run-deploy:
+        description: "Run deployment (true/false)"
+        required: true
+        type: boolean
 
 jobs:
 
   test-app:
     name: Test Angular App
-    runs-on: self-hosted #use self hosted for O2switch runner
-    # needs: sast-analysis
+    runs-on: unbuntu-latest
 
     ## Use for artifect when using 
-    # outputs: 
-    #  dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
+    outputs: 
+     dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
     steps:
       # 1. Checkout code
       - name: Checkout code
@@ -38,37 +33,39 @@ jobs:
       - name: Install dependencies
         run: npm ci # >= npm install 
 
-      # #4.5. Test npm
-      # - name: Test npm
-      #   run: npm run test -- --watch=false --browsers=ChromeHeadless
+      #4.5. Test npm
+      - name: Test npm
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
 
       - name: Build Angular App
         run: npm run ng build
 
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: angular-build
-      #     path: dist/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-build
+          path: dist/
 
 
 
   deploy:
     name: Deploy to Production
-    runs-on: self-hosted
+    runs-on: unbuntu-latest
     needs: [test-app]
-    # if: ${{ github.event.inputs.run-deploy == 'true' }} 
+    if: ${{ github.event.inputs.run-deploy == 'true' }} 
     steps:
     
-      - name: Build Angular App
-        run: npm run ng build
-
-      #Get runner's public IP
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-build   # doit correspondre au nom utilisé dans upload-artifact
+          path: dist/
+            #Get runner's public IP
       - name: Get runner's public IP
         id: get_ip
         run: |
-          IP=$(curl -s https://api.ipify.org)
-          echo "ip=$IP" >> "$GITHUB_OUTPUT"
+                IP=$(curl -s https://api.ipify.org)
+                echo "ip=$IP" >> "$GITHUB_OUTPUT"
 
       - name: Whitelist runner IP on o2Switch
         shell: bash
@@ -122,27 +119,3 @@ jobs:
             curl -f -sX GET "https://$LOGIN:$ENCODED_PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$IP&direction=$direction&port=22" || true
             sleep 1
           done
-
-
-  # sast-analysis:
-  #   env:
-  #     NODE_ENV: production
-  #   steps:
-  #     - name: Cache Node modules
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: node_modules
-  #         key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-
-  #     - name: Cache Docker layers
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: /var/lib/docker
-  #         key: ${{ runner.os }}-docker
-        
- # - name: Security check - super-sast-action
- #        uses: DrPlumcake/super-sast-action@v1.0
- #        with:
- #          project_path: .
- #          ignore_failure: true
- #          repo_token: ${{ secrets.GITHUB_TOKEN }}
