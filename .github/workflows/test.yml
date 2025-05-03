@@ -8,7 +8,7 @@ jobs:
 
   test-app:
     name: Test Angular App
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
 
     ## Use for artifect when using 
     outputs: 
@@ -44,7 +44,7 @@ jobs:
 
   deploy:
     name: Deploy to Production
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
     needs: [test-app]
     steps:
     
