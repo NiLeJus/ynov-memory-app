@@ -2,7 +2,7 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 
 on:
   push:
-    branches: [test-cicd]
+    branches: [main]
 
 jobs:
 
@@ -51,7 +51,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: angular-build   # doit correspondre au nom utilisé dans upload-artifact
+          name: angular-build   # should be the artifact name folder
           path: dist/
             #Get runner's public IP
       - name: Get runner's public IP
