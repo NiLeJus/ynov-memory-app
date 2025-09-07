@@ -1,41 +1,113 @@
-name: Build and Deploy Angular App via FTP
+name: Build and Deploy Angular App via SFTP on O2Switch
 
 on:
   push:
-    branches:
-      - main # Déclenchement uniquement sur la branche principale
+    branches: [test-cicd]
 
 jobs:
-  build-and-deploy:
+
+  test-app:
+    name: Test Angular App
     runs-on: ubuntu-latest
 
+    ## Use for artifect when using 
+    outputs: 
+     dist_path: ${{ steps.upload_artifacts.outputs.dist_path }}
     steps:
-      # Étape 1 : Récupérer le code source
+      # 1. Checkout code
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Étape 2 : Installer Node.js et les dépendances
+        uses: actions/checkout@v4
+        
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Version compatible avec Angular 19
-
+          node-version: 22
+      
       - name: Install dependencies
-        run: npm install
+        run: npm ci # >= npm install 
 
-      # Étape 3 : Construire l'application Angular
+      # #4.5. Test npm
+      # - name: Test npm
+      #   run: npm run test -- --watch=false --browsers=ChromeHeadless
+
       - name: Build Angular App
-        run: npm run build 
+        run: npm run ng build
 
-      # Étape 4 : Déployer via FTP
-      - name: Deploy to FTP Server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/memory-app/browser/ # Dossier généré par le build Angular
-          server-dir: public_html/
-          exclude: |
-            **/.git*
-            **/node_modules/**
+          name: angular-build
+          path: dist/
+
+
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [test-app]
+    steps:
+    
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-build   # doit correspondre au nom utilisé dans upload-artifact
+          path: dist/
+            #Get runner's public IP
+      - name: Get runner's public IP
+        id: get_ip
+        run: |
+                IP=$(curl -s https://api.ipify.org)
+                echo "ip=$IP" >> "$GITHUB_OUTPUT"
+      - name: Whitelist runner IP on o2Switch
+        shell: bash
+        env:
+          LOGIN: ${{ secrets.O2SWITCH_LOGIN }}
+          PASSWORD: ${{ secrets.O2SWITCH_PASSWORD }}
+          SERVER: ${{ secrets.O2SWITCH_SERVER }}
+          IP: ${{ steps.get_ip.outputs.ip }}
+        run: |
+          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
+      
+          # Encodage URL du mot de passe !IMPORTANT
+          ENCODED_PASSWORD=$(echo -n "$PASSWORD" | jq -sRr @uri)
+      
+          echo "Ajout de l'IP du runner $IP à la whitelist..."
+          ADD_RESPONSE=$(curl -sX POST -d "whitelist[address]=$IP" -d "whitelist[port]=22" "https://$LOGIN:$ENCODED_PASSWORD@$SERVER:2083/$ENDPOINT?r=add")
+          echo "Réponse de l'ajout : $ADD_RESPONSE"
+      
+           # Check Success !USE FOR DEBUG!
+          # if [[ $ADD_RESPONSE == *"error"* ]]; then
+          #   echo "Erreur lors de l'ajout de l'IP : $ADD_RESPONSE"
+          #   exit 60
+          # fi
+
+         # 7. Deploy to Server via SFTP
+      - name: Deploy to Server via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          username: ${{ secrets.O2SWITCH_LOGIN }}
+          server: ${{ secrets.O2SWITCH_SERVER }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          local_path: 'dist/memory-app/browser/*'
+          remote_path: 'public_html/'
+          sftpArgs: '-o ConnectTimeout=5'
+
+      - name: Cleanup IP
+        if: always()
+        shell: bash
+        env:
+          LOGIN: ${{ secrets.O2SWITCH_LOGIN }}
+          PASSWORD: ${{ secrets.O2SWITCH_PASSWORD }}
+          SERVER: ${{ secrets.O2SWITCH_SERVER }}
+          IP: ${{ steps.get_ip.outputs.ip }}
+        run: |
+          set -e
+          ENDPOINT='frontend/o2switch/o2switch-ssh-whitelist/index.live.php'
+          ENCODED_PASSWORD=$(echo -n "$PASSWORD" | jq -sRr @uri)
+          
+          for direction in in out; do
+            echo "Removing $IP ($direction)..."
+            curl -f -sX GET "https://$LOGIN:$ENCODED_PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$IP&direction=$direction&port=22" || true
+            sleep 1
+          done
