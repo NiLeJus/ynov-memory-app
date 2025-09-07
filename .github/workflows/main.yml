@@ -2,7 +2,7 @@ name: Build and Deploy Angular App via SFTP on O2Switch
 
 on:
   push:
-    branches: [test-cicd]
+    branches: [main]
 
 jobs:
 
@@ -111,3 +111,4 @@ jobs:
             curl -f -sX GET "https://$LOGIN:$ENCODED_PASSWORD@$SERVER:2083/$ENDPOINT?r=remove&address=$IP&direction=$direction&port=22" || true
             sleep 1
           done
+
