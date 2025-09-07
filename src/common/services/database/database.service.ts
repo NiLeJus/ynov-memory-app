@@ -1,6 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { liveQuery, Observable } from 'dexie';
-import { StoreGlobalService } from '../stores/global-store/global-store.service';
+import { StoreGlobalService } from 'src/common/stores/global-store/global-store.service';
+import { db } from 'src/models/_data/db';
+import { tMemcard } from 'src/models/business/memcard.model';
+import { tMemTheme, tProfile } from 'src/models/business/profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -267,7 +270,7 @@ export class DatabaseService {
         const user = await db.users.get(userId);
         if (!user) throw new Error('Utilisateur introuvable');
 
-        const targetTheme = user.themes?.find((t) => t.id === themeId);
+        const targetTheme = user.themes?.find((t: { id: string | null; }) => t.id === themeId);
         if (!targetTheme) throw new Error('Thème introuvable');
 
         targetTheme.cards = [...(targetTheme.cards || []), newCard];

@@ -9,6 +9,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { MemcardObj } from 'src/models/business/memcard.model';
+import { AppState, ManageContent, RunAppState } from './app.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,29 +17,25 @@ import { MemcardObj } from 'src/models/business/memcard.model';
 export class AppStateRepo {
   constructor() {}
 
-  //Run Store
-  runAppState = {
-    wasRunning: true,
-    runData: '',
-  };
-  //Creation Store
+  //#region App
+  appState = AppState.createDefault();
+  //#endregion
 
-  manageContent: any = {
-    unsavedMemcard: '',
-    unsavedThemeName: '',
-  };
+  //#region Run
+  runRelState = RunAppState.createDefault();
+  //#endregion
 
-  //User Store
+  //#region Creation
+  contentRelState = ManageContent.createDefault();
+  //#endregion
 
-  appState = {
-    selectedUser: 0,
-    lastSelectedUser: 0,
-    lastUserPostition: 'oui',
-  };
-
-  writeState() {
-
+  //#region Commons
+  writeState(): boolean {
+    return true;
   }
 
-  
+  readState(targets: any[] | 'all'): AppState | RunAppState | ManageContent {
+    return new AppState(1, 1, '');
+  }
+  //#endregion
 }
